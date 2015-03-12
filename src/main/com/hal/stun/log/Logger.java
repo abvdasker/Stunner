@@ -24,4 +24,13 @@ public class Logger {
     out.flush();
   }
   
+  public void print(char c) throws IOException {
+    out.write(c);
+    out.flush();
+  }
+  
+  public void print(int i) throws IOException {
+    print(i + "");
+  }
+  
 }
