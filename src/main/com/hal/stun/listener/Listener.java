@@ -18,12 +18,12 @@ public class Listener {
   private BufferedInputStream in;
   private BufferedOutputStream out;
   
-  public Listener(int port) {
+  public Listener(int port) throws IOException {
     this.port = port;
+    serverSocket = new ServerSocket(port);  
   }
   
   public InputStream listen() throws IOException {
-    serverSocket = new ServerSocket(port);
     clientSocket = serverSocket.accept();
     in = new BufferedInputStream(clientSocket.getInputStream());
     out = new BufferedOutputStream(clientSocket.getOutputStream());
@@ -32,6 +32,10 @@ public class Listener {
   
   public void say(byte[] output) throws IOException {
     out.write(output);
+  }
+
+  public void refresh() {
+    
   }
   
 }

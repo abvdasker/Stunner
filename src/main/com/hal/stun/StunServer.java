@@ -2,6 +2,7 @@ package com.hal.stun;
 
 import com.hal.stun.listener.Listener;
 import com.hal.stun.log.Logger;
+
 import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.Reader;
@@ -19,42 +20,34 @@ public class StunServer {
     
     Listener listener = new Listener(PORT_NUMBER);
     
-    /* 
+    /**
      * The input stream from one request. This stream will
      * close when the connection is closed. Until then it will block
      * on read(). Use a input read to parse the request into lines.
      * when an empty line is received, that is the end of the request.
      *
      */
-    InputStream in = listener.listen(); 
-    String requestText = getRequestText(in);
-    log.print(requestText);
-    
 
+    while (true) {
+      InputStream in = listener.listen(); 
+      String requestText = getRequestText(in);
+      log.print(requestText);
+    }
+    
+    
   }
   
   private static String getRequestText(InputStream in) throws IOException {
+
+    BufferedReader requestReader = new BufferedReader(new InputStreamReader(in));
     StringBuffer requestText = new StringBuffer();
-    byte inputByte;
-    char lastChar = ' ';
-    char inputChar = ' ';
-    
-    while ((inputByte = (byte) in.read()) != -1) {
-      inputChar = (char) inputByte;
-      requestText.append(inputChar);
-      log.print("_" + (int) lastChar + "_");
-      log.print("_" + (int) inputChar + "_");
-      if (inputChar == '\n') {
-        log.print('\n');
-      }
-      // if (isLineEndChar(inputChar) && isLineEndChar(lastChar)) {
-      //   break;
-      // }
-      lastChar = inputChar;
+
+    String line;
+    while ( !(line = requestReader.readLine()).isEmpty()) {
+	requestText.append(line + '\n');
     }
-    if (lastChar != ' ') {
-      requestText.append(lastChar);
-    }
+    in.close();
+
     return requestText.toString();
   }
   
