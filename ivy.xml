@@ -1,0 +1,6 @@
+<ivy-module version="2.4">
+  <info organisation="com.hal" module="stun" />
+  <dependencies>
+    <dependency org="junit" name="junit" rev="4.12" />
+  </dependencies>
+</ivy-module>
