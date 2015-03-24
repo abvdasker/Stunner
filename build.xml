@@ -1,0 +1,39 @@
+<project name="Stunner" default="dist" basedir=".">
+  <description>
+    The build file for Stunner.
+  </description>
+  <property name="src" location="src" />
+  <property name="main" location="${src}/main" />
+  <property name="test" location="${src}/test" />
+  <property name="build" location="build" />
+  <property name="dist" location="dist" />
+  <property name="version">0.1</property>
+  <property name="sourcepath" location="${main}/com/hal/stun" />
+  
+  <target name="init">
+    <tstamp />
+    <mkdir dir="${build}" />
+  </target>
+  <target name="compile" depends="init" description="compile the source">
+    <javac srcdir="${src}" destdir="${build}" />
+  </target>
+
+  <target name="dist" depends="compile" description="generate the distribution">
+    <mkdir dir="${dist}/jar" />
+
+    <!-- Put everything in ${build} into the Stunner-${version}.jar file -->
+    <jar jarfile="${dist}/jar/Stunner-${version}.jar" basedir="${build}">
+      <manifest>
+	<attribute name="Main-Class" value="com.hal.stun.StunServer" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clean" description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}" />
+    <delete dir="${dist}" />
+  </target>
+
+
+</project>
