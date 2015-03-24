@@ -63,7 +63,7 @@
   </target>
   
   <target name="clean-ivy" description="clean up ivy">
-    <delete dir="${ivy.jar.dir}"
+    <delete dir="${ivy.jar.dir}" />
   </target>
 
 
