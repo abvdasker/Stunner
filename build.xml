@@ -32,6 +32,8 @@
   <property name="dist" location="dist" />
   <property name="version">0.1</property>
   <property name="sourcepath" location="${main}/com/hal/stun" />
+  <property name="test.reports" location="reports" />
+
   
   <target name="init">
     <tstamp />
@@ -49,7 +51,9 @@
   </target>
 
   <target name="compile-tests" depends="compile" description="compile tests">
-    <mkdir dir="${src.test}" />
+    <echo>test path: ${toString:test.path}</echo>
+    <echo>main classes path: "${build.main}"</echo>
+    <mkdir dir="${build.test}" />
     <javac srcdir="${src.test}" destdir="${build.test}" includeantruntime="false" debug="true">
       <classpath>
 	<path refid="test.path" />
@@ -60,8 +64,9 @@
   </target>
 
   <target name="test" depends="compile-tests" description="Run unit tests" >
+    <mkdir dir="${test.reports}" />
     
-    <junit printsummary="yes" haltonfailure="yes" >
+    <junit printsummary="true" haltonerror="true" haltonfailure="false" >
       <classpath>
 	<path refid="test.path" />
 	<pathelement location="${build.main}" />
@@ -69,6 +74,12 @@
       </classpath>
 
       <formatter type="plain" />
+
+      <batchtest fork="true" todir="${test.reports}" >
+	<fileset dir="${src.test}" >
+	  <include name="**/*Test.java" />
+	</fileset>
+      </batchtest>
     </junit>
 
   </target>
@@ -84,6 +95,8 @@
     </jar>
   </target>
 
+  <target name="build-and-test" depends="test, dist" />
+
   <target name="clean" description="clean up">
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}" />
@@ -94,7 +107,11 @@
     <delete dir="${ivy.jar.dir}" />
   </target>
 
-  <target name="clean-all" depends="clean, clean-ivy" description="clean build, dist, dependencies and ivy">
+  <target name="clean-reports" description="clean up test reports">
+    <delete dir="${test.reports}" />
+  </target>
+
+  <target name="clean-all" depends="clean, clean-reports, clean-ivy" description="clean build, dist, dependencies and ivy">
     <echo message="deleting everything but source" />
   </target>
 
