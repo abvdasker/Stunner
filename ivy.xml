@@ -1,6 +1,10 @@
 <ivy-module version="2.4">
   <info organisation="com.hal" module="stun" />
+  <configurations>
+    <conf name="test" description="Required for test only" />
+  </configurations>
+
   <dependencies>
-    <dependency org="junit" name="junit" rev="4.12" />
+    <dependency org="junit" name="junit" rev="4.12" conf="test->default" />
   </dependencies>
 </ivy-module>

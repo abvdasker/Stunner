@@ -1,4 +1,4 @@
-<project name="Stunner" default="dist" basedir=".">
+<project name="Stunner" default="dist" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <description>
     The build file for Stunner.
   </description>
@@ -19,37 +19,65 @@
       <fileset file="${ivy.jar.file}" />
     </path>
     <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
-    
-  </target>
+  </target>  
 
   <!-- build project -->
 
   <property name="src" location="src" />
-  <property name="main" location="${src}/main" />
-  <property name="test" location="${src}/test" />
+  <property name="src.main" location="${src}/main/java" />
+  <property name="src.test" location="${src}/test/java" />
   <property name="build" location="build" />
+  <property name="build.main" location="${build}/main" />
+  <property name="build.test" location="${build}/test" />
   <property name="dist" location="dist" />
   <property name="version">0.1</property>
   <property name="sourcepath" location="${main}/com/hal/stun" />
   
   <target name="init">
     <tstamp />
-    <mkdir dir="${build}" />
+    <mkdir dir="${build.main}" />
   </target>
 
-  <target name="resolve" depends="install-ivy" description="retrieve dependencies with ivy" xmlns:ivy="antlib:org.apache.ivy.ant">
-    <ivy:retrieve />
+  <target name="resolve" depends="install-ivy" description="retrieve dependencies with ivy">
+    <ivy:retrieve conf="test" pattern="${build}/lib/[conf]/[artifact](-[classifier]).[ext]"/>
+
+    <ivy:cachepath pathid="test.path" conf="test" />
   </target>
   
   <target name="compile" depends="init, resolve" description="compile the source">
-    <javac srcdir="${src}" destdir="${build}" />
+    <javac srcdir="${src.main}" destdir="${build.main}" />
+  </target>
+
+  <target name="compile-tests" depends="compile" description="compile tests">
+    <mkdir dir="${src.test}" />
+    <javac srcdir="${src.test}" destdir="${build.test}" includeantruntime="false" debug="true">
+      <classpath>
+	<path refid="test.path" />
+	<pathelement path="${build.main}" />
+      </classpath>
+    </javac>
+
+  </target>
+
+  <target name="test" depends="compile-tests" description="Run unit tests" >
+    
+    <junit printsummary="yes" haltonfailure="yes" >
+      <classpath>
+	<path refid="test.path" />
+	<pathelement location="${build.main}" />
+	<pathelement location="${build.test}" />
+      </classpath>
+
+      <formatter type="plain" />
+    </junit>
+
   </target>
 
   <target name="dist" depends="compile" description="generate the distribution">
     <mkdir dir="${dist}/jar" />
 
     <!-- Put everything in ${build} into the Stunner-${version}.jar file -->
-    <jar jarfile="${dist}/jar/Stunner-${version}.jar" basedir="${build}">
+    <jar jarfile="${dist}/jar/Stunner-${version}.jar" basedir="${build.main}">
       <manifest>
 	<attribute name="Main-Class" value="com.hal.stun.StunServer" />
       </manifest>
@@ -66,5 +94,8 @@
     <delete dir="${ivy.jar.dir}" />
   </target>
 
+  <target name="clean-all" depends="clean, clean-ivy" description="clean build, dist, dependencies and ivy">
+    <echo message="deleting everything but source" />
+  </target>
 
 </project>
