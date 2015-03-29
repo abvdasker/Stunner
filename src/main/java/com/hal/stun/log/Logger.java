@@ -1,7 +1,9 @@
 package com.hal.stun.log;
 
+import java.io.File;
 import java.io.OutputStream;
-
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 
 public class Logger {
@@ -18,6 +20,14 @@ public class Logger {
   public Logger() {
     this.out = System.out;
   }
+
+    public Logger(File file) throws IOException {
+	if (!file.exists()) {
+	    file.createNewFile();
+	}
+
+	this.out = new BufferedOutputStream(new FileOutputStream(file));
+    }
   
   public void print(String string) throws IOException {
     out.write(string.getBytes());
