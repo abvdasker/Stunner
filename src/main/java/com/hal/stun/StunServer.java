@@ -51,18 +51,4 @@ public class StunServer {
     return requestText.toString();
   }
   
-  private static InputStream getBufferedInputStreamUnlessBuffered(InputStream in) {
-    if (in instanceof BufferedInputStream) {
-      return in;
-    } else {
-      return new BufferedInputStream(in);
-    }
-  }
-  
-  private static boolean isLineEndChar(char character) {
-    char newLine1 = (char) 10;
-    char newLine2 = (char) 13;
-    return character == newLine1 || character == newLine2;
-  }
-  
 }
