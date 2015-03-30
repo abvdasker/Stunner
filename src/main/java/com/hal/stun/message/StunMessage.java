@@ -40,7 +40,7 @@ public class StunMessage {
 
     private void parseHeader(byte[] header) throws StunParseException {
 	byte firstByte = header[0];
-	if (header>>>6 != 0) {
+	if (firstByte>>>6 != 0) {
 	    throw new StunParseException("first two bits of header were not zero");
 	}
 
