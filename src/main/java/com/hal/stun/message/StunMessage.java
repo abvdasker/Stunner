@@ -14,7 +14,7 @@ public class StunMessage {
 
     // also add message length, magic cookie and transaction ID fields
 
-    public StunMessage(byte[] message) {
+    public StunMessage(byte[] message) throws StunParseException {
 	this.messageBytes = message;
 	parse(messageBytes);
     }
@@ -24,7 +24,7 @@ public class StunMessage {
 	parseHeader(header);
     }
 
-    private byte[] getHeaderBytes(byte[] message) throws StunParseException {
+    private static byte[] getHeaderBytes(byte[] message) throws StunParseException {
 	if (message.length < HEADER_SIZE) {
 	    throw new StunParseException("message was smaller than header size. Header must be 20 bytes");
 	}
@@ -54,11 +54,11 @@ public class StunMessage {
 	byte messageClassBits = 0b0;
 	byte topBit = header[0];
 	byte lowerBit = header[1];
-	topBit &= 0b00000001;
-	lowerBit = lowerBit & 0b00010000;
+	topBit &= (byte) 0b00000001;
+	lowerBit = (byte) (lowerBit & 0b00010000);
 	topBit <<= 1;
 	lowerBit >>>= 4;
-	return topBit | lowerBit;
+	return (byte) (topBit | lowerBit);
     }
 
     private short getMessageMethod(byte[] header) {
@@ -70,10 +70,10 @@ public class StunMessage {
 	
 	// removes the included class bit from lower byte and shifts down
 	byte lowerBits = header[1];
-	byte lowerTop3 = lowerBits & 0b11100000;
+	byte lowerTop3 = (byte) (lowerBits & 0b111000000);
 	lowerTop3 >>>= 1;
-	byte lowerBottom4 = lowerBits & 0b00001111;
-	lowerBits = lowerTop3 | lowerBottom4; 
+	byte lowerBottom4 = (byte) (lowerBits & 0b00001111);
+	lowerBits = (byte) (lowerTop3 | lowerBottom4); 
 
 	short fullBits = 0;
 	fullBits |= topBits;
@@ -91,7 +91,7 @@ public class StunMessage {
 	short messageLength = 0;
 	messageLength |= messageLengthTop;
 	messageLength <<= 8;
-	return messageLength | messageLengthBottom;
+	return (byte) (messageLength | messageLengthBottom);
     }
 
 }

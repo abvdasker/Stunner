@@ -9,13 +9,13 @@ public enum MessageClass {
      * 0b11 - error response
      */
 
-    REQUEST(0b00);
-    INDICATION(0b01);
-    SUCCESS(0b10);
-    ERROR(0b11);
+    REQUEST((byte) 0b00),
+    INDICATION((byte) 0b01),
+    SUCCESS((byte) 0b10),
+    ERROR((byte) 0b11);
 
     private byte classBits;
-    public MessageClass(byte classBits) {
+    MessageClass(byte classBits) {
 	this.classBits = classBits;
     }
 
@@ -33,7 +33,10 @@ public enum MessageClass {
 	    return SUCCESS;
 	case 0b11:
 	    return ERROR;
+	default:
+	    throw new RuntimeException("should never reach here. Invalid classBits specified");
 	}
+	
     }
 
 

@@ -53,6 +53,7 @@
   <target name="compile-tests" depends="compile" description="compile tests">
     <echo>test path: ${toString:test.path}</echo>
     <echo>main classes path: "${build.main}"</echo>
+    <echo>test classes path: "${build.test}"</echo>
     <mkdir dir="${build.test}" />
     <javac srcdir="${src.test}" destdir="${build.test}" includeantruntime="false" debug="true">
       <classpath>
@@ -66,7 +67,7 @@
   <target name="test" depends="compile-tests" description="Run unit tests" >
     <mkdir dir="${test.reports}" />
     
-    <junit printsummary="true" haltonerror="true" haltonfailure="false" >
+    <junit printsummary="true" haltonerror="true" haltonfailure="true" >
       <classpath>
 	<path refid="test.path" />
 	<pathelement location="${build.main}" />
