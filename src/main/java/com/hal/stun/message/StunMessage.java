@@ -6,20 +6,16 @@ public class StunMessage {
 
     private static final int HEADER_SIZE = 20;
     private static final short BINDING_METHOD = 0b000000000001;
-    
-    private byte messageClass; // 2 bits
+
+    private byte[] messageBytes;
+    private MessageClass messageClass;
     private short method; // 12 bits; binding method is 0b000000000001
-    /*TODO: write enum of message classes
-     * 0b00 - requeust
-     * 0b01 - indication
-     * 0b10 - success response
-     * 0b11 - error response
-     */
 
     // also add message length, magic cookie and transaction ID fields
 
     public StunMessage(byte[] message) {
-	
+	this.messageBytes = message;
+	parse(messageBytes);
     }
 
     private void parse(byte[] message) throws StunParseException {
@@ -43,11 +39,31 @@ public class StunMessage {
 	if (firstByte>>>6 != 0) {
 	    throw new StunParseException("first two bits of header were not zero");
 	}
-
+	byte messageClassBits = getMessageClassBits(header);
+	messageClass = MessageClass.fromByte(messageClassBits);
 	
-
     }
 
+    private byte getMessageClassBits(byte[] header) {
+	byte messageClassBits = 0b0;
+	byte topBit = header[0];
+	byte lowerBit = header[1];
+	topBit &= 0b00000001;
+	lowerBit = lowerBit & 0b00010000;
+	topBit <<= 1;
+	lowerBit >>>= 4;
+	return topBit | lowerBit;
+    }
 
+    private short getMessageMethod(byte[] header) {
+	short topBits = header[0];
+	topBits >>>= 1;
+	topBits <<= 9;
+
+	short lowerBits = header[1];
+
+	short fullBits = topBits | lowerBits;
+	fullBits &= 
+    }
 
 }
