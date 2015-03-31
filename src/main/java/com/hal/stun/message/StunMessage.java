@@ -10,6 +10,7 @@ public class StunMessage {
     private byte[] messageBytes;
     private MessageClass messageClass;
     private short method; // 12 bits; binding method is 0b000000000001
+    private short messageLength;
 
     // also add message length, magic cookie and transaction ID fields
 
@@ -41,6 +42,11 @@ public class StunMessage {
 	}
 	byte messageClassBits = getMessageClassBits(header);
 	messageClass = MessageClass.fromByte(messageClassBits);
+	method = getMessageMethod(header);
+	if (method != BINDING_METHOD) {
+	    throw new StunParseException("unrecognized method. Only recognized method would be encoded with 0b000000000001");
+	}
+	messageLength = getMessageLength(header);
 	
     }
 
@@ -56,14 +62,36 @@ public class StunMessage {
     }
 
     private short getMessageMethod(byte[] header) {
-	short topBits = header[0];
+	byte topBits = header[0];
+	
+	// removes the included class bit from upper byte and shifts down
 	topBits >>>= 1;
 	topBits <<= 9;
+	
+	// removes the included class bit from lower byte and shifts down
+	byte lowerBits = header[1];
+	byte lowerTop3 = lowerBits & 0b11100000;
+	lowerTop3 >>>= 1;
+	byte lowerBottom4 = lowerBits & 0b00001111;
+	lowerBits = lowerTop3 | lowerBottom4; 
 
-	short lowerBits = header[1];
+	short fullBits = 0;
+	fullBits |= topBits;
+	// shift upper bits down to fill in removed c;ass bit from lower bits
+	fullBits >>>= 1;
+        
+	// combine with 7 lower method bits
+	fullBits |= lowerBits;
+	return fullBits;
+    }
 
-	short fullBits = topBits | lowerBits;
-	fullBits &= 
+    private short getMessageLength(byte[] header) {
+	byte messageLengthTop = header[2];
+	byte messageLengthBottom = header[3];
+	short messageLength = 0;
+	messageLength |= messageLengthTop;
+	messageLength <<= 8;
+	return messageLength | messageLengthBottom;
     }
 
 }
