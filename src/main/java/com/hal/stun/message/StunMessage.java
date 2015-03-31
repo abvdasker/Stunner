@@ -77,7 +77,7 @@ public class StunMessage {
 
 	short fullBits = 0;
 	fullBits |= topBits;
-	// shift upper bits down to fill in removed c;ass bit from lower bits
+	// shift upper bits down to fill in removed class bit from lower bits
 	fullBits >>>= 1;
         
 	// combine with 7 lower method bits
