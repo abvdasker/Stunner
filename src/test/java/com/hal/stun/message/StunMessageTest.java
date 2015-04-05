@@ -89,8 +89,8 @@ public class StunMessageTest {
   public void testGetMessageClassBits() throws IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
     byte expectedClassBits = MessageClass.ERROR.getClassBits();
-    headerBytes[0] = Byte.MAX_VALUE;
-    headerBytes[1] = Byte.MAX_VALUE;
+    headerBytes[0] = (byte) 0xff;
+    headerBytes[1] = (byte) 0xff;
     byte actualClassBits = (byte) getMessageClassBitsMethod.invoke(null, headerBytes);
     Assert.assertEquals("message class retrieved from header matches that set in header", 
       expectedClassBits, actualClassBits);
