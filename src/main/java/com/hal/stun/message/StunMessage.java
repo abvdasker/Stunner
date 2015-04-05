@@ -4,8 +4,8 @@ import com.hal.stun.message.StunParseException;
 
 public class StunMessage {
 
-  private static final int HEADER_SIZE = 20;
-  private static final short BINDING_METHOD = 0b000000000001;
+  public static final int HEADER_SIZE = 20;
+  public static final short BINDING_METHOD = 0b000000000001;
 
   private byte[] messageBytes;
   private MessageClass messageClass;

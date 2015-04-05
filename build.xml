@@ -57,8 +57,8 @@
     <mkdir dir="${build.test}" />
     <javac srcdir="${src.test}" destdir="${build.test}" includeantruntime="false" debug="true">
       <classpath>
-	<path refid="test.path" />
-	<pathelement path="${build.main}" />
+        <path refid="test.path" />
+        <pathelement path="${build.main}" />
       </classpath>
     </javac>
 
@@ -69,17 +69,16 @@
     
     <junit printsummary="true" haltonerror="true" haltonfailure="true" >
       <classpath>
-	<path refid="test.path" />
-	<pathelement location="${build.main}" />
-	<pathelement location="${build.test}" />
+        <path refid="test.path" />
+        <pathelement location="${build.main}" />
+        <pathelement location="${build.test}" />
       </classpath>
 
       <formatter type="plain" />
-
       <batchtest fork="true" todir="${test.reports}" >
-	<fileset dir="${src.test}" >
-	  <include name="**/*Test.java" />
-	</fileset>
+        <fileset dir="${src.test}" >
+          <include name="**/*Test.java" />
+        </fileset>
       </batchtest>
     </junit>
 
@@ -91,7 +90,7 @@
     <!-- Put everything in ${build} into the Stunner-${version}.jar file -->
     <jar jarfile="${dist}/jar/Stunner-${version}.jar" basedir="${build.main}">
       <manifest>
-	<attribute name="Main-Class" value="com.hal.stun.StunServer" />
+        <attribute name="Main-Class" value="com.hal.stun.StunServer" />
       </manifest>
     </jar>
   </target>

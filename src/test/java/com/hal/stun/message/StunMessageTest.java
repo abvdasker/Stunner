@@ -14,18 +14,31 @@ import org.junit.Test;
 public class StunMessageTest {
 
   private static Method getHeaderBytesMethod;
+  private static Method parseHeaderMethod;
+  private static Method getMessageMethodMethod;
+  private static Method getMessageClassBitsMethod;
 
   @BeforeClass
   public static void BeforeAll() throws NoSuchMethodException {
     getHeaderBytesMethod = StunMessage.class.getDeclaredMethod("getHeaderBytes", byte[].class);
     getHeaderBytesMethod.setAccessible(true);
+    
+    parseHeaderMethod = StunMessage.class.getDeclaredMethod("parseHeader", byte[].class);
+    parseHeaderMethod.setAccessible(true);
+    
+    getMessageClassBitsMethod = StunMessage.class.getDeclaredMethod("getMessageClassBits", byte[].class);
+    getMessageClassBitsMethod.setAccessible(true);
+    
+    getMessageMethodMethod = StunMessage.class.getDeclaredMethod("getMessageMethod", byte[].class);
+    getMessageMethodMethod.setAccessible(true);
   }
 
   @Test
   public void testGetHeaderBytes() throws Exception {
-    byte[] testBytes = new byte[50];
-    testBytes[49] = 0b10;
-    testBytes[19] = 0b11;
+    int messageSize = 50;
+    byte[] testBytes = new byte[messageSize];
+    testBytes[messageSize - 1] = 0b10;
+    testBytes[StunMessage.HEADER_SIZE - 1] = 0b11;
     byte[] actualHeaderBytes = (byte[]) getHeaderBytesMethod.invoke(null, testBytes);
 	
     Field headerSizeConstant = StunMessage.class.getDeclaredField("HEADER_SIZE");
@@ -44,7 +57,7 @@ public class StunMessageTest {
   @Test(expected = StunParseException.class)
   public void testGetHeaderBytesTooFew() 
   throws StunParseException, IllegalAccessException, InvocationTargetException {
-    byte[] testBytes = new byte[19];
+    byte[] testBytes = new byte[StunMessage.HEADER_SIZE - 1];
 
     try {
       getHeaderBytesMethod.invoke(null, testBytes);
@@ -58,11 +71,38 @@ public class StunMessageTest {
     }
 	
   }
+  
+  @Test(expected = StunParseException.class)
+  public void testParseHeaderFirstTwoBitsSet() 
+  throws StunParseException, IllegalAccessException, InvocationTargetException {
+    byte[] messageBytes = new byte[50];
+    messageBytes[1] = (byte) StunMessage.BINDING_METHOD;
+    byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
+    headerBytes[0] = (byte) 0b01000000;
+    headerBytes[1] = (byte) StunMessage.BINDING_METHOD;
+    StunMessage stunMessage = new StunMessage(messageBytes);
+    try {
+      parseHeaderMethod.invoke(stunMessage, headerBytes);
+    } catch (InvocationTargetException exception) {
+      Throwable cause = exception.getCause();
+      if (cause != null && cause instanceof StunParseException) {
+        throw (StunParseException) cause;
+      } else {
+        throw exception;
+      }
+    }
+  }
 
   @Test(expected = StunParseException.class)
   public void testInitializeMessageTooSmall() throws StunParseException {
-    byte[] testBytes = new byte[19];
+    byte[] testBytes = new byte[StunMessage.HEADER_SIZE - 1];
     new StunMessage(testBytes);
   }
+  
+  // @Test
+  // public void testGetMessageClassBits() {
+  //   byte[] headerBytes = new byte[19];
+  //   headerBytes[0]
+  // }
 
 }
