@@ -6,6 +6,8 @@ public class StunMessage {
 
   public static final int HEADER_SIZE = 20;
   public static final short BINDING_METHOD = 0b000000000001;
+  
+  // NEVER FORGET to mask when upcasting from unsigned byte to int
   private static int MASK = 0xff;
 
   private byte[] messageBytes;
