@@ -99,10 +99,15 @@ public class StunMessageTest {
     new StunMessage(testBytes);
   }
   
-  // @Test
-  // public void testGetMessageClassBits() {
-  //   byte[] headerBytes = new byte[19];
-  //   headerBytes[0]
-  // }
+  @Test
+  public void testGetMessageClassBits() throws IllegalAccessException, InvocationTargetException {
+    byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
+    byte expectedClassBits = MessageClass.ERROR.getClassBits();
+    headerBytes[0] = Byte.MAX_VALUE;
+    headerBytes[1] = Byte.MAX_VALUE;
+    byte actualClassBits = (byte) getMessageClassBitsMethod.invoke(null, headerBytes);
+    Assert.assertEquals("message class retrieved from header matches that set in header", 
+      expectedClassBits, actualClassBits);
+  }
 
 }

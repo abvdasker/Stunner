@@ -9,10 +9,10 @@ public enum MessageClass {
     * 0b11 - error response
     */
 
-    REQUEST((byte) 0b00),
-      INDICATION((byte) 0b01),
-        SUCCESS((byte) 0b10),
-          ERROR((byte) 0b11);
+  REQUEST((byte) 0b00),
+  INDICATION((byte) 0b01),
+  SUCCESS((byte) 0b10),
+  ERROR((byte) 0b11);
 
   private byte classBits;
   MessageClass(byte classBits) {

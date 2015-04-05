@@ -50,7 +50,7 @@ public class StunMessage {
 	
   }
 
-  private byte getMessageClassBits(byte[] header) {
+  private static byte getMessageClassBits(byte[] header) {
     byte messageClassBits = 0b0;
     byte topBit = header[0];
     byte lowerBit = header[1];
@@ -61,7 +61,7 @@ public class StunMessage {
     return (byte) (topBit | lowerBit);
   }
 
-  private short getMessageMethod(byte[] header) {
+  private static short getMessageMethod(byte[] header) {
     byte topBits = header[0];
 	
     // removes the included class bit from upper byte and shifts down
@@ -85,7 +85,7 @@ public class StunMessage {
     return fullBits;
   }
 
-  private short getMessageLength(byte[] header) {
+  private static short getMessageLength(byte[] header) {
     byte messageLengthTop = header[2];
     byte messageLengthBottom = header[3];
     short messageLength = 0;
