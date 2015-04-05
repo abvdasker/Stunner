@@ -21,12 +21,11 @@ public class StunServer {
     Listener listener = new Listener(PORT_NUMBER);
     
     /**
-     * The input stream from one request. This stream will
-     * close when the connection is closed. Until then it will block
-     * on read(). Use a input read to parse the request into lines.
-     * when an empty line is received, that is the end of the request.
-     *
-     */
+      * The input stream from one request. This stream will
+      * close when the connection is closed. Until then it will block
+      * on read(). Use a input read to parse the request into lines.
+      * when an empty line is received, that is the end of the request.
+      */
 
     while (true) {
       InputStream in = listener.listen(); 
@@ -44,7 +43,7 @@ public class StunServer {
 
     String line;
     while ( !(line = requestReader.readLine()).isEmpty()) {
-	requestText.append(line + '\n');
+      requestText.append(line + '\n');
     }
     in.close();
 
