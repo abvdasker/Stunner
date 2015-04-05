@@ -67,7 +67,7 @@
   <target name="test" depends="compile-tests" description="Run unit tests" >
     <mkdir dir="${test.reports}" />
     
-    <junit printsummary="true" haltonerror="true" haltonfailure="true" >
+    <junit printsummary="true" haltonerror="true" haltonfailure="true" showoutput="true" >
       <classpath>
         <path refid="test.path" />
         <pathelement location="${build.main}" />

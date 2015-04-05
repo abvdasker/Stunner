@@ -17,6 +17,7 @@ public class StunMessageTest {
   private static Method parseHeaderMethod;
   private static Method getMessageMethodMethod;
   private static Method getMessageClassBitsMethod;
+  private static Method getMessageLengthMethod;
 
   @BeforeClass
   public static void BeforeAll() throws NoSuchMethodException {
@@ -31,6 +32,9 @@ public class StunMessageTest {
     
     getMessageMethodMethod = StunMessage.class.getDeclaredMethod("getMessageMethod", byte[].class);
     getMessageMethodMethod.setAccessible(true);
+    
+    getMessageLengthMethod = StunMessage.class.getDeclaredMethod("getMessageLength", byte[].class);
+    getMessageLengthMethod.setAccessible(true);
   }
 
   @Test
@@ -69,8 +73,14 @@ public class StunMessageTest {
         throw exception;
       }
     }
-	
   }
+  
+  @Test(expected = StunParseException.class)
+  public void testInitializeMessageTooSmall() throws StunParseException {
+    byte[] testBytes = new byte[StunMessage.HEADER_SIZE - 1];
+    new StunMessage(testBytes);
+  }
+  
   
   @Test(expected = StunParseException.class)
   public void testParseHeaderFirstTwoBitsSet() 
@@ -93,12 +103,6 @@ public class StunMessageTest {
     }
   }
 
-  @Test(expected = StunParseException.class)
-  public void testInitializeMessageTooSmall() throws StunParseException {
-    byte[] testBytes = new byte[StunMessage.HEADER_SIZE - 1];
-    new StunMessage(testBytes);
-  }
-  
   @Test
   public void testGetMessageClassBits() throws IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
@@ -108,6 +112,19 @@ public class StunMessageTest {
     byte actualClassBits = (byte) getMessageClassBitsMethod.invoke(null, headerBytes);
     Assert.assertEquals("message class retrieved from header matches that set in header", 
       expectedClassBits, actualClassBits);
+  }
+  
+  @Test
+  public void testGetMessageLength() throws IllegalAccessException, InvocationTargetException {
+    byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
+    int expectedMessageLength = 0xffff;
+    expectedMessageLength >>>= 2;
+    expectedMessageLength <<= 2;
+    headerBytes[2] = (byte) 0xff;
+    headerBytes[3] = (byte) (0xff << 2); // clear lower 2 bits
+    int actualMessageLength = (int) getMessageLengthMethod.invoke(null, headerBytes);
+    Assert.assertEquals("message length should match that set in header", 
+      expectedMessageLength, actualMessageLength);
   }
 
 }
