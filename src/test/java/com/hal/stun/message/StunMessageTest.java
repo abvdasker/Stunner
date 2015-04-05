@@ -63,16 +63,7 @@ public class StunMessageTest {
   throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] testBytes = new byte[StunMessage.HEADER_SIZE - 1];
 
-    try {
-      getHeaderBytesMethod.invoke(null, testBytes);
-    } catch (InvocationTargetException exception) {
-      Throwable cause = exception.getCause();
-      if (cause != null && cause instanceof StunParseException) {
-        throw (StunParseException) cause;
-      } else {
-        throw exception;
-      }
-    }
+    invocationShouldCauseParseException(getHeaderBytesMethod, null, testBytes);
   }
   
   @Test(expected = StunParseException.class)
@@ -91,16 +82,7 @@ public class StunMessageTest {
     headerBytes[0] = (byte) 0b01000000;
     headerBytes[1] = (byte) StunMessage.BINDING_METHOD;
     StunMessage stunMessage = new StunMessage(messageBytes);
-    try {
-      parseHeaderMethod.invoke(stunMessage, headerBytes);
-    } catch (InvocationTargetException exception) {
-      Throwable cause = exception.getCause();
-      if (cause != null && cause instanceof StunParseException) {
-        throw (StunParseException) cause;
-      } else {
-        throw exception;
-      }
-    }
+    invocationShouldCauseParseException(parseHeaderMethod, stunMessage, headerBytes);
   }
 
   @Test
@@ -125,6 +107,30 @@ public class StunMessageTest {
     int actualMessageLength = (int) getMessageLengthMethod.invoke(null, headerBytes);
     Assert.assertEquals("message length should match that set in header", 
       expectedMessageLength, actualMessageLength);
+  }
+
+  @Test(expected = StunParseException.class)
+  public void testGetInvalidMessageLength() 
+  throws IllegalAccessException, InvocationTargetException, StunParseException {
+    byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
+    int expectedMessageLength = 0xffff;
+    headerBytes[2] = (byte) 0xff;
+    headerBytes[3] = (byte) 0xff; // clear lower 2 bits
+    invocationShouldCauseParseException(getMessageLengthMethod, null, headerBytes);
+  }
+  
+  private void invocationShouldCauseParseException(Method method, StunMessage stunMessage, byte[] argument) 
+  throws IllegalAccessException, InvocationTargetException, StunParseException {
+    try {
+      method.invoke(stunMessage, argument);
+    } catch (InvocationTargetException exception) {
+      Throwable cause = exception.getCause();
+      if (cause != null && cause instanceof StunParseException) {
+        throw (StunParseException) cause;
+      } else {
+        throw exception;
+      }
+    }
   }
 
 }
