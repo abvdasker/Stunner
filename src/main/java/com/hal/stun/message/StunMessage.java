@@ -6,6 +6,7 @@ public class StunMessage {
 
   public static final int HEADER_SIZE = 20;
   public static final short BINDING_METHOD = 0b000000000001;
+  public static final int MAGIC_COOKIE = 0x2112A442;
   
   // NEVER FORGET to mask when upcasting from unsigned byte to int
   private static int MASK = 0xff;
@@ -50,7 +51,15 @@ public class StunMessage {
       throw new StunParseException("unrecognized method. Only recognized method would be encoded with 0b000000000001");
     }
     messageLength = getMessageLength(header);
-	
+    verifyMagicCookie(header);
+  }
+  
+  private static void verifyMagicCookie(byte[] header) throws StunParseException {
+	  int magicCookie = getMagicCookie(header);
+    if (magicCookie != MAGIC_COOKIE) {
+      throw new StunParseException("magic cookie must be " 
+        + Integer.toHexString(MAGIC_COOKIE) + " but was " + Integer.toHexString(magicCookie) );
+    }
   }
 
   private static byte getMessageClassBits(byte[] header) {
@@ -101,5 +110,16 @@ public class StunMessage {
     
     return messageLength;
   }
-
+  
+  private static int getMagicCookie(byte[] header) throws StunParseException {
+    int magicCookie = header[4] & MASK;
+    magicCookie <<= 8;
+    magicCookie |= (header[5] & MASK);
+    magicCookie <<= 8;
+    magicCookie |= (header[6] & MASK);
+    magicCookie <<= 8;
+    magicCookie |= (header[7] & MASK);
+    return magicCookie;
+  }
+  
 }

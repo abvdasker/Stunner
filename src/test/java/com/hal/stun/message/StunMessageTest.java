@@ -13,14 +13,17 @@ import org.junit.Test;
 
 public class StunMessageTest {
 
+  private static int MASK = 0xff;
+
   private static Method getHeaderBytesMethod;
   private static Method parseHeaderMethod;
   private static Method getMessageMethodMethod;
   private static Method getMessageClassBitsMethod;
   private static Method getMessageLengthMethod;
+  private static Method verifyMagicCookieMethod;
 
   @BeforeClass
-  public static void BeforeAll() throws NoSuchMethodException {
+  public static void beforeAll() throws NoSuchMethodException {
     getHeaderBytesMethod = StunMessage.class.getDeclaredMethod("getHeaderBytes", byte[].class);
     getHeaderBytesMethod.setAccessible(true);
     
@@ -35,8 +38,11 @@ public class StunMessageTest {
     
     getMessageLengthMethod = StunMessage.class.getDeclaredMethod("getMessageLength", byte[].class);
     getMessageLengthMethod.setAccessible(true);
+    
+    verifyMagicCookieMethod = StunMessage.class.getDeclaredMethod("verifyMagicCookie", byte[].class);
+    verifyMagicCookieMethod.setAccessible(true);
   }
-
+  
   @Test
   public void testGetHeaderBytes() throws Exception {
     int messageSize = 50;
@@ -63,7 +69,7 @@ public class StunMessageTest {
   throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] testBytes = new byte[StunMessage.HEADER_SIZE - 1];
 
-    invocationShouldCauseParseException(getHeaderBytesMethod, null, testBytes);
+    invokeWithPossibleParseException(getHeaderBytesMethod, null, testBytes);
   }
   
   @Test(expected = StunParseException.class)
@@ -82,7 +88,7 @@ public class StunMessageTest {
     headerBytes[0] = (byte) 0b01000000;
     headerBytes[1] = (byte) StunMessage.BINDING_METHOD;
     StunMessage stunMessage = new StunMessage(messageBytes);
-    invocationShouldCauseParseException(parseHeaderMethod, stunMessage, headerBytes);
+    invokeWithPossibleParseException(parseHeaderMethod, stunMessage, headerBytes);
   }
 
   @Test
@@ -116,10 +122,36 @@ public class StunMessageTest {
     int expectedMessageLength = 0xffff;
     headerBytes[2] = (byte) 0xff;
     headerBytes[3] = (byte) 0xff; // clear lower 2 bits
-    invocationShouldCauseParseException(getMessageLengthMethod, null, headerBytes);
+    invokeWithPossibleParseException(getMessageLengthMethod, null, headerBytes);
   }
   
-  private void invocationShouldCauseParseException(Method method, StunMessage stunMessage, byte[] argument) 
+  @Test
+  public void testVerifyMagicCookie() 
+  throws StunParseException, IllegalAccessException, InvocationTargetException {
+    byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
+    int magicCookie = StunMessage.MAGIC_COOKIE;
+    headerBytes[4] = (byte) ((magicCookie >>> 3*8) & MASK);
+    headerBytes[5] = (byte) ((magicCookie >>> 2*8) & MASK);
+    headerBytes[6] = (byte) ((magicCookie >>> 1*8) & MASK);
+    headerBytes[7] = (byte) (magicCookie & MASK);
+    
+    invokeWithPossibleParseException(verifyMagicCookieMethod, null, headerBytes);
+  }
+  
+  @Test(expected = StunParseException.class)
+  public void testVerifyInvalidMagicCookie()
+  throws StunParseException, IllegalAccessException, InvocationTargetException {
+    byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
+    int magicCookie = StunMessage.MAGIC_COOKIE;
+    headerBytes[4] = (byte) ((magicCookie >>> 3*8) & MASK);
+    headerBytes[5] = (byte) ((magicCookie >>> 2*8) & MASK);
+    headerBytes[6] = (byte) ((magicCookie >>> 1*8) & MASK);
+    headerBytes[7] = (byte) ((magicCookie & MASK) + 1);
+    
+    invokeWithPossibleParseException(verifyMagicCookieMethod, null, headerBytes);
+  }
+  
+  private void invokeWithPossibleParseException(Method method, StunMessage stunMessage, byte[] argument) 
   throws IllegalAccessException, InvocationTargetException, StunParseException {
     try {
       method.invoke(stunMessage, argument);
