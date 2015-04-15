@@ -87,6 +87,7 @@ public class StunMessageTest {
     byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
     headerBytes[0] = (byte) 0b01000000;
     headerBytes[1] = (byte) StunMessage.BINDING_METHOD;
+    addValidMagicCookie(headerBytes);
     StunMessage stunMessage = new StunMessage(messageBytes);
     invokeWithPossibleParseException(parseHeaderMethod, stunMessage, headerBytes);
   }
@@ -129,12 +130,7 @@ public class StunMessageTest {
   public void testVerifyMagicCookie() 
   throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
-    int magicCookie = StunMessage.MAGIC_COOKIE;
-    headerBytes[4] = (byte) ((magicCookie >>> 3*8) & MASK);
-    headerBytes[5] = (byte) ((magicCookie >>> 2*8) & MASK);
-    headerBytes[6] = (byte) ((magicCookie >>> 1*8) & MASK);
-    headerBytes[7] = (byte) (magicCookie & MASK);
-    
+    addValidMagicCookie(headerBytes);
     invokeWithPossibleParseException(verifyMagicCookieMethod, null, headerBytes);
   }
   
@@ -143,9 +139,7 @@ public class StunMessageTest {
   throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunMessage.HEADER_SIZE];
     int magicCookie = StunMessage.MAGIC_COOKIE;
-    headerBytes[4] = (byte) ((magicCookie >>> 3*8) & MASK);
-    headerBytes[5] = (byte) ((magicCookie >>> 2*8) & MASK);
-    headerBytes[6] = (byte) ((magicCookie >>> 1*8) & MASK);
+    addValidMagicCookie(headerBytes);
     headerBytes[7] = (byte) ((magicCookie & MASK) + 1);
     
     invokeWithPossibleParseException(verifyMagicCookieMethod, null, headerBytes);
@@ -163,6 +157,16 @@ public class StunMessageTest {
         throw exception;
       }
     }
+  }
+
+  private static byte[] addValidMagicCookie(byte[] headerBytes) {
+    int magicCookie = StunMessage.MAGIC_COOKIE;
+    headerBytes[4] = (byte) ((magicCookie >>> 3*8) & MASK);
+    headerBytes[5] = (byte) ((magicCookie >>> 2*8) & MASK);
+    headerBytes[6] = (byte) ((magicCookie >>> 1*8) & MASK);
+    headerBytes[7] = (byte) (magicCookie & MASK);
+    
+    return headerBytes;
   }
 
 }
