@@ -55,7 +55,7 @@ public class StunMessage {
   }
   
   private static void verifyMagicCookie(byte[] header) throws StunParseException {
-	  int magicCookie = getMagicCookie(header);
+    int magicCookie = getMagicCookie(header);
     if (magicCookie != MAGIC_COOKIE) {
       throw new StunParseException("magic cookie must be " 
         + Integer.toHexString(MAGIC_COOKIE) + " but was " + Integer.toHexString(magicCookie) );
