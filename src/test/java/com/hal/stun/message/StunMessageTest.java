@@ -4,12 +4,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-
 import org.junit.BeforeClass;
 import org.junit.Assert;
 import org.junit.Test;
-
-
 
 public class StunMessageTest {
 

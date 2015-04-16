@@ -14,7 +14,8 @@ public class StunMessage {
   private byte[] messageBytes;
   private MessageClass messageClass;
   private short method; // 12 bits; binding method is 0b000000000001
-  private int messageLength;
+  private int messageLength; // 16 bits; must be a multiple ov 4 (i.e. bottom 2 bits are 0)
+  private String transactionID; // 96 bits;
 
   // also add message length, magic cookie and transaction ID fields
 
@@ -52,6 +53,7 @@ public class StunMessage {
     }
     messageLength = getMessageLength(header);
     verifyMagicCookie(header);
+    transactionID = getTransactionID(header);
   }
   
   private static void verifyMagicCookie(byte[] header) throws StunParseException {
@@ -111,15 +113,39 @@ public class StunMessage {
     return messageLength;
   }
   
-  private static int getMagicCookie(byte[] header) throws StunParseException {
-    int magicCookie = header[4] & MASK;
-    magicCookie <<= 8;
-    magicCookie |= (header[5] & MASK);
-    magicCookie <<= 8;
-    magicCookie |= (header[6] & MASK);
-    magicCookie <<= 8;
-    magicCookie |= (header[7] & MASK);
-    return magicCookie;
+  private static int getMagicCookie(byte[] header) {
+    return extractByteSequence(header, 4, 4);
+  }
+  
+  private static String getTransactionID(byte[] header) {
+    // transaction ID can be represented by 3 ints
+    // convert ints to hex string
+    int highestBytes = extractByteSequence(header, 8, 4);
+    int middleBytes = extractByteSequence(header, 12, 4);
+    int lowerBytes = extractByteSequence(header, 16, 4);
+    String transactionID = Integer.toHexString(highestBytes)
+      + Integer.toHexString(middleBytes)
+      + Integer.toHexString(lowerBytes);
+    
+    return transactionID;
+  }
+  
+  private static int extractByteSequence(byte[] bytes, int startByteIndex, int bytesToExtract) {
+    if (bytesToExtract > 4) {
+      throw new RuntimeException("cannot cram more than 4 bytes into an int");
+    }
+    int endIndex = startByteIndex + bytesToExtract;
+    if (endIndex > bytes.length) {
+      byte b = bytes[Integer.MAX_VALUE];
+    }
+    
+    int bytesAsInt = 0;
+    for (int i = 0; i < bytesToExtract; i++) {
+      bytesAsInt <<= 8;
+      bytesAsInt |= (bytes[i] & MASK);
+    }
+    
+    return bytesAsInt;
   }
   
 }
