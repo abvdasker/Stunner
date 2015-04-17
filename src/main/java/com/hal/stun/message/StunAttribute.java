@@ -13,6 +13,15 @@ public class StunAttribute {
     this.attributeType = attributeType;
     this.length = length;
     this.value = value;
+    verifyValueLength(value, length);
+  }
+  
+  private static void verifyValueLength(String value, int length) {
+    int hexStringLength = value.length()/2; // each hex char encodes 4 bits
+    if (hexStringLength != length) {
+      throw new StunParseException("attribute value " + value + " is " + hexStringLength 
+        + " bytes, but the attribute length specified is " + length);
+    }
   }
   
   // public StunAttribute(byte[] attributeBytes) {

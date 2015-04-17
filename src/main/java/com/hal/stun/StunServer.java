@@ -69,4 +69,9 @@ public class StunServer {
     return requestText.toString();
   }
   
+  private static StunMessage buildResponse(StunMessage request) {
+    StunMessage response = new StunMessage();
+    
+  }
+  
 }
