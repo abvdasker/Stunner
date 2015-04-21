@@ -23,9 +23,10 @@ public class Listener {
     serverSocket = new ServerSocket(port);  
   }
   
-  /* TODO: create listener loop. Listen gets passed in the application and calls the
+  /* 
+   * TODO: create listener loop. Listen gets passed in the application and calls the
    * app's handler method every time a new request comes in. The handler method will
-   * return the response which gets written through the output stream back to the
+   * return the response which gets written through the listener's output stream back to the
    * client.
    */ 
   public InputStream listen() throws IOException {

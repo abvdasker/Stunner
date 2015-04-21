@@ -33,6 +33,7 @@ public class StunServer {
       InputStream in = listener.listen(); 
       byte[] requestBytes = getRequestBytes(in);
       log.print(requestBytes.length + " bytes received");
+      //StunMessage message = new StunMessage(requestBytes);
       //String requestText = getRequestText(in);
       //log.print(requestText);
     }

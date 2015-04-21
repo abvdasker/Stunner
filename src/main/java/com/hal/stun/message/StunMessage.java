@@ -5,11 +5,9 @@ import java.util.List;
 
 public class StunMessage {
   
-  private byte[] messageBytes;
-  private StunHeader header;
-  private List<StunAttribute> attributes;
-
-  // also add message length, magic cookie and transaction ID fields
+  protected byte[] messageBytes;
+  protected StunHeader header;
+  protected List<StunAttribute> attributes;
 
   public StunMessage(byte[] message) throws StunParseException {
     this.messageBytes = message;
@@ -17,7 +15,6 @@ public class StunMessage {
     header.validateMessageLength(message);
     attributes = StunAttribute.parseAttributes(getAttributesBytes(message));
   }
-
   
   private static byte[] getHeaderBytes(byte[] message) throws StunParseException {
     if (message.length < StunHeader.HEADER_SIZE) {
@@ -37,6 +34,10 @@ public class StunMessage {
     }
     
     return attributesBytes;
+  }
+  
+  public StunHeader getHeader() {
+    return header;
   }
   
 }

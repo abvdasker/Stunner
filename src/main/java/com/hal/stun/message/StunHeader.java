@@ -11,13 +11,35 @@ public class StunHeader {
   
   private byte[] headerBytes;
   private MessageClass messageClass;
-  private short method; // 12 bits; binding method is 0b000000000001
+  private short method; // 12 bits; binding method is 0b000000000001 (5 bits in byte 0, 7 bits in byte 1 = 12 bits)
   private int messageLength; // 16 bits; must be a multiple ov 4 (i.e. bottom 2 bits are 0)
   private String transactionID; // 96 bits;
   
   public StunHeader(byte[] headerBytes) throws StunParseException {
     this.headerBytes = headerBytes;
     parse(headerBytes);
+  }
+  
+  public StunHeader(MessageClass messageClass, short method, int messageLength, String transactionID) {
+    this.messageClass = messageClass;
+    this.method = method;
+    this.messageLength = messageLength;
+    this.transactionID = transactionID;
+    this.headerBytes = generateHeaderBytes(messageClass, method, messageLength, transactionID);
+  }
+  
+  public void validateMessageLength(byte[] wholeMessage) 
+  throws StunParseException {
+    int actualMessageLength = wholeMessage.length - headerBytes.length;
+    if (actualMessageLength != messageLength) {
+      throw new StunParseException("message length mismatch! message body was " 
+        + actualMessageLength + " bytes, but the header message length field indicated " 
+        + actualMessageLength + " bytes.");
+    }
+  }
+  
+  public MessageClass getMessageClass() {
+    return messageClass;
   }
   
   private void parse(byte[] headerBytes) throws StunParseException {
@@ -29,6 +51,46 @@ public class StunHeader {
     messageLength = getMessageLength(headerBytes);
     verifyMagicCookie(headerBytes);
     transactionID = getTransactionID(headerBytes);
+  }
+  
+  private static byte[] generateHeaderBytes(MessageClass messageClass, short method, int messageLength, String transactionID) {
+    byte[] headerBytes = new byte[HEADER_SIZE];
+    
+    // set the first two bytes (annoying due to mixed method and class encoding)
+    byte[] firstTwoBytes = generateMssageClassAndMethodBytes(messageClass, method);
+    headerBytes[0] = firstTwoBytes[0];
+    headerBytes[1] = firstTwoBytes[1];
+    
+    // set next two bytes using the 16-bit message length
+    byte upperMessageLength = (byte) (messageLength >>> 8);
+    byte lowerMessageLength = (byte) (messageLength);
+    headerBytes[2] = upperMessageLength;
+    headerBytes[3] = lowerMessageLength;
+    
+    // set next 4 bytes to the magic cookie by shifting and truncating
+    headerBytes[4] = (byte) (MAGIC_COOKIE >>> 3*8);
+    headerBytes[5] = (byte) (MAGIC_COOKIE >>> 2*8);
+    headerBytes[6] = (byte) (MAGIC_COOKIE >>> 1*8);
+    headerBytes[7] = (byte) (MAGIC_COOKIE);
+    
+    // use built-in method to convert hex string to byte array to set next 24 bytes (96 bits) at indices 8-32
+  }
+  
+  private static byte[] generateMessageClassAndMethodBytes(MessageClass messageClass, short method) {
+    byte[] firstTwoBytes = new byte[2];
+    int messageClassBits = messageClass.getClassBits & MASK;
+    int lowerMessageClassBit = topMessageClassBits & 0b1;
+    int topMessageClassBit = messageClassBits >>> 1;
+    
+    int methodTopFive = method >>> 7;
+    int firstByte = (method << 1);
+    firstByte |= topMessageClassBit;
+    firstTwoBytes[0] = (byte) firstByte;
+    
+    int methodBottomSeven = method & 0b01111111;
+    int secondByte |= (lowerMessageClassBit <<< 7);
+    firstTwoBytes[1] = (byte) secondByte;
+    return firstTwoBytes;
   }
   
   private static void verifyMagicCookie(byte[] header) throws StunParseException {
@@ -115,16 +177,6 @@ public class StunHeader {
   private static void verifyMethod(short method) throws StunParseException {
     if (method != BINDING_METHOD) {
       throw new StunParseException("unrecognized method. Only recognized method would be encoded with 0b000000000001");
-    }
-  }
-  
-  public void validateMessageLength(byte[] wholeMessage) 
-  throws StunParseException {
-    int actualMessageLength = wholeMessage.length - headerBytes.length;
-    if (actualMessageLength != messageLength) {
-      throw new StunParseException("message length mismatch! message body was " 
-        + actualMessageLength + " bytes, but the header message length field indicated " 
-        + actualMessageLength + " bytes.");
     }
   }
   

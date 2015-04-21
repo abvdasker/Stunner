@@ -24,6 +24,8 @@ public class StunAttribute {
     }
   }
   
+  // add method to convert to byte array
+  
   // public StunAttribute(byte[] attributeBytes) {
   //   this.attributeType = StunMessageUtils.extractByteSequence(attributeBytes, 0, 2);
   //   this.length = StunMessageUtils.extractByteSequence(attributeBytes, 2, 2);
