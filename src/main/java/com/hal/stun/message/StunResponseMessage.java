@@ -20,13 +20,11 @@ public class StunResponseMessage extends StunMessage {
     return attributes;
   }
   
-  // given an input list of attributes, spits out the byte length. This is
-  // potentially inefficient since it means converting the attributes to
-  // byte arrays once here and later for serialization.
+  // avoid this inefficiency by simply adding 4 to the attribute's length field
   private static int getAttributeListByteLength(List<StunAttribute> responseAttributes) {
     int responseBodyByteLength = 0;
     for (StunAttribute attribute : responseAttributes) {
-      responseBodyByteLength += attribute.toByteArray().length;
+      responseBodyByteLength += attribute.getLength() + 4;
     }
     
     return responseBodyByteLength;

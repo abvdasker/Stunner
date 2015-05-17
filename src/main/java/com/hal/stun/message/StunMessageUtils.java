@@ -1,5 +1,7 @@
 package com.hal.stun.message;
 
+import java.util.List;
+
 public class StunMessageUtils {
 
   public static final int MASK = 0xff;
@@ -37,6 +39,45 @@ public class StunMessageUtils {
     }
     
     return outputBuffer.toString();
+  }
+  
+  public static byte[] joinByteArrays(List<byte[]> byteArrays) {
+    int totalBytes = 0;
+    for (byte[] byteArray : byteArrays) {
+      totalBytes += byteArray.length;
+    }
+    
+    byte[] joinedByteArrays = new byte[totalBytes];
+    int i = 0;
+    for (byte[] byteArray : byteArrays) {
+      for (byte singleByte : byteArray) {
+        joinedByteArrays[i] = singleByte;
+        i++;
+      }
+    }
+    
+    return joinedByteArrays;
+  }
+  
+  public static byte[] convertHexToByteArray(String hex) {
+    int bufferLength = (int) Math.ceil(hex.length()/2.0);
+    byte[] hexBytes = new byte[bufferLength];
+    StringBuffer temp = new StringBuffer(2);
+    int hexBytesIndex = 0;
+    for (int i = 0; i < hex.length(); i++) {
+      if (temp.length() == 2) {
+        String byteHex = temp.toString();
+        hexBytes[hexBytesIndex] = Byte.parseByte(byteHex, 16);
+        temp = new StringBuffer(2);
+        hexBytesIndex++;
+      }
+      temp.append(hex.charAt(i));
+      // eat 2 characters into a string buffer
+    }
+    if (temp.length() > 0) {
+      hexBytes[hexBytesIndex] = Byte.parseByte(temp.toString(), 16);
+    }
+    return hexBytes;
   }
   
 }

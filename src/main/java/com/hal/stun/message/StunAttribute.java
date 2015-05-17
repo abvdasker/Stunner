@@ -25,7 +25,21 @@ public class StunAttribute {
   }
   
   public byte[] toByteArray() {
-    return null;
+    byte[] typeBytes = new byte[2];
+    byte[] lengthBytes = new byte[2];
+    typeBytes[0] = (byte) (attributeType >>> 8);
+    typeBytes[1] = (byte) attributeType;
+    
+    lengthBytes[0] = (byte) (length >>> 8);
+    lengthBytes[1] = (byte) length;
+    
+    byte[] attributeValueBytes = StunMessageUtils.convertHexToByteArray(value);    
+    
+    List<byte[]> unjoinedAttributeBytes = new ArrayList<byte[]>();
+    unjoinedAttributeBytes.add(typeBytes);
+    unjoinedAttributeBytes.add(lengthBytes);
+    
+    return StunMessageUtils.joinByteArrays(unjoinedAttributeBytes);
   }
   
   // add method to convert to byte array
