@@ -1,30 +1,35 @@
-package com.hal.stun;
+package com.hal.stun.message;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StunResponseMessage extends StunMessage {
   
   public StunResponseMessage(StunMessage requestMessage) {
-    this.attributes = buildResponseAttributes(request);
-    int messageLength = getAttributeListByteLength(responseAttributes);
-    this.header = new StunHeader(MessageClass.SUCCESS, BINDING_METHOD, messageLength, request.transactionID);
+    super();
+    this.attributes = buildResponseAttributes(requestMessage);
+    int messageLength = getAttributeListByteLength(attributes);
+    this.header = new StunHeader(MessageClass.SUCCESS, StunHeader.BINDING_METHOD, messageLength, requestMessage.getHeader().getTransactionID());
   }
   
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) {
-    List<StunAttribute> attributes = new List<StunAttribute>();
-    if (request.method == BINDING_METHOD) {
+    List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+    if (request.getHeader().getMessageMethod() == StunHeader.BINDING_METHOD) {
       // generate XOR mapping
     }
+    return attributes;
   }
   
   // given an input list of attributes, spits out the byte length. This is
   // potentially inefficient since it means converting the attributes to
   // byte arrays once here and later for serialization.
-  private static int getAttributeListByteLength(responseAttributes) {
+  private static int getAttributeListByteLength(List<StunAttribute> responseAttributes) {
     int responseBodyByteLength = 0;
     for (StunAttribute attribute : responseAttributes) {
-      responseByteLenth += attribute.toByteArray().length;
+      responseBodyByteLength += attribute.toByteArray().length;
     }
     
-    return responseByteLength;
+    return responseBodyByteLength;
   }
   
 }

@@ -1,6 +1,6 @@
 package com.hal.stun.message;
 
-class StunParseException extends Exception {
+public class StunParseException extends Exception {
 
   StunParseException(String message) {
     super(message);

@@ -16,6 +16,10 @@ public class StunMessage {
     attributes = StunAttribute.parseAttributes(getAttributesBytes(message));
   }
   
+  protected StunMessage() {
+    
+  }
+  
   private static byte[] getHeaderBytes(byte[] message) throws StunParseException {
     if (message.length < StunHeader.HEADER_SIZE) {
       throw new StunParseException("message was smaller than header size. Header must be 20 bytes");
@@ -38,6 +42,12 @@ public class StunMessage {
   
   public StunHeader getHeader() {
     return header;
+  }
+  
+  // convert the header and attributes 
+  // back into a byte array if it doesn't exist
+  public byte[] toByteArray() {
+    return null;
   }
   
 }

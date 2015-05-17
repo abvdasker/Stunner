@@ -9,19 +9,23 @@ public class StunAttribute {
   private int attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the length of the encoded value in bytes
   private String value; // hex encoded value of the attribute value
-  public StunAttribute(int attributeType, int length, String value) {
+  public StunAttribute(int attributeType, int length, String value) throws StunParseException {
     this.attributeType = attributeType;
     this.length = length;
     this.value = value;
     verifyValueLength(value, length);
   }
   
-  private static void verifyValueLength(String value, int length) {
+  private static void verifyValueLength(String value, int length) throws StunParseException {
     int hexStringLength = value.length()/2; // each hex char encodes 4 bits
     if (hexStringLength != length) {
       throw new StunParseException("attribute value " + value + " is " + hexStringLength 
         + " bytes, but the attribute length specified is " + length);
     }
+  }
+  
+  public byte[] toByteArray() {
+    return null;
   }
   
   // add method to convert to byte array

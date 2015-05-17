@@ -2,6 +2,7 @@ package com.hal.stun;
 
 import com.hal.stun.listener.Listener;
 import com.hal.stun.log.Logger;
+import com.hal.stun.message.StunMessage;
 
 import java.io.InputStream;
 import java.io.BufferedInputStream;
@@ -71,8 +72,8 @@ public class StunServer {
   }
   
   private static StunMessage buildResponse(StunMessage request) {
-    StunMessage response = new StunMessage();
-    
+    //StunMessage response = new StunMessage();
+    return null;
   }
   
 }

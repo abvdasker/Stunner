@@ -38,8 +38,16 @@ public class StunHeader {
     }
   }
   
+  public short getMessageMethod() {
+    return getMessageMethod();
+  }
+  
   public MessageClass getMessageClass() {
     return messageClass;
+  }
+  
+  public String getTransactionID() {
+    return transactionID;
   }
   
   private void parse(byte[] headerBytes) throws StunParseException {
@@ -57,7 +65,7 @@ public class StunHeader {
     byte[] headerBytes = new byte[HEADER_SIZE];
     
     // set the first two bytes (annoying due to mixed method and class encoding)
-    byte[] firstTwoBytes = generateMssageClassAndMethodBytes(messageClass, method);
+    byte[] firstTwoBytes = generateMessageClassAndMethodBytes(messageClass, method);
     headerBytes[0] = firstTwoBytes[0];
     headerBytes[1] = firstTwoBytes[1];
     
@@ -74,13 +82,16 @@ public class StunHeader {
     headerBytes[7] = (byte) (MAGIC_COOKIE);
     
     // use built-in method to convert hex string to byte array to set next 24 bytes (96 bits) at indices 8-32
+    
+    
+    return headerBytes;
   }
   
   private static byte[] generateMessageClassAndMethodBytes(MessageClass messageClass, short method) {
     byte[] firstTwoBytes = new byte[2];
-    int messageClassBits = messageClass.getClassBits & MASK;
-    int lowerMessageClassBit = topMessageClassBits & 0b1;
+    int messageClassBits = messageClass.getClassBits() & MASK;
     int topMessageClassBit = messageClassBits >>> 1;
+    int lowerMessageClassBit = topMessageClassBit & 0b1;
     
     int methodTopFive = method >>> 7;
     int firstByte = (method << 1);
@@ -88,7 +99,7 @@ public class StunHeader {
     firstTwoBytes[0] = (byte) firstByte;
     
     int methodBottomSeven = method & 0b01111111;
-    int secondByte |= (lowerMessageClassBit <<< 7);
+    int secondByte = (lowerMessageClassBit << 7);
     firstTwoBytes[1] = (byte) secondByte;
     return firstTwoBytes;
   }

@@ -1,5 +1,11 @@
 package com.hal.stun;
 
+import com.hal.stun.message.StunMessage;
+import com.hal.stun.message.StunResponseMessage;
+import com.hal.stun.message.StunHeader;
+import com.hal.stun.message.MessageClass;
+import com.hal.stun.message.StunParseException;
+
 class StunApplication {
   
   public StunApplication() {
@@ -7,14 +13,14 @@ class StunApplication {
   
   // handler also needs some info about the connection like
   // source IP, request received time, etc.
-  public byte[] handle(byte[] rawRequest) throws UnsupportedStunClassException {
+  public byte[] handle(byte[] rawRequest) throws UnsupportedStunClassException, StunParseException {
     StunMessage request = new StunMessage(rawRequest);
     StunMessage response = buildResponse(request);
     return response.toByteArray();
   }
   
   public static StunMessage buildResponse(StunMessage request) throws UnsupportedStunClassException {
-    MessageClass requestMessageClass = request.getHeader.getMessageClass();
+    MessageClass requestMessageClass = request.getHeader().getMessageClass();
     StunHeader header = request.getHeader();
     StunMessage response;
     switch(requestMessageClass) {
@@ -29,7 +35,6 @@ class StunApplication {
       case ERROR:
       default:
       throw new UnsupportedStunClassException(requestMessageClass);
-      break;
     }
     
     return response;
@@ -46,8 +51,8 @@ class StunApplication {
   
   public static class UnsupportedStunClassException extends Exception {
     
-    public UnsupportedStunClassException(MessageClass class) {
-      super("stun message type " + class.name() + " is not supported by the STUN server");
+    public UnsupportedStunClassException(MessageClass messageClass) {
+      super("stun message type " + messageClass.name() + " is not supported by the STUN server");
     }
     
   }
