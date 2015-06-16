@@ -21,7 +21,7 @@ public class StunMessageUtils {
     return bytesAsInt;
   }
   
-  public static String extractByteSequenceAsHex(byte[] bytes, int startByteIndex, int bytesToExtract) {
+  public static String extractByteSequenceAsHex(byte[] bytes, int startByteIndex, int bytesToExtract, boolean preserveLeadingZeroes) {
     StringBuffer outputBuffer = new StringBuffer();
     int endIndex = startByteIndex + bytesToExtract;
 
@@ -38,7 +38,14 @@ public class StunMessageUtils {
       outputBuffer.append(Integer.toHexString(chunk));
     }
     
-    return outputBuffer.toString();
+    StringBuffer leadingZeroes = new StringBuffer();
+    if (preserveLeadingZeroes) {
+      int outputBufferLength = outputBuffer.length();
+      while (( (outputBufferLength + leadingZeroes.length())/2) < bytesToExtract) {
+        leadingZeroes.append('0');
+      }
+    }
+    return leadingZeroes.toString() + outputBuffer.toString();
   }
   
   public static byte[] joinByteArrays(List<byte[]> byteArrays) {

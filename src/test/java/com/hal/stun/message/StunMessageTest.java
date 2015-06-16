@@ -2,12 +2,15 @@ package com.hal.stun.message;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import javax.xml.bind.DatatypeConverter;
 
 import org.junit.BeforeClass;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class StunMessageTest {
+  
+  private static final String HEX_ENCODED_STUN_REQUEST = "0001000c2112A442115cfdfe3a1b4139e4fc98310020000800013e837f000001";
 
   private static Method getHeaderBytesMethod;
   private static Method getAttributesBytesMethod;
@@ -47,5 +50,14 @@ public class StunMessageTest {
     StunMessageTestHelper.invokeWithPossibleParseException(getHeaderBytesMethod, null, testBytes);
   }
   
+  @Test
+  public void testInitializeStunMessage() throws Exception {
+    StunMessage message = new StunMessage(getTestStunRequest());
+  }
+  
+  private static byte[] getTestStunRequest() {
+    byte[] messageBytes = DatatypeConverter.parseHexBinary(HEX_ENCODED_STUN_REQUEST);
+    return messageBytes;
+  }
   
 }

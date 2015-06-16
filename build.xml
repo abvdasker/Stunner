@@ -47,7 +47,7 @@
   </target>
   
   <target name="compile" depends="init, resolve" description="compile the source">
-    <javac srcdir="${src.main}" destdir="${build.main}" />
+    <javac srcdir="${src.main}" destdir="${build.main}" debug="true" debuglevel="lines,vars,source" />
   </target>
 
   <target name="compile-tests" depends="compile" description="compile tests">
@@ -55,7 +55,7 @@
     <echo>main classes path: "${build.main}"</echo>
     <echo>test classes path: "${build.test}"</echo>
     <mkdir dir="${build.test}" />
-    <javac srcdir="${src.test}" destdir="${build.test}" includeantruntime="false" debug="true">
+    <javac srcdir="${src.test}" destdir="${build.test}" includeantruntime="false" debug="true" debuglevel="lines,vars,source" >
       <classpath>
         <path refid="test.path" />
         <pathelement path="${build.main}" />
@@ -67,7 +67,7 @@
   <target name="test" depends="compile-tests" description="Run unit tests" >
     <mkdir dir="${test.reports}" />
     
-    <junit printsummary="true" haltonerror="true" haltonfailure="true" showoutput="true" >
+    <junit printsummary="true" haltonerror="true" haltonfailure="true" showoutput="true">
       <classpath>
         <path refid="test.path" />
         <pathelement location="${build.main}" />

@@ -21,13 +21,13 @@ public class Logger {
     this.out = System.out;
   }
 
-    public Logger(File file) throws IOException {
-	if (!file.exists()) {
-	    file.createNewFile();
-	}
-
-	this.out = new BufferedOutputStream(new FileOutputStream(file));
+  public Logger(File file) throws IOException {
+    if (!file.exists()) {
+      file.createNewFile();
     }
+
+    this.out = new BufferedOutputStream(new FileOutputStream(file));
+  }
   
   public void print(String string) throws IOException {
     out.write(string.getBytes());

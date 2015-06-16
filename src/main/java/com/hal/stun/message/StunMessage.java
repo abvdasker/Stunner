@@ -33,8 +33,8 @@ public class StunMessage {
   
   private static byte[] getAttributesBytes(byte[] message) throws StunParseException {
     byte[] attributesBytes = new byte[message.length - StunHeader.HEADER_SIZE];
-    for(int i = message[StunHeader.HEADER_SIZE]; i < message.length; i++) {
-      attributesBytes[i - StunHeader.HEADER_SIZE] = message[i]; 
+    for(int i = 0; i < attributesBytes.length; i++) {
+      attributesBytes[i] = message[StunHeader.HEADER_SIZE + i]; 
     }
     
     return attributesBytes;

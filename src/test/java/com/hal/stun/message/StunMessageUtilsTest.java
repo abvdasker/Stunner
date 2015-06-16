@@ -32,7 +32,7 @@ public class StunMessageUtilsTest {
   @Test
   public void testExtractByteSequenceAsHex() {
     byte[] bytes = new byte[8];
-    String expectedByteSequence = "1ff01";
+    String expectedByteSequence = "01ff01";
     bytes[0] = (byte) 0xd3;
     
     bytes[1] = (byte) 1;
@@ -43,7 +43,7 @@ public class StunMessageUtilsTest {
     bytes[4] = (byte) 0xfa;
     bytes[7] = (byte) 0x7c;
     
-    String actualByteSequence = StunMessageUtils.extractByteSequenceAsHex(bytes, 1, 3);
+    String actualByteSequence = StunMessageUtils.extractByteSequenceAsHex(bytes, 1, 3, true);
     Assert.assertEquals("extracted byte sequence matches that written", expectedByteSequence, actualByteSequence);
   }
   

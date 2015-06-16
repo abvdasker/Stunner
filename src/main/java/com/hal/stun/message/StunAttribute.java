@@ -67,14 +67,15 @@ public class StunAttribute {
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     
     int offset = 0;
-    while (offset < attributesBytes.length) {
+    int paddedLength = 0;
+    while (offset + paddedLength < attributesBytes.length) {
       int attributeType = StunMessageUtils.extractByteSequence(attributesBytes, offset, 2);
       int length = StunMessageUtils.extractByteSequence(attributesBytes, offset + 2, 2);
-      int paddedLength = length;
+      paddedLength = length;
       while (paddedLength%4 != 0) { // round length up to nearest multiple of 4 bytes (32 bits)
         paddedLength += 1;
       }
-      String value = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength);
+      String value = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength, true);
       attributes.add(new StunAttribute(attributeType, length, value));
       offset += paddedLength;
     }
@@ -87,7 +88,7 @@ public class StunAttribute {
       throw new StunParseException("attributes must have bit count that is multiple of 32");
     }
     if (attributesBytes.length < 8) {
-      throw new StunParseException("an attribute must be at least 16 bytes.");
+      throw new StunParseException("there must be at least one attribute of 16 bytes or more.");
     }
   }
   

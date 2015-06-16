@@ -34,7 +34,7 @@ public class StunHeader {
     if (actualMessageLength != messageLength) {
       throw new StunParseException("message length mismatch! message body was " 
         + actualMessageLength + " bytes, but the header message length field indicated " 
-        + actualMessageLength + " bytes.");
+        + messageLength + " bytes.");
     }
   }
   
@@ -187,7 +187,7 @@ public class StunHeader {
   
   private static void verifyMethod(short method) throws StunParseException {
     if (method != BINDING_METHOD) {
-      throw new StunParseException("unrecognized method. Only recognized method would be encoded with 0b000000000001");
+      throw new StunParseException("unrecognized method " + method + ". Only recognized method would be encoded with 0b000000000001");
     }
   }
   
