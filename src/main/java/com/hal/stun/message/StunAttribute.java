@@ -72,9 +72,8 @@ public class StunAttribute {
       int attributeType = StunMessageUtils.extractByteSequence(attributesBytes, offset, 2);
       int length = StunMessageUtils.extractByteSequence(attributesBytes, offset + 2, 2);
       paddedLength = length;
-      while (paddedLength%4 != 0) { // round length up to nearest multiple of 4 bytes (32 bits)
-        paddedLength += 1;
-      }
+      int roundValue = 4 - paddedLength%4;
+      paddedLength += roundValue;
       String value = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength, true);
       attributes.add(new StunAttribute(attributeType, length, value));
       offset += paddedLength;
