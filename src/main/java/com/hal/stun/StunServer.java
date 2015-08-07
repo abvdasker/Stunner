@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.nio.ByteBuffer;
+import java.net.InetSocketAddress;
 
 import java.io.IOException;
 
@@ -34,6 +35,7 @@ public class StunServer {
       InputStream in = listener.listen(); 
       byte[] requestBytes = getRequestBytes(in);
       log.print(requestBytes.length + " bytes received");
+      InetSocketAddress address = listener.getRequestAddress();
       //StunMessage message = new StunMessage(requestBytes);
       //String requestText = getRequestText(in);
       //log.print(requestText);

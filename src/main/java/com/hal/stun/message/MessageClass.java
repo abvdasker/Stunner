@@ -24,19 +24,12 @@ public enum MessageClass {
   }
 
   public static MessageClass fromByte(byte classBits) {
-    switch(classBits) {
-      case 0b00:
-      return REQUEST;
-      case 0b01:
-      return INDICATION; 
-      case 0b10:
-      return SUCCESS;
-      case 0b11:
-      return ERROR;
-      default:
-      throw new RuntimeException("should never reach here. Invalid classBits specified");
+    for (MessageClass messageClass : MessageClass.values()) {
+      if (messageClass.getClassBits() == classBits) {
+        return messageClass;
+      }
     }
-	
+    throw new RuntimeException("should never reach here. Invalid classBits specified");
   }
 
 

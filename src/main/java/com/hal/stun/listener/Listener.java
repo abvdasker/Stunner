@@ -2,6 +2,7 @@ package com.hal.stun.listener;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -38,6 +39,10 @@ public class Listener {
   
   public void say(byte[] output) throws IOException {
     out.write(output);
+  }
+  
+  public SocketAddress getRequestAddress() {
+    return clientSocket.getRemoteSocketAddress();
   }
 
   public void refresh() {

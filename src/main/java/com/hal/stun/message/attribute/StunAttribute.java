@@ -1,25 +1,26 @@
-package com.hal.stun.message;
+package com.hal.stun.message.attribute;
 
+import com.hal.stun.message.StunParseException;
+import com.hal.stun.message.StunMessageUtils;
 import java.util.List;
 import java.util.ArrayList;
 
-// building the list of attributes is sort-of tricky...
 public class StunAttribute {
   
   private int attributeType; // the attribute type to be set by the implementing subclass
-  private int length; // the length of the encoded value in bytes
-  private String value; // hex encoded value of the attribute value
-  public StunAttribute(int attributeType, int length, String value) throws StunParseException {
+  private int length; // the size of this attribute's value in bytes
+  private String valueHex; // hex encoded valueHex of the attribute
+  public StunAttribute(int attributeType, int length, String valueHex) throws StunParseException {
     this.attributeType = attributeType;
     this.length = length;
-    this.value = value;
-    verifyValueLength(value, length);
+    this.valueHex = valueHex;
+    verifyValueLength(valueHex, length);
   }
   
-  private static void verifyValueLength(String value, int length) throws StunParseException {
-    int hexStringLength = value.length()/2; // each hex char encodes 4 bits
+  private static void verifyValueLength(String valueHex, int length) throws StunParseException {
+    int hexStringLength = valueHex.length()/2; // each hex char encodes 4 bits
     if (hexStringLength != length) {
-      throw new StunParseException("attribute value " + value + " is " + hexStringLength 
+      throw new StunParseException("attribute valueHex " + valueHex + " is " + hexStringLength 
         + " bytes, but the attribute length specified is " + length);
     }
   }
@@ -33,7 +34,7 @@ public class StunAttribute {
     lengthBytes[0] = (byte) (length >>> 8);
     lengthBytes[1] = (byte) length;
     
-    byte[] attributeValueBytes = StunMessageUtils.convertHexToByteArray(value);    
+    byte[] attributeValueBytes = StunMessageUtils.convertHexToByteArray(valueHex);    
     
     List<byte[]> unjoinedAttributeBytes = new ArrayList<byte[]>();
     unjoinedAttributeBytes.add(typeBytes);
@@ -42,12 +43,10 @@ public class StunAttribute {
     return StunMessageUtils.joinByteArrays(unjoinedAttributeBytes);
   }
   
-  // add method to convert to byte array
-  
   // public StunAttribute(byte[] attributeBytes) {
   //   this.attributeType = StunMessageUtils.extractByteSequence(attributeBytes, 0, 2);
   //   this.length = StunMessageUtils.extractByteSequence(attributeBytes, 2, 2);
-  //   this.value = StunMessageUtils.extractByteSequence(attributeBytes, 4, length);
+  //   this.valueHex = StunMessageUtils.extractByteSequence(attributeBytes, 4, length);
   // }
   
   public int getAttributeType() {
@@ -59,7 +58,7 @@ public class StunAttribute {
   }
 
   public String getValueAsHex() {
-    return value;
+    return valueHex;
   }
   
   public static List<StunAttribute> parseAttributes(byte[] attributesBytes) throws StunParseException {
@@ -72,12 +71,14 @@ public class StunAttribute {
       int attributeType = StunMessageUtils.extractByteSequence(attributesBytes, offset, 2);
       int length = StunMessageUtils.extractByteSequence(attributesBytes, offset + 2, 2);
       paddedLength = length;
+      
+      // round up to nearest multiple of 4
       int modValue = paddedLength%4;
       if (modValue > 0) {
         paddedLength += (4 - modValue);
       }
-      String value = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength, true);
-      attributes.add(new StunAttribute(attributeType, length, value));
+      String valueHex = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength, true);
+      attributes.add(new StunAttribute(attributeType, length, valueHex));
       offset += paddedLength;
     }
     

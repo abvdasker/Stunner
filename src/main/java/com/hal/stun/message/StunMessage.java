@@ -1,6 +1,7 @@
 package com.hal.stun.message;
 
 import com.hal.stun.message.StunParseException;
+import com.hal.stun.message.attribute.StunAttribute;
 import java.util.List;
 
 public class StunMessage {
@@ -16,10 +17,20 @@ public class StunMessage {
     attributes = StunAttribute.parseAttributes(getAttributesBytes(message));
   }
   
+  public StunHeader getHeader() {
+    return header;
+  }
+  
+  // convert the header and attributes 
+  // back into a byte array if it doesn't exist
+  public byte[] toByteArray() {
+    return null;
+  }
+  
   protected StunMessage() {
     
   }
-  
+
   private static byte[] getHeaderBytes(byte[] message) throws StunParseException {
     if (message.length < StunHeader.HEADER_SIZE) {
       throw new StunParseException("message was smaller than header size. Header must be 20 bytes");
@@ -38,16 +49,6 @@ public class StunMessage {
     }
     
     return attributesBytes;
-  }
-  
-  public StunHeader getHeader() {
-    return header;
-  }
-  
-  // convert the header and attributes 
-  // back into a byte array if it doesn't exist
-  public byte[] toByteArray() {
-    return null;
   }
   
 }
