@@ -1,5 +1,7 @@
 package com.hal.stun.message;
 
+import com.hal.stun.message.attribute.StunAttribute;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,13 @@ public class StunResponseMessage extends StunMessage {
     super();
     this.attributes = buildResponseAttributes(requestMessage);
     int messageLength = getAttributeListByteLength(attributes);
-    this.header = new StunHeader(MessageClass.SUCCESS, StunHeader.BINDING_METHOD, messageLength, requestMessage.getHeader().getTransactionID());
+    this.header = new StunHeader(
+      MessageClass.SUCCESS,
+      StunHeader.BINDING_METHOD,
+      messageLength,
+      requestMessage.getHeader().getTransactionID()
+    );
+    
   }
   
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) {

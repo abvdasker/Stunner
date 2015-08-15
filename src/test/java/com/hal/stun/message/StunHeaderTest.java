@@ -114,7 +114,8 @@ public class StunHeaderTest {
     headerBytes[0] = (byte) 0b11;
     headerBytes[1] = (byte) 0xff;
     short actualMessageMethod = (short) getMessageMethodMethod.invoke(null, headerBytes);
-    Assert.assertEquals("retrieved method should be the same as the input method with the lowest bit of the upper method",
+    Assert.assertEquals(
+      "retrieved method should be the same as the input method with the lowest bit of the upper method",
       expectedMessageMethod, actualMessageMethod);
   }
 

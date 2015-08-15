@@ -35,7 +35,7 @@ public class StunServer {
       InputStream in = listener.listen(); 
       byte[] requestBytes = getRequestBytes(in);
       log.print(requestBytes.length + " bytes received");
-      InetSocketAddress address = listener.getRequestAddress();
+      InetSocketAddress address = (InetSocketAddress) listener.getRequestAddress();
       //StunMessage message = new StunMessage(requestBytes);
       //String requestText = getRequestText(in);
       //log.print(requestText);

@@ -1,4 +1,4 @@
-package com.hal.stun.message;
+package com.hal.stun.message.attribute;
 
 public enum AttributeType {
   
@@ -10,19 +10,19 @@ public enum AttributeType {
     this.type = type;
   }
   
-  public byte getTypeBytes() {
+  public byte getTypeByte() {
     return type;
   }
   
-  public static AttributeType fromByte(byte type) {
+  public static AttributeType fromByte(byte type) throws UnrecognizedAttributeTypeException {
     for (AttributeType attributeType : AttributeType.values()) {
-      if (attributeType.getTypeBytes() == type) {
+      if (attributeType.getTypeByte() == type) {
         return attributeType;
       }
     }
     
     // TODO: should probably have its own error
-    throw new RuntimeException("should never reach here. Invalid Attribute type specified");
+    throw new UnrecognizedAttributeTypeException(type);
   }
   
 }
