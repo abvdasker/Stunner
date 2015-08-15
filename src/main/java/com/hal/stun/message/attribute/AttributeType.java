@@ -2,19 +2,20 @@ package com.hal.stun.message.attribute;
 
 public enum AttributeType {
   
-  MAPPED_ADDRESS((byte) 0x0001),
-  XOR_MAPPED_ADDRESS((byte) 0x0020);
+  // 16-bit attribute type
+  MAPPED_ADDRESS((short) 0x0001),
+  XOR_MAPPED_ADDRESS((short) 0x0020);
   
-  private byte type;
-  AttributeType(byte type) {
+  private short type;
+  AttributeType(short type) {
     this.type = type;
   }
   
-  public byte getTypeByte() {
+  public short getTypeBytes() {
     return type;
   }
   
-  public static AttributeType fromByte(byte type) throws UnrecognizedAttributeTypeException {
+  public static AttributeType fromBytes(short type) throws UnrecognizedAttributeTypeException {
     for (AttributeType attributeType : AttributeType.values()) {
       if (attributeType.getTypeByte() == type) {
         return attributeType;

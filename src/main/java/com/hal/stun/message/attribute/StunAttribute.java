@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class StunAttribute {
   
-  private int attributeType; // the attribute type to be set by the implementing subclass
+  private AttributeType attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the size of this attribute's value in bytes
   private String valueHex; // hex encoded valueHex of the attribute
   public StunAttribute(int attributeType, int length, String valueHex) throws StunParseException {
-    this.attributeType = attributeType;
+    this.attributeType = AttributeType.fromBytes((short) attributeType);
     this.length = length;
     this.valueHex = valueHex;
     verifyValueLength(valueHex, length);
@@ -83,6 +83,12 @@ public class StunAttribute {
     }
     
     return attributes;
+  }
+  
+  public static StunAttribute buildAttributeForType(int attributeType, int length, String valueHex) {
+    switch(attributeType) {
+      case 
+    }
   }
   
   private static void validateAttributesBytes(byte[] attributesBytes) throws StunParseException {
