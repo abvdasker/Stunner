@@ -47,4 +47,20 @@ public class StunMessageUtilsTest {
     Assert.assertEquals("extracted byte sequence matches that written", expectedByteSequence, actualByteSequence);
   }
   
+  @Test
+  public void testConvertHexToByteArray() {
+    String hex = "010203";
+    byte[] result = StunMessageUtils.convertHexToByteArray(hex);
+    Assert.assertEquals(result[0], (byte) 1);
+    Assert.assertEquals(result[1], (byte) 2);
+    Assert.assertEquals(result[2], (byte) 3);
+    
+    hex = "000107d0";
+    result = StunMessageUtils.convertHexToByteArray(hex);
+    Assert.assertEquals(result[0], (byte) 0);
+    Assert.assertEquals(result[1], (byte) 1);
+    Assert.assertEquals(result[2], (byte) 7);
+    Assert.assertEquals(result[3], (byte) 208);
+  }
+  
 }

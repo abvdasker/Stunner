@@ -17,7 +17,7 @@ public enum AttributeType {
   
   public static AttributeType fromBytes(short type) throws UnrecognizedAttributeTypeException {
     for (AttributeType attributeType : AttributeType.values()) {
-      if (attributeType.getTypeByte() == type) {
+      if (attributeType.getTypeBytes() == type) {
         return attributeType;
       }
     }

@@ -20,10 +20,10 @@ public class AttributeTypeTest {
   }
   
   @Test
-  public void testGetTypeByte() throws Exception {
+  public void testGetTypeBytes() throws Exception {
     short expectedTypeBytes = (short) 0x0001;
     short typeBytes = AttributeType.MAPPED_ADDRESS.getTypeBytes();
-    Assert.assertEquals("should return the byte for this object", expectedTypeByte, typeByte);
+    Assert.assertEquals("should return the byte for this object", expectedTypeBytes, typeBytes);
   }
   
 }

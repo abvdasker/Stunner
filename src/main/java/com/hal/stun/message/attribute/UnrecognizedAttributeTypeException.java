@@ -2,7 +2,7 @@ package com.hal.stun.message.attribute;
 
 public class UnrecognizedAttributeTypeException extends Exception {
   
-  public UnrecognizedAttributeTypeException(byte type) {
+  public UnrecognizedAttributeTypeException(short type) {
     super("Unrecognized attribute type: " + type);
   }
   

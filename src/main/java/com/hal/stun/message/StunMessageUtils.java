@@ -74,7 +74,7 @@ public class StunMessageUtils {
     for (int i = 0; i < hex.length(); i++) {
       if (temp.length() == 2) {
         String byteHex = temp.toString();
-        hexBytes[hexBytesIndex] = Byte.parseByte(byteHex, 16);
+        hexBytes[hexBytesIndex] = convertHexToByte(byteHex);
         temp = new StringBuffer(2);
         hexBytesIndex++;
       }
@@ -82,9 +82,18 @@ public class StunMessageUtils {
       // eat 2 characters into a string buffer
     }
     if (temp.length() > 0) {
-      hexBytes[hexBytesIndex] = Byte.parseByte(temp.toString(), 16);
+      hexBytes[hexBytesIndex] = convertHexToByte(temp.toString());
     }
+    
     return hexBytes;
+  }
+  
+  private static byte convertHexToByte(String chars) {
+    if (chars.length() != 2) {
+      throw new RuntimeException("can only convery exactly 2-chars at a time");
+    }
+    byte val = (byte) (Integer.parseInt(chars, 16) & MASK);
+    return val;
   }
   
 }

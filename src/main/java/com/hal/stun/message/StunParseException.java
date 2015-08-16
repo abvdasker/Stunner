@@ -6,4 +6,8 @@ public class StunParseException extends Exception {
     super(message);
   }
   
+  public StunParseException(String message, Exception exception) {
+    super(message, exception);
+  }
+  
 }

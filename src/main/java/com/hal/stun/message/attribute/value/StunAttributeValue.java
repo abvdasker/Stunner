@@ -1,14 +1,16 @@
 package com.hal.stun.message.attribute.value;
 
-import com.hal.message.StunMessageUtils;
+import com.hal.stun.message.StunMessageUtils;
+import com.hal.stun.message.StunParseException;
 
 public abstract class StunAttributeValue {
   
   private String attributeValueHex;
   protected byte[] valueBytes;
-  public StunAttributeValue(String attributeValueHex) {
+  public StunAttributeValue(String attributeValueHex) throws StunParseException {
     this.attributeValueHex = attributeValueHex;
-    this.valueBytes = StunMessageUtils.convertHexToByteArray(valueHex);
+    this.valueBytes = StunMessageUtils.convertHexToByteArray(attributeValueHex);
+    parseValueBytes();
     validate();
   }
   
@@ -18,6 +20,7 @@ public abstract class StunAttributeValue {
     }
   }
   
-  private abstract boolean isValid();
+  protected abstract void parseValueBytes() throws StunParseException;
+  protected abstract boolean isValid();
   
 }

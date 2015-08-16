@@ -2,6 +2,7 @@ package com.hal.stun.message.attribute;
 
 import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.StunMessageUtils;
+import com.hal.stun.message.attribute.UnrecognizedAttributeTypeException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -10,7 +11,8 @@ public class StunAttribute {
   private AttributeType attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the size of this attribute's value in bytes
   private String valueHex; // hex encoded valueHex of the attribute
-  public StunAttribute(int attributeType, int length, String valueHex) throws StunParseException {
+  public StunAttribute(int attributeType, int length, String valueHex) 
+  throws StunParseException, UnrecognizedAttributeTypeException {
     this.attributeType = AttributeType.fromBytes((short) attributeType);
     this.length = length;
     this.valueHex = valueHex;
@@ -28,8 +30,10 @@ public class StunAttribute {
   public byte[] toByteArray() {
     byte[] typeBytes = new byte[2];
     byte[] lengthBytes = new byte[2];
-    typeBytes[0] = (byte) (attributeType >>> 8);
-    typeBytes[1] = (byte) attributeType;
+    
+    short attributeTypeValue = attributeType.getTypeBytes();
+    typeBytes[0] = (byte) (attributeTypeValue >>> 8);
+    typeBytes[1] = (byte) attributeTypeValue;
     
     lengthBytes[0] = (byte) (length >>> 8);
     lengthBytes[1] = (byte) length;
@@ -49,8 +53,8 @@ public class StunAttribute {
   //   this.valueHex = StunMessageUtils.extractByteSequence(attributeBytes, 4, length);
   // }
   
-  public int getAttributeType() {
-    return attributeType;
+  public short getAttributeType() {
+    return attributeType.getTypeBytes();
   }
   
   public int getLength() {
@@ -78,18 +82,24 @@ public class StunAttribute {
         paddedLength += (4 - modValue);
       }
       String valueHex = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength, true);
-      attributes.add(new StunAttribute(attributeType, length, valueHex));
+      
+      try {
+        attributes.add(new StunAttribute(attributeType, length, valueHex));
+      } catch (UnrecognizedAttributeTypeException exception) {
+        System.out.println("TEMPORARY LACK OF ERROR HANDLING FOR UNRECOGNIZED attribute type triggered");
+        // TODO: implement error handling to add unrecognized attribute to response.
+      }
       offset += paddedLength;
     }
     
     return attributes;
   }
   
-  public static StunAttribute buildAttributeForType(int attributeType, int length, String valueHex) {
-    switch(attributeType) {
-      case 
-    }
-  }
+  // public static StunAttribute buildAttributeForType(int attributeType, int length, String valueHex) {
+  //   switch(attributeType) {
+  //     case
+  //   }
+  // }
   
   private static void validateAttributesBytes(byte[] attributesBytes) throws StunParseException {
     if (attributesBytes.length % 4 != 0) {
