@@ -9,8 +9,6 @@ import com.hal.stun.message.attribute.UnrecognizedAttributeTypeException;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public class StunAttribute {
   
@@ -20,7 +18,7 @@ public class StunAttribute {
   protected StunAttribute(AttributeType attributeType, int length, String valueHex) throws StunParseException {
     this.attributeType = attributeType;
     this.length = length;
-    this.attributeValue = buildAttributeValue(attributeType, valueHex);
+    this.attributeValue = attributeType.buildAttributeValue(valueHex);
   }
   
   private static void verifyValueLength(String valueHex, int length) throws StunParseException {
@@ -51,12 +49,6 @@ public class StunAttribute {
     
     return StunMessageUtils.joinByteArrays(unjoinedAttributeBytes);
   }
-  
-  // public StunAttribute(byte[] attributeBytes) {
-  //   this.attributeType = StunMessageUtils.extractByteSequence(attributeBytes, 0, 2);
-  //   this.length = StunMessageUtils.extractByteSequence(attributeBytes, 2, 2);
-  //   this.valueHex = StunMessageUtils.extractByteSequence(attributeBytes, 4, length);
-  // }
   
   public short getAttributeType() {
     return attributeType.getTypeBytes();
@@ -101,25 +93,6 @@ public class StunAttribute {
     }
     
     return attributes;
-  }
-  
-  private static StunAttributeValue buildAttributeValue(AttributeType type, String valueHex)
-      throws StunParseException {
-    try {
-      Class<? extends StunAttributeValue> attributeValueClass = type.getAttributeValueClass();
-      Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(String.class);
-      return constructor.newInstance(valueHex);
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
-      throw new RuntimeException("could not instantiate class", exception);
-    } catch (InvocationTargetException exception) {
-      Throwable cause = exception.getCause();
-      if (cause instanceof StunParseException) {
-        throw (StunParseException) cause;
-      } else {
-        throw new RuntimeException(cause);
-      }
-    }
-    
   }
   
   private static void validateAttributesBytes(byte[] attributesBytes) throws StunParseException {
