@@ -14,6 +14,10 @@ public abstract class StunAttributeValue {
     validate();
   }
   
+  public String getHexValue() {
+    return attributeValueHex;
+  }
+  
   private void validate() throws StunParseException {
     if (!isValid()) {
       throw new StunParseException("could not parse attribute value " + attributeValueHex);

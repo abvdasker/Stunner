@@ -2,21 +2,26 @@ package com.hal.stun.message.attribute;
 
 import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.StunMessageUtils;
+import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.UnrecognizedAttributeTypeException;
+
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-public class StunAttribute {
+public abstract class StunAttribute {
   
   private AttributeType attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the size of this attribute's value in bytes
-  private String valueHex; // hex encoded valueHex of the attribute
-  public StunAttribute(int attributeType, int length, String valueHex) 
-  throws StunParseException, UnrecognizedAttributeTypeException {
-    this.attributeType = AttributeType.fromBytes((short) attributeType);
+  //private String valueHex; // hex encoded valueHex of the attribute
+  private StunAttributeValue attributeValue;
+  protected StunAttribute(AttributeType attributeType, int length, String valueHex) throws StunParseException {
+    this.attributeType = attributeType;
     this.length = length;
-    this.valueHex = valueHex;
-    verifyValueLength(valueHex, length);
+    this.attributeValue = parseValueHex(valueHex);
+    //this.valueHex = valueHex;
+    //verifyValueLength(valueHex, length);
   }
   
   private static void verifyValueLength(String valueHex, int length) throws StunParseException {
@@ -38,7 +43,8 @@ public class StunAttribute {
     lengthBytes[0] = (byte) (length >>> 8);
     lengthBytes[1] = (byte) length;
     
-    byte[] attributeValueBytes = StunMessageUtils.convertHexToByteArray(valueHex);    
+    String attributeValueHex = getValueAsHex();
+    byte[] attributeValueBytes = StunMessageUtils.convertHexToByteArray(attributeValueHex);    
     
     List<byte[]> unjoinedAttributeBytes = new ArrayList<byte[]>();
     unjoinedAttributeBytes.add(typeBytes);
@@ -62,8 +68,10 @@ public class StunAttribute {
   }
 
   public String getValueAsHex() {
-    return valueHex;
+    return attributeValue.getHexValue();
   }
+  
+  protected abstract StunAttributeValue parseValueHex(String valueHex) throws StunParseException;
   
   public static List<StunAttribute> parseAttributes(byte[] attributesBytes) throws StunParseException {
     validateAttributesBytes(attributesBytes);
@@ -83,16 +91,38 @@ public class StunAttribute {
       }
       String valueHex = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength, true);
       
+      AttributeType type;
       try {
-        attributes.add(new StunAttribute(attributeType, length, valueHex));
+        type = AttributeType.fromBytes((short) attributeType);
       } catch (UnrecognizedAttributeTypeException exception) {
-        System.out.println("TEMPORARY LACK OF ERROR HANDLING FOR UNRECOGNIZED attribute type triggered");
         // TODO: implement error handling to add unrecognized attribute to response.
+        System.out.println("TEMPORARY LACK OF ERROR HANDLING FOR UNRECOGNIZED attribute type triggered");
+        throw new RuntimeException(exception);
       }
+      attributes.add(buildFromType(type, length, valueHex));
       offset += paddedLength;
     }
     
     return attributes;
+  }
+  
+  private static StunAttribute buildFromType(AttributeType type, int length, String valueHex)
+    throws StunParseException {
+    try {
+      Class<? extends StunAttribute> attributeClass = type.getAttributeClass();
+      Constructor<? extends StunAttribute> constructor = attributeClass.getConstructor(int.class, String.class);
+      return constructor.newInstance(length, valueHex);
+    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
+      throw new RuntimeException("could not instantiate class", exception);
+    } catch (InvocationTargetException exception) {
+      Throwable cause = exception.getCause();
+      if (cause instanceof StunParseException) {
+        throw (StunParseException) cause;
+      } else {
+        throw new RuntimeException(cause);
+      }
+    }
+    
   }
   
   // public static StunAttribute buildAttributeForType(int attributeType, int length, String valueHex) {
