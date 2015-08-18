@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 public class MappedAddressStunAttributeValue extends StunAttributeValue {
   
-  // 7 bytes OR 19 bytes
+  // 8 bytes OR 20 bytes
   // 0x0001 - type;
   // 0x0000 - length;
   // value

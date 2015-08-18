@@ -1,27 +1,28 @@
 package com.hal.stun.message.attribute;
 
+import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.value.MappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 
 public enum AttributeType {
   
   // 16-bit attribute type
-  MAPPED_ADDRESS((short) 0x0001, MappedAddressStunAttribute.class),
-  XOR_MAPPED_ADDRESS((short) 0x0020, XORMappedAddressStunAttribute.class);
+  MAPPED_ADDRESS((short) 0x0001, MappedAddressStunAttributeValue.class),
+  XOR_MAPPED_ADDRESS((short) 0x0020, XORMappedAddressStunAttributeValue.class);
   
   private short type;
-  private Class<? extends StunAttribute> attributeClass;
-  private AttributeType(short type, Class<? extends StunAttribute> attributeClass) {
+  private Class<? extends StunAttributeValue> attributeValueClass;
+  private AttributeType(short type, Class<? extends StunAttributeValue> attributeValueClass) {
     this.type = type;
-    this.attributeClass = attributeClass;
+    this.attributeValueClass = attributeValueClass;
   }
   
   public short getTypeBytes() {
     return type;
   }
   
-  public Class<? extends StunAttribute> getAttributeClass() {
-    return attributeClass;
+  public Class<? extends StunAttributeValue> getAttributeValueClass() {
+    return attributeValueClass;
   }
   
   public static AttributeType fromBytes(short type) throws UnrecognizedAttributeTypeException {
