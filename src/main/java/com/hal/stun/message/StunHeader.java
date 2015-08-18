@@ -61,7 +61,10 @@ public class StunHeader {
     transactionID = getTransactionID(headerBytes);
   }
   
-  private static byte[] generateHeaderBytes(MessageClass messageClass, short method, int messageLength, String transactionID) {
+  private static byte[] generateHeaderBytes(MessageClass messageClass,
+                                            short method,
+                                            int messageLength,
+                                            String transactionID) {
     byte[] headerBytes = new byte[HEADER_SIZE];
     
     // set the first two bytes (annoying due to mixed method and class encoding)

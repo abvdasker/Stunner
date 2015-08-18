@@ -15,7 +15,7 @@ public class AttributeTypeTest {
   
   @Test(expected = UnrecognizedAttributeTypeException.class)
   public void testInitializeAttributeTypeMissingAttribute() 
-  throws UnrecognizedAttributeTypeException {
+      throws UnrecognizedAttributeTypeException {
     AttributeType.fromBytes((short) 0x0010);
   }
   

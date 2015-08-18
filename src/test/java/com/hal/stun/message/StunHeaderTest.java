@@ -40,14 +40,14 @@ public class StunHeaderTest {
   
   @Test
   public void testVerifyFirstByte() 
-  throws StunParseException, IllegalAccessException, InvocationTargetException {
+      throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
     StunMessageTestHelper.invokeWithPossibleParseException(verifyFirstByteMethod, null, headerBytes);
   }
   
   @Test(expected = StunParseException.class)
   public void testVerifyFirstByteWithBitSet() 
-  throws StunParseException, IllegalAccessException, InvocationTargetException {
+      throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
     headerBytes[0] = (byte) 0b10000000;
     StunMessageTestHelper.invokeWithPossibleParseException(verifyFirstByteMethod, null, headerBytes);
@@ -66,7 +66,7 @@ public class StunHeaderTest {
   
   @Test
   public void testVerifyMagicCookie()
-  throws StunParseException, IllegalAccessException, InvocationTargetException {
+      throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
     addValidMagicCookie(headerBytes);
     StunMessageTestHelper.invokeWithPossibleParseException(verifyMagicCookieMethod, null, headerBytes);
@@ -74,7 +74,7 @@ public class StunHeaderTest {
 
   @Test(expected = StunParseException.class)
   public void testVerifyInvalidMagicCookie()
-  throws StunParseException, IllegalAccessException, InvocationTargetException {
+      throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
     int magicCookie = StunHeader.MAGIC_COOKIE;
     addValidMagicCookie(headerBytes);
@@ -99,7 +99,7 @@ public class StunHeaderTest {
   
   @Test(expected = StunParseException.class)
   public void testGetInvalidMessageLength()
-  throws IllegalAccessException, InvocationTargetException, StunParseException {
+      throws IllegalAccessException, InvocationTargetException, StunParseException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
     int expectedMessageLength = 0xffff;
     headerBytes[2] = (byte) 0xff;

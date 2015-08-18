@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 public class StunMessageTestHelper {
   
   public static void invokeWithPossibleParseException(Method method, StunHeader stunMessage, byte[] argument) 
-  throws IllegalAccessException, InvocationTargetException, StunParseException {
+      throws IllegalAccessException, InvocationTargetException, StunParseException {
     try {
       method.invoke(stunMessage, argument);
     } catch (InvocationTargetException exception) {

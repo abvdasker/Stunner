@@ -104,7 +104,7 @@ public class StunAttribute {
   }
   
   private static StunAttributeValue buildAttributeValue(AttributeType type, String valueHex)
-    throws StunParseException {
+      throws StunParseException {
     try {
       Class<? extends StunAttributeValue> attributeValueClass = type.getAttributeValueClass();
       Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(String.class);

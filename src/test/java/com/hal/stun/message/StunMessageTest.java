@@ -44,7 +44,7 @@ public class StunMessageTest {
   
   @Test(expected = StunParseException.class)
   public void testGetHeaderBytesTooFew() 
-  throws StunParseException, IllegalAccessException, InvocationTargetException {
+      throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] testBytes = new byte[StunHeader.HEADER_SIZE - 1];
 
     StunMessageTestHelper.invokeWithPossibleParseException(getHeaderBytesMethod, null, testBytes);

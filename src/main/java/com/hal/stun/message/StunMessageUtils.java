@@ -21,7 +21,10 @@ public class StunMessageUtils {
     return bytesAsInt;
   }
   
-  public static String extractByteSequenceAsHex(byte[] bytes, int startByteIndex, int bytesToExtract, boolean preserveLeadingZeroes) {
+  public static String extractByteSequenceAsHex(byte[] bytes, 
+                                                int startByteIndex,
+                                                int bytesToExtract,
+                                                boolean preserveLeadingZeroes) {
     StringBuffer outputBuffer = new StringBuffer();
     int endIndex = startByteIndex + bytesToExtract;
 
