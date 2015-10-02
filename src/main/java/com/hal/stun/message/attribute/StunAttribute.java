@@ -19,9 +19,10 @@ public class StunAttribute {
     this.attributeType = attributeType;
     this.length = length;
     this.attributeValue = attributeType.buildAttributeValue(valueHex);
+    verifyValueLength(valueHex);
   }
   
-  private static void verifyValueLength(String valueHex, int length) throws StunParseException {
+  private void verifyValueLength(String valueHex) throws StunParseException {
     int hexStringLength = valueHex.length()/2; // each hex char encodes 4 bits
     if (hexStringLength != length) {
       throw new StunParseException("attribute valueHex " + valueHex + " is " + hexStringLength 
