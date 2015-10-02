@@ -37,17 +37,15 @@ public class StunAttribute {
     short attributeTypeValue = attributeType.getTypeBytes();
     typeBytes[0] = (byte) (attributeTypeValue >>> 8);
     typeBytes[1] = (byte) attributeTypeValue;
-    
+
     lengthBytes[0] = (byte) (length >>> 8);
     lengthBytes[1] = (byte) length;
-    
-    String attributeValueHex = getValueAsHex();
-    byte[] attributeValueBytes = StunMessageUtils.convertHexToByteArray(attributeValueHex);    
     
     List<byte[]> unjoinedAttributeBytes = new ArrayList<byte[]>();
     unjoinedAttributeBytes.add(typeBytes);
     unjoinedAttributeBytes.add(lengthBytes);
-    
+    unjoinedAttributeBytes.add(getValueBytes());
+
     return StunMessageUtils.joinByteArrays(unjoinedAttributeBytes);
   }
   
@@ -59,8 +57,17 @@ public class StunAttribute {
     return length;
   }
 
-  public String getValueAsHex() {
+  public String getValueHex() {
     return attributeValue.getHexValue();
+  }
+
+  public byte[] getValueBytes() {
+    String attributeValueHex = getValueHex();
+    return StunMessageUtils.convertHexToByteArray(attributeValueHex);
+  }
+
+  public StunAttributeValue getValue() {
+    return attributeValue;
   }
   
   public static List<StunAttribute> parseAttributes(byte[] attributesBytes) throws StunParseException {

@@ -20,6 +20,10 @@ public class StunMessageUtils {
     
     return bytesAsInt;
   }
+
+  public static String convertByteArrayToHex(byte[] bytes) {
+    return extractByteSequenceAsHex(bytes, 0, bytes.length, true);
+  }
   
   public static String extractByteSequenceAsHex(byte[] bytes, 
                                                 int startByteIndex,
