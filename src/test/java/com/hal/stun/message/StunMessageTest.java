@@ -52,7 +52,7 @@ public class StunMessageTest {
   
   @Test
   public void testInitializeStunMessage() throws Exception {
-    StunMessage message = new StunMessage(getTestStunRequest());
+    StunMessage message = new StunMessage(getTestStunRequest(), null);
   }
   
   private static byte[] getTestStunRequest() {

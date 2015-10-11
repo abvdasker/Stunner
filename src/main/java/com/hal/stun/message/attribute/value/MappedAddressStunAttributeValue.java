@@ -33,6 +33,10 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   public MappedAddressStunAttributeValue(String valueHex) throws StunParseException {
     super(valueHex);
   }
+
+  public MappedAddressStunAttributeValue() throws StunParseException {
+    super(null);
+  }
   
   public byte getAddressFamily() {
     return addressFamily;

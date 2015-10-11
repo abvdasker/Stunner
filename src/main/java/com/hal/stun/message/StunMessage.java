@@ -4,14 +4,18 @@ import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.attribute.StunAttribute;
 import java.util.List;
 
+import java.net.InetSocketAddress;
+
 public class StunMessage {
   
   protected byte[] messageBytes;
   protected StunHeader header;
   protected List<StunAttribute> attributes;
+  protected InetSocketAddress address;
 
-  public StunMessage(byte[] message) throws StunParseException {
+  public StunMessage(byte[] message, InetSocketAddress address) throws StunParseException {
     this.messageBytes = message;
+    this.address = address;
     header = new StunHeader(getHeaderBytes(message));
     header.validateMessageLength(message);
     attributes = StunAttribute.parseAttributes(getAttributesBytes(message));

@@ -6,6 +6,8 @@ import com.hal.stun.message.StunHeader;
 import com.hal.stun.message.MessageClass;
 import com.hal.stun.message.StunParseException;
 
+import java.net.InetSocketAddress;
+
 class StunApplication {
   
   public StunApplication() {
@@ -13,15 +15,15 @@ class StunApplication {
   
   // handler also needs some info about the connection like
   // source IP, request received time, etc.
-  public byte[] handle(byte[] rawRequest) throws UnsupportedStunClassException, StunParseException {
-    StunMessage request = new StunMessage(rawRequest);
+  public byte[] handle(byte[] rawRequest, InetSocketAddress address) throws UnsupportedStunClassException, StunParseException {
+    StunMessage request = new StunMessage(rawRequest, address);
     StunMessage response = buildResponse(request);
     return response.toByteArray();
   }
   
   public static StunMessage buildResponse(StunMessage request) throws UnsupportedStunClassException {
-    MessageClass requestMessageClass = request.getHeader().getMessageClass();
     StunHeader header = request.getHeader();
+    MessageClass requestMessageClass = header.getMessageClass();
     StunMessage response;
     switch(requestMessageClass) {
       case REQUEST:

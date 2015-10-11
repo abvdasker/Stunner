@@ -20,9 +20,10 @@ public class StunServer {
   private static final int MAX_BUFFER_BYTES = 7000; // probably too large
   private static final Logger log = new Logger();
   
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, Exception {
     
     Listener listener = new Listener(PORT_NUMBER);
+    StunApplication application = new StunApplication();
     
     /**
       * The input stream from one request. This stream will
@@ -36,6 +37,7 @@ public class StunServer {
       byte[] requestBytes = getRequestBytes(in);
       log.print(requestBytes.length + " bytes received");
       InetSocketAddress address = (InetSocketAddress) listener.getRequestAddress();
+      application.handle(requestBytes, address);
       //StunMessage message = new StunMessage(requestBytes);
       //String requestText = getRequestText(in);
       //log.print(requestText);
