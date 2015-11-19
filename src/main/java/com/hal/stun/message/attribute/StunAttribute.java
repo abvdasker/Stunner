@@ -110,5 +110,4 @@ public class StunAttribute {
       throw new StunParseException("there must be at least one attribute of 16 bytes or more.");
     }
   }
-  
 }

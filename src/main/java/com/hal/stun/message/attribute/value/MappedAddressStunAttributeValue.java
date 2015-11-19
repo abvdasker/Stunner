@@ -20,11 +20,11 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   //     OR
   //   0x0000 0000 0000 0000 0000 0000 0000 0000 ipv6 address
   //
-  private static final byte IPV4_FAMILY_CODE = (byte) 0x01;
-  private static final byte IPV6_FAMILY_CODE = (byte) 0x02;
+  protected static final byte IPV4_FAMILY_CODE = (byte) 0x01;
+  protected static final byte IPV6_FAMILY_CODE = (byte) 0x02;
 
-  private static final int IPV4_ATTRIBUTE_SIZE = 8;
-  private static final int IPV6_ATTRIBUTE_SIZE = 20;
+  protected static final int IPV4_ATTRIBUTE_SIZE = 8;
+  protected static final int IPV6_ATTRIBUTE_SIZE = 20;
   
   private byte addressFamily;
   private short port;
@@ -45,15 +45,15 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   public short getPort() {
     return port;
   }
-  
+
   public InetAddress getAddress() {
     return address;
   }
-  
+
   protected void parseValueBytes() throws StunParseException {
     addressFamily = valueBytes[1];
     port = parsePort();
-    
+
     byte[] addressBytes = Arrays.copyOfRange(valueBytes, 4, valueBytes.length);
     try {
       address = InetAddress.getByAddress(addressBytes);

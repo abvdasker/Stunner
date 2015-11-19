@@ -34,6 +34,10 @@ public class StunMessage {
   public List<StunAttribute> getAttributes() {
     return attributes;
   }
+
+  public InetSocketAddress getAddress() {
+    return address;
+  }
   
   protected StunMessage() {
     

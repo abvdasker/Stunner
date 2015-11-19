@@ -23,7 +23,10 @@ public class StunResponseMessage extends StunMessage {
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) {
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     if (request.getHeader().getMessageMethod() == StunHeader.BINDING_METHOD) {
-      // generate XOR mapping
+      XORMappedAddress mappedAddress = new XORMappedAddress(request.getAddress());
+      // convert to hex
+      // build stun attribute
+      // add new attribute to list
     }
     return attributes;
   }
