@@ -1,5 +1,7 @@
 package com.hal.stun.message;
 
+import com.hal.stun.message.StunMessageUtils;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
@@ -18,5 +20,13 @@ public class StunMessageTestHelper {
       }
     }
   }
-  
+
+  public static byte[] convertArray(int[] array) {
+    byte[] convertedArray = new byte[array.length];
+    for (int i = 0; i < array.length; i++) {
+      int value = array[i];
+      convertedArray[i] = (byte) (value & StunMessageUtils.MASK);
+    }
+    return convertedArray;
+  }
 }

@@ -4,6 +4,7 @@ import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.value.MappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
+import com.hal.stun.message.attribute.value.FingerprintStunAttributeValue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +13,8 @@ public enum AttributeType {
   
   // 16-bit attribute type
   MAPPED_ADDRESS((short) 0x0001, MappedAddressStunAttributeValue.class),
-  XOR_MAPPED_ADDRESS((short) 0x0020, XORMappedAddressStunAttributeValue.class);
+  XOR_MAPPED_ADDRESS((short) 0x0020, XORMappedAddressStunAttributeValue.class),
+  FINGERPRINT((short) 0x8028, FingerprintStunAttributeValue.class);
   
   private short type;
   private Class<? extends StunAttributeValue> attributeValueClass;
@@ -40,7 +42,6 @@ public enum AttributeType {
         throw new RuntimeException(cause);
       }
     }
-    
   }
   
   public static AttributeType fromBytes(short type) throws UnrecognizedAttributeTypeException {

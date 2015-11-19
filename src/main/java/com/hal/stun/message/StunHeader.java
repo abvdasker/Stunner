@@ -39,7 +39,7 @@ public class StunHeader {
   }
   
   public short getMessageMethod() {
-    return getMessageMethod();
+    return method;
   }
   
   public MessageClass getMessageClass() {
@@ -49,6 +49,10 @@ public class StunHeader {
   public String getTransactionID() {
     return transactionID;
   }
+
+  public int getMessageLength() {
+    return messageLength;
+  }
   
   private void parse(byte[] headerBytes) throws StunParseException {
     verifyFirstByte(headerBytes);
@@ -56,7 +60,7 @@ public class StunHeader {
     messageClass = MessageClass.fromByte(messageClassBits);
     method = getMessageMethod(headerBytes);
     verifyMethod(method);
-    messageLength = getMessageLength(headerBytes);
+    messageLength = parseMessageLength(headerBytes);
     verifyMagicCookie(headerBytes);
     transactionID = getTransactionID(headerBytes);
   }
@@ -150,7 +154,7 @@ public class StunHeader {
     return fullBits;
   }
 
-  private static int getMessageLength(byte[] header) throws StunParseException {
+  private static int parseMessageLength(byte[] header) throws StunParseException {
     int messageLengthTop = header[2] & MASK;
     int messageLengthBottom = header[3] & MASK;
     int messageLength = 0;

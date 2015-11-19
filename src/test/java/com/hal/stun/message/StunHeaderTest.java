@@ -15,7 +15,7 @@ public class StunHeaderTest {
   private static Method verifyFirstByteMethod;
   private static Method verifyMagicCookieMethod;
   private static Method getMessageClassBitsMethod;
-  private static Method getMessageLengthMethod;
+  private static Method parseMessageLengthMethod;
   private static Method getMessageMethodMethod;
 
   @BeforeClass
@@ -30,8 +30,8 @@ public class StunHeaderTest {
     getMessageClassBitsMethod = StunHeader.class.getDeclaredMethod("getMessageClassBits", byte[].class);
     getMessageClassBitsMethod.setAccessible(true);
 
-    getMessageLengthMethod = StunHeader.class.getDeclaredMethod("getMessageLength", byte[].class);
-    getMessageLengthMethod.setAccessible(true);
+    parseMessageLengthMethod = StunHeader.class.getDeclaredMethod("parseMessageLength", byte[].class);
+    parseMessageLengthMethod.setAccessible(true);
 
     getMessageMethodMethod = StunHeader.class.getDeclaredMethod("getMessageMethod", byte[].class);
     getMessageMethodMethod.setAccessible(true);
@@ -92,7 +92,7 @@ public class StunHeaderTest {
     expectedMessageLength <<= 2;
     headerBytes[2] = (byte) 0xff;
     headerBytes[3] = (byte) (0xff << 2); // clear lower 2 bits
-    int actualMessageLength = (int) getMessageLengthMethod.invoke(null, headerBytes);
+    int actualMessageLength = (int) parseMessageLengthMethod.invoke(null, headerBytes);
     Assert.assertEquals("message length should match that set in header",
       expectedMessageLength, actualMessageLength);
   }
@@ -104,7 +104,7 @@ public class StunHeaderTest {
     int expectedMessageLength = 0xffff;
     headerBytes[2] = (byte) 0xff;
     headerBytes[3] = (byte) 0xff; // clear lower 2 bits
-    StunMessageTestHelper.invokeWithPossibleParseException(getMessageLengthMethod, null, headerBytes);
+    StunMessageTestHelper.invokeWithPossibleParseException(parseMessageLengthMethod, null, headerBytes);
   }
   
   @Test
