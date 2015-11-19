@@ -19,7 +19,7 @@ public class StunMessageRegressionTest {
     List<StunAttribute> attributes = message.getAttributes();
     StunAttribute attribute = attributes.get(0);
 
-    Assert.assertEquals("message type is binding", (short) 1, header.getMessageMethod());
+    Assert.assertEquals("message type is binding", StunHeader.BINDING_METHOD, header.getMessageMethod());
     Assert.assertEquals("message length is eight bytes", (short) 8, header.getMessageLength());
     Assert.assertEquals("has one attribute", 1, attributes.size());
     Assert.assertEquals("is a fingerprint attribute", AttributeType.FINGERPRINT, attribute.getAttributeType());
