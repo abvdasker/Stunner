@@ -26,16 +26,16 @@ class StunApplication {
     MessageClass requestMessageClass = header.getMessageClass();
     StunMessage response;
     switch(requestMessageClass) {
-      case REQUEST:
+    case REQUEST:
       response = handleRequest(request);
       break;
-      case INDICATION:
+    case INDICATION:
       handleIndication(request);
       response = null;
       break;
-      case SUCCESS:
-      case ERROR:
-      default:
+    case SUCCESS:
+    case ERROR:
+    default:
       throw new UnsupportedStunClassException(requestMessageClass);
     }
     
