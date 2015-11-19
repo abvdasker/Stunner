@@ -30,6 +30,10 @@ public class StunMessage {
   public byte[] toByteArray() {
     return null;
   }
+
+  public List<StunAttribute> getAttributes() {
+    return attributes;
+  }
   
   protected StunMessage() {
     

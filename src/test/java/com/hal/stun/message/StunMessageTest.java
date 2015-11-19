@@ -1,11 +1,10 @@
 package com.hal.stun.message;
 
-import com.hal.stun.message.StunMessageTestHelper;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import javax.xml.bind.DatatypeConverter;
-import java.net.InetSocketAddress;
+
+import com.hal.stun.message.StunMessageTestHelper;
 
 import org.junit.BeforeClass;
 import org.junit.Assert;
@@ -26,16 +25,6 @@ public class StunMessageTest {
     getAttributesBytesMethod.setAccessible(true);
   }
 
-  @Test
-  public void testStunMessage() throws Exception {
-    InetSocketAddress address = new InetSocketAddress(StunMessageTestData.REAL_STUN_ADDRESS, 2000);
-    byte[] messageBytes = StunMessageTestHelper.convertArray(StunMessageTestData.REAL_STUN_MESSAGE);
-    StunMessage message = new StunMessage(messageBytes, address);
-    StunHeader header = message.getHeader();
-    Assert.assertEquals("message type is binding", (short) 1, header.getMessageMethod());
-    Assert.assertEquals("message length is eight bytes", (short) 8, header.getMessageLength());
-  }
-  
   @Test
   public void testGetHeaderBytes() throws Exception {
     int messageSize = 50;

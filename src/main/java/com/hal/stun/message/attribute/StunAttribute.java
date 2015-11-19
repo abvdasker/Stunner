@@ -5,7 +5,6 @@ import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.value.MappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
-import com.hal.stun.message.attribute.UnrecognizedAttributeTypeException;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -49,8 +48,8 @@ public class StunAttribute {
     return StunMessageUtils.joinByteArrays(unjoinedAttributeBytes);
   }
   
-  public short getAttributeType() {
-    return attributeType.getTypeBytes();
+  public AttributeType getAttributeType() {
+    return attributeType;
   }
   
   public int getLength() {
