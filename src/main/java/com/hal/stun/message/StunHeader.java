@@ -171,7 +171,8 @@ public class StunHeader {
   private static int getMagicCookie(byte[] header) {
     return StunMessageUtils.extractByteSequence(header, 4, 4);
   }
-  
+
+  // TODO: store transaction ID as byte array
   private static String getTransactionID(byte[] header) {
     // transaction ID can be represented by 3 ints
     // convert ints to hex string

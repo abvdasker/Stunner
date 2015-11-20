@@ -21,6 +21,7 @@ public class StunResponseMessage extends StunMessage {
   }
   
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) {
+    StunHeader header = request.getHeader();
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     if (request.getHeader().getMessageMethod() == StunHeader.BINDING_METHOD) {
       XORMappedAddress mappedAddress = new XORMappedAddress(request.getAddress());
