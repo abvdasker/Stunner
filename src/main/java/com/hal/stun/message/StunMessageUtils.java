@@ -102,5 +102,13 @@ public class StunMessageUtils {
     byte val = (byte) (Integer.parseInt(chars, 16) & MASK);
     return val;
   }
-  
+
+  private static byte[] xORBytes(byte[] firstArray, byte[] secondArray) {
+    byte[] outputArray = new byte[firstArray.length];
+    for (int i = 0; i < firstArray.length; i++) {
+      outputArray[i] = firstArray[i];
+    }
+
+    return outputArray;
+  }
 }

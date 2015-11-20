@@ -9,18 +9,39 @@ import java.net.UnknownHostException;
 
 // how to pass the magic cookie?
 public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttributeValue {
+
+  private static final int MAGIC_COOKIE = 0x;
+
+  // TODO: need to pass in transaction ID for XOR operation
   public XORMappedAddressStunattributeValue(InetSocketAddress address) {
     super(generateFrom(address));
   }
   
   private static String generateFrom(InetSocketAddress address) {
     InetAddress baseAddress = address.getAddress();
-    byte[] addressBytes = baseAddress.get
-    byte family;
+    byte[] addressBytes = baseAddress.getAddress();
+    byte family = generateFamily();
     short xPort = generateXPort();
 
-    if (address.get
+    if (addressBytes.length == IPV4_ATTRIBUTE_SIZE) {
+      family = generateIPv4Family();
+    } else if (addressBytes.length == IPV6_ATTRIBUTE_SIZE) {
+      family = generateIPv6Family();
+    } else {
+      throw new RuntimeException();
+    }
+
+    byte[] xAddress = generateXAddress(addressBytes);
+  }
+
+  private static byte gemerateFamily() {
+  }
+
+  private static short generateXPort() {
     
-    byte[] xAddress = gene
+  }
+
+  private static byte[] generateXAddress(byte[] addressBytes) {
+    
   }
 }
