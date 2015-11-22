@@ -30,6 +30,7 @@ public enum AttributeType {
   public StunAttributeValue buildAttributeValue(String valueHex)
       throws StunParseException {
     try {
+      System.out.println(valueHex);
       Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(String.class);
       return constructor.newInstance(valueHex);
     } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {

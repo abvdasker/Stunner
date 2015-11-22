@@ -57,8 +57,6 @@ public class StunMessageTest {
   }
   
   private static byte[] getTestStunRequest() {
-    byte[] messageBytes = DatatypeConverter.parseHexBinary(HEX_ENCODED_STUN_REQUEST);
-    return messageBytes;
+    return DatatypeConverter.parseHexBinary(HEX_ENCODED_STUN_REQUEST);
   }
-  
 }

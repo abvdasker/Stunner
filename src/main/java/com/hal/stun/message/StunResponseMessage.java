@@ -1,13 +1,14 @@
 package com.hal.stun.message;
 
 import com.hal.stun.message.attribute.StunAttribute;
+import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StunResponseMessage extends StunMessage {
   
-  public StunResponseMessage(StunMessage requestMessage) {
+  public StunResponseMessage(StunMessage requestMessage) throws StunParseException {
     super();
     this.attributes = buildResponseAttributes(requestMessage);
     int messageLength = getAttributeListByteLength(attributes);
@@ -20,11 +21,11 @@ public class StunResponseMessage extends StunMessage {
     
   }
   
-  private static List<StunAttribute> buildResponseAttributes(StunMessage request) {
+  private static List<StunAttribute> buildResponseAttributes(StunMessage request) throws StunParseException {
     StunHeader header = request.getHeader();
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
-    if (request.getHeader().getMessageMethod() == StunHeader.BINDING_METHOD) {
-      XORMappedAddress mappedAddress = new XORMappedAddress(request.getAddress());
+    if (header.getMessageMethod() == StunHeader.BINDING_METHOD) {
+      XORMappedAddressStunAttributeValue mappedAddress = new XORMappedAddressStunAttributeValue(request.getAddress(), header.getTransactionID());
       // convert to hex
       // build stun attribute
       // add new attribute to list

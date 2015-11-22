@@ -21,7 +21,7 @@ class StunApplication {
     return response.toByteArray();
   }
   
-  public static StunMessage buildResponse(StunMessage request) throws UnsupportedStunClassException {
+  public static StunMessage buildResponse(StunMessage request) throws UnsupportedStunClassException, StunParseException {
     StunHeader header = request.getHeader();
     MessageClass requestMessageClass = header.getMessageClass();
     StunMessage response;
@@ -42,7 +42,7 @@ class StunApplication {
     return response;
   }
   
-  public static StunMessage handleRequest(StunMessage request) {
+  public static StunMessage handleRequest(StunMessage request) throws StunParseException {
     StunMessage response = new StunResponseMessage(request);
     return response;
   }

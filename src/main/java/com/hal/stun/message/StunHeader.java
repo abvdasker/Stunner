@@ -13,21 +13,21 @@ public class StunHeader {
   private MessageClass messageClass;
   private short method; // 12 bits; binding method is 0b000000000001 (5 bits in byte 0, 7 bits in byte 1 = 12 bits)
   private int messageLength; // 16 bits; must be a multiple ov 4 (i.e. bottom 2 bits are 0)
-  private String transactionID; // 96 bits;
-  
+  private byte[] transactionID; // 96 bits;
+
   public StunHeader(byte[] headerBytes) throws StunParseException {
     this.headerBytes = headerBytes;
     parse(headerBytes);
   }
-  
-  public StunHeader(MessageClass messageClass, short method, int messageLength, String transactionID) {
+
+  public StunHeader(MessageClass messageClass, short method, int messageLength, byte[] transactionID) {
     this.messageClass = messageClass;
     this.method = method;
     this.messageLength = messageLength;
     this.transactionID = transactionID;
     this.headerBytes = generateHeaderBytes(messageClass, method, messageLength, transactionID);
   }
-  
+
   public void validateMessageLength(byte[] wholeMessage) 
   throws StunParseException {
     int actualMessageLength = wholeMessage.length - headerBytes.length;
@@ -37,7 +37,7 @@ public class StunHeader {
         + messageLength + " bytes.");
     }
   }
-  
+
   public short getMessageMethod() {
     return method;
   }
@@ -46,7 +46,7 @@ public class StunHeader {
     return messageClass;
   }
   
-  public String getTransactionID() {
+  public byte[] getTransactionID() {
     return transactionID;
   }
 
@@ -62,13 +62,13 @@ public class StunHeader {
     verifyMethod(method);
     messageLength = parseMessageLength(headerBytes);
     verifyMagicCookie(headerBytes);
-    transactionID = getTransactionID(headerBytes);
+    transactionID = parseTransactionID(headerBytes);
   }
   
   private static byte[] generateHeaderBytes(MessageClass messageClass,
                                             short method,
                                             int messageLength,
-                                            String transactionID) {
+                                            byte[] transactionID) {
     byte[] headerBytes = new byte[HEADER_SIZE];
     
     // set the first two bytes (annoying due to mixed method and class encoding)
@@ -89,7 +89,6 @@ public class StunHeader {
     headerBytes[7] = (byte) (MAGIC_COOKIE);
     
     // use built-in method to convert hex string to byte array to set next 24 bytes (96 bits) at indices 8-32
-    
     
     return headerBytes;
   }
@@ -164,35 +163,36 @@ public class StunHeader {
     if ((messageLength%4) != 0) {
       throw new StunParseException("last 2 bits of message length must be 0");
     }
-    
+
     return messageLength;
   }
-  
+
   private static int getMagicCookie(byte[] header) {
     return StunMessageUtils.extractByteSequence(header, 4, 4);
   }
 
   // TODO: store transaction ID as byte array
-  private static String getTransactionID(byte[] header) {
+  private static byte[] parseTransactionID(byte[] header) {
     // transaction ID can be represented by 3 ints
     // convert ints to hex string
-    int highestBytes = StunMessageUtils.extractByteSequence(header, 8, 4);
-    int middleBytes = StunMessageUtils.extractByteSequence(header, 12, 4);
-    int lowerBytes = StunMessageUtils.extractByteSequence(header, 16, 4);
-    String transactionID = Integer.toHexString(highestBytes)
-      + Integer.toHexString(middleBytes)
-      + Integer.toHexString(lowerBytes);
-    
+    int transactionIDStart = 8;
+    int transactionIDLength = 12;
+    byte[] transactionID = new byte[transactionIDLength];
+    for (int i = transactionIDStart; i < transactionIDStart + transactionIDLength; i++) {
+      int transactionIDIndex = i - transactionIDStart;
+      transactionID[transactionIDIndex] = header[i];
+    }
+
     return transactionID;
   }
-  
+
   private static void verifyFirstByte(byte[] headerBytes) throws StunParseException {
     int firstByte = headerBytes[0] & MASK;
-    if (firstByte>>>6 != 0) {
+    if ((firstByte >>> 6) != 0) {
       throw new StunParseException("first two bits of header were not zero");
     }
   }
-  
+
   private static void verifyMethod(short method) throws StunParseException {
     if (method != BINDING_METHOD) {
       throw new StunParseException("unrecognized method " + method + ". Only recognized method would be encoded with 0b000000000001");
