@@ -92,7 +92,6 @@ public class StunAttribute {
         type = AttributeType.fromBytes((short) attributeType);
       } catch (UnrecognizedAttributeTypeException exception) {
         // TODO: implement error handling to add unrecognized attribute to response.
-        System.out.println("TEMPORARY LACK OF ERROR HANDLING FOR UNRECOGNIZED attribute type triggered");
         throw new RuntimeException(exception);
       }
       attributes.add(new StunAttribute(type, length, valueHex));

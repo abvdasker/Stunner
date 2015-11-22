@@ -11,6 +11,10 @@ import java.net.UnknownHostException;
 // how to pass the magic cookie?
 public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttributeValue {
 
+  public XORMappedAddressStunAttributeValue(String valueHex) throws StunParseException {
+    super(valueHex);
+  }
+  
   // TODO: need to pass in transaction ID for XOR operation
   public XORMappedAddressStunAttributeValue(InetSocketAddress address, byte[] transactionID) throws StunParseException {
     super(generateFrom(address, transactionID));
