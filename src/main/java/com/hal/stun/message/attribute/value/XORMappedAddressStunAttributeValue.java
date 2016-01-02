@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
-// how to pass the magic cookie?
 public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttributeValue {
 
   public XORMappedAddressStunAttributeValue(byte[] value) throws StunParseException {

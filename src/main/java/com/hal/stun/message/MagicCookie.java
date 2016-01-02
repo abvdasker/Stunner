@@ -15,4 +15,14 @@ public final class MagicCookie {
     byte magicCookieByte = (byte) (VALUE >>> index * 8);
     return magicCookieByte;
   }
+
+  public static byte[] getBytes() {
+    byte[] cookieBytes = new byte[4];
+
+    for (int i = 0; i < cookieBytes.length; i++) {
+      cookieBytes[i] = getByte(i);
+    }
+
+    return cookieBytes;
+  }
 }

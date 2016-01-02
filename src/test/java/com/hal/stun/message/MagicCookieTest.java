@@ -25,4 +25,18 @@ public class MagicCookieTest {
     Assert.assertEquals("correctly extracts top two bytes as short",
                         expected, actual);
   }
+
+  public void testGetBytes() {
+    byte[] expectedBytes = {
+      (byte) 0x21,
+      (byte) 0x12,
+      (byte) 0xA4,
+      (byte) 0x42
+    };
+
+    byte[] actualBytes = MagicCookie.getBytes();
+
+    Assert.assertArrayEquals("returns whole magic cookie as byte array",
+                             expectedBytes, actualBytes);
+  }
 }
