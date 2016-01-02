@@ -65,7 +65,6 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
 
   private static byte[] generateIPV4XAddress(byte[] address) {
     byte[] magicCookieBytes = MagicCookie.getBytesBigEndian();
-
     byte[] xAddress = new byte[address.length];
     for (int i = 0; i < xAddress.length; i++) {
       xAddress[i] = unsignByte(magicCookieBytes[i] ^ address[i]);
@@ -74,7 +73,36 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
   }
 
   private static byte[] generateIPV6XAddress(byte[] address, byte[] transactionID) {
-    return new byte[0];
+    byte[] magicCookieBytes = MagicCookie.getBytesBigEndian();
+    byte[] xAddress = new byte[address.length];
+
+    byte[] magicCookiePlusTransactionID = combineArrays(magicCookieBytes, transactionID);
+
+    for (int i = 0; i < address.length; i++) {
+      byte operand = magicCookiePlusTransactionID[i];
+      xAddress[i] = unsignByte(operand ^ address[i]);
+    }
+
+    return xAddress;
+  }
+
+  private static byte[] combineArrays(byte[] first, byte[] second) {
+    byte[] destination = new byte[first.length + second.length];
+    System.arraycopy(
+                     first,
+                     0,
+                     destination,
+                     0,
+                     first.length);
+
+    System.arraycopy(
+                     second,
+                     0,
+                     destination,
+                     first.length,
+                     second.length);
+
+    return destination;
   }
 
   private static byte unsignByte(int number) {
