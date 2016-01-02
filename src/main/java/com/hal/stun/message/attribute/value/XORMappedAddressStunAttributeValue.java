@@ -50,30 +50,38 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
     byte upperByte = (byte) (port >>> 8);
 
     short magicCookieTopBytes = MagicCookie.getTopTwoBytes();
-    byte magicCookieTopByte = (byte) ((magicCookieTopBytes >>> 8) & StunMessageUtils.MASK);
+    byte magicCookieTopByte = unsignByte(magicCookieTopBytes >>> 8);
     byte magicCookieSecondTopByte = (byte) (magicCookieTopBytes);
 
-    byte xoredUpperByte = (byte) ((upperByte ^ magicCookieTopByte) & StunMessageUtils.MASK);
-    byte xoredLowerByte = (byte) ((lowerByte ^ magicCookieSecondTopByte) & StunMessageUtils.MASK);
+    byte xoredUpperByte = unsignByte(upperByte ^ magicCookieTopByte);
+    byte xoredLowerByte = unsignByte(lowerByte ^ magicCookieSecondTopByte);
 
-    short xPort = (short) (xoredUpperByte & StunMessageUtils.MASK);
+    short xPort = unsignShort(xoredUpperByte);
     xPort <<= 8;
-    xPort |= (short) (xoredLowerByte & StunMessageUtils.MASK);
+    xPort |= unsignShort(xoredLowerByte);
 
     return xPort;
   }
 
   private static byte[] generateIPV4XAddress(byte[] address) {
-    /*byte[] magicCookieBytes = MagicCookie.getBytes;
+    byte[] magicCookieBytes = MagicCookie.getBytesBigEndian();
 
     byte[] xAddress = new byte[address.length];
     for (int i = 0; i < xAddress.length; i++) {
-      
-    }*/
-    return new byte[0];
+      xAddress[i] = unsignByte(magicCookieBytes[i] ^ address[i]);
+    }
+    return xAddress;
   }
 
   private static byte[] generateIPV6XAddress(byte[] address, byte[] transactionID) {
     return new byte[0];
+  }
+
+  private static byte unsignByte(int number) {
+    return (byte) (number & StunMessageUtils.MASK);
+  }
+
+  private static short unsignShort(int number) {
+    return (short) (number & StunMessageUtils.MASK);
   }
 }
