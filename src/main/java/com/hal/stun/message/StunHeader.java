@@ -7,7 +7,6 @@ public class StunHeader {
   // NEVER FORGET to mask when upcasting from unsigned byte to int
   public static final int HEADER_SIZE = 20;
   public static final short BINDING_METHOD = 0b000000000001;
-  public static final int MAGIC_COOKIE = 0x2112A442;
   
   private byte[] headerBytes;
   private MessageClass messageClass;
@@ -83,10 +82,10 @@ public class StunHeader {
     headerBytes[3] = lowerMessageLength;
     
     // set next 4 bytes to the magic cookie by shifting and truncating
-    headerBytes[4] = (byte) (MAGIC_COOKIE >>> 3*8);
-    headerBytes[5] = (byte) (MAGIC_COOKIE >>> 2*8);
-    headerBytes[6] = (byte) (MAGIC_COOKIE >>> 1*8);
-    headerBytes[7] = (byte) (MAGIC_COOKIE);
+    headerBytes[4] = MagicCookie.getByte(3);
+    headerBytes[5] = MagicCookie.getByte(2);
+    headerBytes[6] = MagicCookie.getByte(1);
+    headerBytes[7] = MagicCookie.getByte(0);
     
     // use built-in method to convert hex string to byte array to set next 24 bytes (96 bits) at indices 8-32
     
@@ -112,9 +111,9 @@ public class StunHeader {
   
   private static void verifyMagicCookie(byte[] header) throws StunParseException {
     int magicCookie = getMagicCookie(header);
-    if (magicCookie != MAGIC_COOKIE) {
+    if (magicCookie != MagicCookie.VALUE) {
       throw new StunParseException("magic cookie must be " 
-        + Integer.toHexString(MAGIC_COOKIE) + " but was " + Integer.toHexString(magicCookie) );
+        + Integer.toHexString(MagicCookie.VALUE) + " but was " + Integer.toHexString(magicCookie) );
     }
   }
 

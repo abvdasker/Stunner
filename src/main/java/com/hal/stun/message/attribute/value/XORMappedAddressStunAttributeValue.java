@@ -2,6 +2,7 @@ package com.hal.stun.message.attribute.value;
 
 import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.StunParseException;
+import com.hal.stun.message.StunHeader;
 
 import java.util.Arrays;
 import java.net.InetAddress;
@@ -14,12 +15,12 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
   public XORMappedAddressStunAttributeValue(byte[] value) throws StunParseException {
     super(value);
   }
-  
+
   // TODO: need to pass in transaction ID for XOR operation
   public XORMappedAddressStunAttributeValue(InetSocketAddress address, byte[] transactionID) throws StunParseException {
     super(generateFrom(address, transactionID));
   }
-  
+
   private static byte[] generateFrom(InetSocketAddress address, byte[] transactionID) {
     InetAddress baseAddress = address.getAddress();
     byte[] addressBytes = baseAddress.getAddress();
@@ -56,6 +57,9 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
   }
 
   private static short generateXPort(int port) {
+    byte lowerByte = (byte) (port);
+    byte upperByte = (byte) (port >>> 8);
+
     return (short) 0;
   }
 

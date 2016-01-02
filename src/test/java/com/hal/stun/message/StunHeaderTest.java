@@ -76,7 +76,7 @@ public class StunHeaderTest {
   public void testVerifyInvalidMagicCookie()
       throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
-    int magicCookie = StunHeader.MAGIC_COOKIE;
+    int magicCookie = MagicCookie.VALUE;
     addValidMagicCookie(headerBytes);
     headerBytes[7] = (byte) ((magicCookie & MASK) + 1);
 
@@ -120,7 +120,7 @@ public class StunHeaderTest {
   }
 
   private static byte[] addValidMagicCookie(byte[] headerBytes) {
-    int magicCookie = StunHeader.MAGIC_COOKIE;
+    int magicCookie = MagicCookie.VALUE;
     headerBytes[4] = (byte) ((magicCookie >>> 3*8) & MASK);
     headerBytes[5] = (byte) ((magicCookie >>> 2*8) & MASK);
     headerBytes[6] = (byte) ((magicCookie >>> 1*8) & MASK);
