@@ -26,7 +26,8 @@ public class MagicCookieTest {
                         expected, actual);
   }
 
-  public void testGetBytes() {
+  @Test
+  public void testGetBytesBigEndian() {
     byte[] expectedBytes = {
       (byte) 0x21,
       (byte) 0x12,
@@ -34,7 +35,7 @@ public class MagicCookieTest {
       (byte) 0x42
     };
 
-    byte[] actualBytes = MagicCookie.getBytes();
+    byte[] actualBytes = MagicCookie.getBytesBigEndian();
 
     Assert.assertArrayEquals("returns whole magic cookie as byte array",
                              expectedBytes, actualBytes);

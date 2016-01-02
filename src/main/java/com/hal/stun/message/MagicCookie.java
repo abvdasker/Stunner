@@ -16,11 +16,12 @@ public final class MagicCookie {
     return magicCookieByte;
   }
 
-  public static byte[] getBytes() {
+  public static byte[] getBytesBigEndian() {
     byte[] cookieBytes = new byte[4];
 
     for (int i = 0; i < cookieBytes.length; i++) {
-      cookieBytes[i] = getByte(i);
+      int bigEndianIndex = (cookieBytes.length - 1) - i;
+      cookieBytes[bigEndianIndex] = getByte(i);
     }
 
     return cookieBytes;

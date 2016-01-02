@@ -64,6 +64,12 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
   }
 
   private static byte[] generateIPV4XAddress(byte[] address) {
+    /*byte[] magicCookieBytes = MagicCookie.getBytes;
+
+    byte[] xAddress = new byte[address.length];
+    for (int i = 0; i < xAddress.length; i++) {
+      
+    }*/
     return new byte[0];
   }
 
