@@ -28,33 +28,22 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
 
     short xPort = generateXPort(address.getPort());
     byte family;
+    byte[] xAddress;
     if (addressBytes.length == IPV4_ATTRIBUTE_SIZE) {
-      family = generateIPv4Family();
+      family = IPV4_FAMILY_CODE;
+      xAddress = generateIPV4XAddress(addressBytes);
     } else if (addressBytes.length == IPV6_ATTRIBUTE_SIZE) {
-      family = generateIPv6Family(transactionID);
+      family = IPV6_FAMILY_CODE;
+      xAddress = generateIPV6XAddress(addressBytes, transactionID);
     } else {
       throw new RuntimeException();
     }
-
-    byte[] xAddress = generateXAddress(addressBytes, transactionID);
 
     return new byte[0];
   }
 
   private static byte[] combineXORMappedAddressComponents(byte family, short xPort, byte[] xAddress) {
     return null;
-  }
-
-  private static byte generateFamily() {
-    return (byte) 0;
-  }
-
-  private static byte generateIPv4Family() {
-    return (byte) 0;
-  }
-
-  private static byte generateIPv6Family(byte[] transactionID) {
-    return (byte) 0;
   }
 
   private static short generateXPort(int port) {
@@ -75,7 +64,11 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
     return xPort;
   }
 
-  private static byte[] generateXAddress(byte[] addressBytes, byte[] transactionID) {
+  private static byte[] generateIPV4XAddress(byte[] address) {
+    return new byte[0];
+  }
+
+  private static byte[] generateIPV6XAddress(byte[] address, byte[] transactionID) {
     return new byte[0];
   }
 }
