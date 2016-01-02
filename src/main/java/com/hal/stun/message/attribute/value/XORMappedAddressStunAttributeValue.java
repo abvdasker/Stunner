@@ -23,9 +23,9 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
   private static byte[] generateFrom(InetSocketAddress address, byte[] transactionID) {
     InetAddress baseAddress = address.getAddress();
     byte[] addressBytes = baseAddress.getAddress();
-    byte family = generateFamily();
-    short xPort = generateXPort();
 
+    short xPort = generateXPort(address.getPort());
+    byte family;
     if (addressBytes.length == IPV4_ATTRIBUTE_SIZE) {
       family = generateIPv4Family();
     } else if (addressBytes.length == IPV6_ATTRIBUTE_SIZE) {
@@ -55,7 +55,7 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
     return (byte) 0;
   }
 
-  private static short generateXPort() {
+  private static short generateXPort(int port) {
     return (short) 0;
   }
 

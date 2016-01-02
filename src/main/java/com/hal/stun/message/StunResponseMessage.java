@@ -1,5 +1,6 @@
 package com.hal.stun.message;
 
+import com.hal.stun.message.attribute.AttributeType;
 import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 
@@ -25,7 +26,11 @@ public class StunResponseMessage extends StunMessage {
     StunHeader header = request.getHeader();
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     if (header.getMessageMethod() == StunHeader.BINDING_METHOD) {
-      XORMappedAddressStunAttributeValue mappedAddress = new XORMappedAddressStunAttributeValue(request.getAddress(), header.getTransactionID());
+      XORMappedAddressStunAttributeValue xORMappedAddress = new XORMappedAddressStunAttributeValue(request.getAddress(), header.getTransactionID());
+
+      byte[] attributeValueBytes = xORMappedAddress.getBytes();
+      StunAttribute attribute = new StunAttribute(AttributeType.XOR_MAPPED_ADDRESS, attributeValueBytes.length, attributeValueBytes);
+      attributes.add(attribute);
       // convert to hex
       // build stun attribute
       // add new attribute to list

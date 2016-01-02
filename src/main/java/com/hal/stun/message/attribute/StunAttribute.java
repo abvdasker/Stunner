@@ -15,13 +15,13 @@ public class StunAttribute {
   private AttributeType attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the size of this attribute's value in bytes
   private StunAttributeValue attributeValue;
-  protected StunAttribute(AttributeType attributeType, int length, byte[] value) throws StunParseException {
+  public StunAttribute(AttributeType attributeType, int length, byte[] value) throws StunParseException {
     this.attributeType = attributeType;
     this.length = length;
     this.attributeValue = attributeType.buildAttributeValue(value);
     verifyValueLength(value);
   }
-  
+
   private void verifyValueLength(byte[] value) throws StunParseException {
     if (value.length != length) {
       String valueHex = StunMessageUtils.convertByteArrayToHex(value);
@@ -29,7 +29,7 @@ public class StunAttribute {
         + " bytes, but the attribute length specified is " + length);
     }
   }
-  
+
   public byte[] toByteArray() {
     byte[] typeBytes = new byte[2];
     byte[] lengthBytes = new byte[2];
