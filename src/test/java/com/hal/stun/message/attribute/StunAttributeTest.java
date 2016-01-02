@@ -12,23 +12,27 @@ public class StunAttributeTest {
   
   @Test
   public void testInitializeStunAttribute() throws Exception {
-    new StunAttribute(AttributeType.MAPPED_ADDRESS, 8, ATTRIBUTE_VALUE_HEX);
+    new StunAttribute(AttributeType.MAPPED_ADDRESS, 8, attributeValue());
   }
 
   @Test(expected = StunParseException.class)
   public void testInitializeStunAttributeSizeMismatch() throws StunParseException, Exception {
-    new StunAttribute(AttributeType.MAPPED_ADDRESS, 7, ATTRIBUTE_VALUE_HEX);
+    new StunAttribute(AttributeType.MAPPED_ADDRESS, 7, attributeValue());
   }
 
   @Test
   public void testToByteArray() throws Exception {
     int expectedLength = 8 + 4;
-    StunAttribute attribute = new StunAttribute(AttributeType.MAPPED_ADDRESS, expectedLength - 4, ATTRIBUTE_VALUE_HEX);
+    StunAttribute attribute = new StunAttribute(AttributeType.MAPPED_ADDRESS, expectedLength - 4, attributeValue());
     byte[] attributeBytes = attribute.toByteArray();
     Assert.assertEquals(expectedLength, attributeBytes.length);
     String expectedAttributeHex = "00010008" + ATTRIBUTE_VALUE_HEX;
     byte[] expectedAttributeBytes = StunMessageUtils.convertHexToByteArray(expectedAttributeHex);
     Assert.assertArrayEquals(expectedAttributeBytes, attributeBytes);
+  }
+
+  private byte[] attributeValue() {
+    return StunMessageUtils.convertHexToByteArray(ATTRIBUTE_VALUE_HEX);
   }
   
 }

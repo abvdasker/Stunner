@@ -30,8 +30,8 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   private short port;
   private InetAddress address;
   
-  public MappedAddressStunAttributeValue(String valueHex) throws StunParseException {
-    super(valueHex);
+  public MappedAddressStunAttributeValue(byte[] value) throws StunParseException {
+    super(value);
   }
 
   public MappedAddressStunAttributeValue() throws StunParseException {
@@ -51,10 +51,10 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   }
 
   protected void parseValueBytes() throws StunParseException {
-    addressFamily = valueBytes[1];
+    addressFamily = value[1];
     port = parsePort();
 
-    byte[] addressBytes = Arrays.copyOfRange(valueBytes, 4, valueBytes.length);
+    byte[] addressBytes = Arrays.copyOfRange(value, 4, value.length);
     try {
       address = InetAddress.getByAddress(addressBytes);
     } catch (UnknownHostException exception) {
@@ -64,38 +64,26 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   
   private short parsePort() {
     short thisPort = 0;
-    thisPort = valueBytes[2];
+    thisPort = value[2];
     thisPort <<= 8;
-    thisPort |= (valueBytes[3] & StunMessageUtils.MASK);
+    thisPort |= (value[3] & StunMessageUtils.MASK);
     return thisPort;
-  }
-  
-  private String parseAddressHex() throws StunParseException {
-    if (addressFamily == IPV4_FAMILY_CODE) {
-      // extract 4 bytes for IPv4 address
-      return StunMessageUtils.extractByteSequenceAsHex(valueBytes, 4, 4, true);
-    } else if (addressFamily == IPV6_FAMILY_CODE) {
-      // extract 16 bytes for IPv6 address
-      return StunMessageUtils.extractByteSequenceAsHex(valueBytes, 4, 16, true);
-    } else {
-      throw new StunParseException("invalid address Family: " + addressFamily);
-    }
   }
   
   private void printBytes() {
     System.out.println("attribute contents");
-    for (int i = 0; i < valueBytes.length; i++) {
-      System.out.println(i + ": " + (valueBytes[i] & StunMessageUtils.MASK));
+    for (int i = 0; i < value.length; i++) {
+      System.out.println(i + ": " + (value[i] & StunMessageUtils.MASK));
     }
   }
   
   protected boolean isValid() {
-    if (valueBytes[0] != 0) {
+    if (value[0] != 0) {
       return false;
     }
-    if (addressFamily == IPV4_FAMILY_CODE && valueBytes.length == IPV4_ATTRIBUTE_SIZE) {
+    if (addressFamily == IPV4_FAMILY_CODE && value.length == IPV4_ATTRIBUTE_SIZE) {
       return true;
-    } else if (addressFamily == IPV6_FAMILY_CODE && valueBytes.length == IPV6_ATTRIBUTE_SIZE) {
+    } else if (addressFamily == IPV6_FAMILY_CODE && value.length == IPV6_ATTRIBUTE_SIZE) {
       return true;
     }
     

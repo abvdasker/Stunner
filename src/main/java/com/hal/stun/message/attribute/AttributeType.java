@@ -27,11 +27,11 @@ public enum AttributeType {
     return type;
   }
   
-  public StunAttributeValue buildAttributeValue(String valueHex)
+  public StunAttributeValue buildAttributeValue(byte[] value)
       throws StunParseException {
     try {
-      Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(String.class);
-      return constructor.newInstance(valueHex);
+      Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(byte[].class);
+      return constructor.newInstance(value);
     } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
       throw new RuntimeException("could not instantiate class", exception);
     } catch (InvocationTargetException exception) {

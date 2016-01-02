@@ -6,6 +6,7 @@ import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.value.MappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -14,17 +15,17 @@ public class StunAttribute {
   private AttributeType attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the size of this attribute's value in bytes
   private StunAttributeValue attributeValue;
-  protected StunAttribute(AttributeType attributeType, int length, String valueHex) throws StunParseException {
+  protected StunAttribute(AttributeType attributeType, int length, byte[] value) throws StunParseException {
     this.attributeType = attributeType;
     this.length = length;
-    this.attributeValue = attributeType.buildAttributeValue(valueHex);
-    verifyValueLength(valueHex);
+    this.attributeValue = attributeType.buildAttributeValue(value);
+    verifyValueLength(value);
   }
   
-  private void verifyValueLength(String valueHex) throws StunParseException {
-    int hexStringLength = valueHex.length()/2; // each hex char encodes 4 bits
-    if (hexStringLength != length) {
-      throw new StunParseException("attribute valueHex " + valueHex + " is " + hexStringLength 
+  private void verifyValueLength(byte[] value) throws StunParseException {
+    if (value.length != length) {
+      String valueHex = StunMessageUtils.convertByteArrayToHex(value);
+      throw new StunParseException("attribute valueHex " + valueHex + " is " + value.length 
         + " bytes, but the attribute length specified is " + length);
     }
   }
@@ -56,13 +57,8 @@ public class StunAttribute {
     return length;
   }
 
-  public String getValueHex() {
-    return attributeValue.getHexValue();
-  }
-
   public byte[] getValueBytes() {
-    String attributeValueHex = getValueHex();
-    return StunMessageUtils.convertHexToByteArray(attributeValueHex);
+    return attributeValue.getBytes();
   }
 
   public StunAttributeValue getValue() {
@@ -81,11 +77,13 @@ public class StunAttribute {
       paddedLength = length;
       
       // round up to nearest multiple of 4
-      int modValue = paddedLength%4;
+      int modValue = paddedLength % 4;
       if (modValue > 0) {
         paddedLength += (4 - modValue);
       }
-      String valueHex = StunMessageUtils.extractByteSequenceAsHex(attributesBytes, offset + 4, paddedLength, true);
+      int arrayStart = offset + 4;
+      int arrayEnd = arrayStart + paddedLength;
+      byte[] value = Arrays.copyOfRange(attributesBytes, arrayStart, arrayEnd);
       
       AttributeType type;
       try {
@@ -94,7 +92,7 @@ public class StunAttribute {
         // TODO: implement error handling to add unrecognized attribute to response.
         throw new RuntimeException(exception);
       }
-      attributes.add(new StunAttribute(type, length, valueHex));
+      attributes.add(new StunAttribute(type, length, value));
       offset += paddedLength;
     }
     

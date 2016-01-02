@@ -5,8 +5,8 @@ import com.hal.stun.message.StunParseException;
 public class FingerprintStunAttributeValue extends StunAttributeValue {
 
   // TODO: implement
-  public FingerprintStunAttributeValue(String valueHex) throws StunParseException {
-    super(valueHex);
+  public FingerprintStunAttributeValue(byte[] value) throws StunParseException {
+    super(value);
   }
 
   public boolean isValid() {

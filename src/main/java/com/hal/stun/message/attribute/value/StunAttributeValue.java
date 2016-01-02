@@ -5,23 +5,22 @@ import com.hal.stun.message.StunParseException;
 
 public abstract class StunAttributeValue {
   
-  private String attributeValueHex;
-  protected byte[] valueBytes;
-  public StunAttributeValue(String attributeValueHex) throws StunParseException {
-    this.attributeValueHex = attributeValueHex;
-    this.valueBytes = StunMessageUtils.convertHexToByteArray(attributeValueHex);
+  protected byte[] value;
+  public StunAttributeValue(byte[] value) throws StunParseException {
+    this.value = value;
     parseValueBytes();
     validate();
   }
   
-  public String getHexValue() {
-    return attributeValueHex;
-  }
-  
   private void validate() throws StunParseException {
     if (!isValid()) {
+      String attributeValueHex = StunMessageUtils.convertByteArrayToHex(value);
       throw new StunParseException("could not parse attribute value " + attributeValueHex);
     }
+  }
+
+  public byte[] getBytes() {
+    return value;
   }
   
   protected abstract void parseValueBytes() throws StunParseException;
