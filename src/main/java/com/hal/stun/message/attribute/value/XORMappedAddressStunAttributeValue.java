@@ -3,6 +3,7 @@ package com.hal.stun.message.attribute.value;
 import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.StunHeader;
+import com.hal.stun.message.MagicCookie;
 
 import java.util.Arrays;
 import java.net.InetAddress;
@@ -60,7 +61,18 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
     byte lowerByte = (byte) (port);
     byte upperByte = (byte) (port >>> 8);
 
-    return (short) 0;
+    short magicCookieTopBytes = MagicCookie.getTopTwoBytes();
+    byte magicCookieTopByte = (byte) ((magicCookieTopBytes >>> 8) & StunMessageUtils.MASK);
+    byte magicCookieSecondTopByte = (byte) (magicCookieTopBytes);
+
+    byte xoredUpperByte = (byte) ((upperByte ^ magicCookieTopByte) & StunMessageUtils.MASK);
+    byte xoredLowerByte = (byte) ((lowerByte ^ magicCookieSecondTopByte) & StunMessageUtils.MASK);
+
+    short xPort = (short) (xoredUpperByte & StunMessageUtils.MASK);
+    xPort <<= 8;
+    xPort |= (short) (xoredLowerByte & StunMessageUtils.MASK);
+
+    return xPort;
   }
 
   private static byte[] generateXAddress(byte[] addressBytes, byte[] transactionID) {
