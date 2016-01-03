@@ -28,21 +28,37 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
     short xPort = generateXPort(address.getPort());
     byte family;
     byte[] xAddress;
+    byte[] value;
     if (addressBytes.length == IPV4_ATTRIBUTE_SIZE) {
       family = IPV4_FAMILY_CODE;
       xAddress = generateIPV4XAddress(addressBytes);
+      value = new byte[IPV4_ATTRIBUTE_SIZE];
     } else if (addressBytes.length == IPV6_ATTRIBUTE_SIZE) {
       family = IPV6_FAMILY_CODE;
       xAddress = generateIPV6XAddress(addressBytes, transactionID);
+      value = new byte[IPV6_ATTRIBUTE_SIZE];
     } else {
-      throw new RuntimeException();
+      throw new RuntimeException(
+                                 "address is not the right size. It was " + addressBytes.length +
+                                 " bytes. XOR Mapped Address attributes must be either " +
+                                 IPV4_ATTRIBUTE_SIZE + " or " + IPV6_ATTRIBUTE_SIZE + " bytes.");
     }
 
-    return new byte[0];
+    combineXORMappedAddressComponents(value, family, xPort, xAddress);
+
+    return value;
   }
 
-  private static byte[] combineXORMappedAddressComponents(byte family, short xPort, byte[] xAddress) {
-    return null;
+  private static void combineXORMappedAddressComponents(byte[] combined, byte family, short xPort, byte[] xAddress) {
+    combined[1] = family;
+    combined[2] = unsignByte(xPort >>> 8);
+    combined[3] = (byte) xPort;
+
+    System.arraycopy(xAddress,
+                     0,
+                     combined,
+                     4,
+                     xAddress.length);
   }
 
   private static short generateXPort(int port) {
