@@ -23,8 +23,13 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   protected static final byte IPV4_FAMILY_CODE = (byte) 0x01;
   protected static final byte IPV6_FAMILY_CODE = (byte) 0x02;
 
-  protected static final int IPV4_ATTRIBUTE_SIZE = 8;
-  protected static final int IPV6_ATTRIBUTE_SIZE = 20;
+  protected static final int ATTRIBUTE_METADATA_SIZE = 4;
+
+  protected static final int IPV4_ADDRESS_SIZE = 4;
+  protected static final int IPV6_ADDRESS_SIZE = 16;
+
+  protected static final int IPV4_ATTRIBUTE_SIZE = ATTRIBUTE_METADATA_SIZE + IPV4_ADDRESS_SIZE;
+  protected static final int IPV6_ATTRIBUTE_SIZE = ATTRIBUTE_METADATA_SIZE + IPV6_ADDRESS_SIZE;
   
   private byte addressFamily;
   private short port;

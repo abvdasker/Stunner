@@ -29,11 +29,11 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
     byte family;
     byte[] xAddress;
     byte[] value;
-    if (addressBytes.length == IPV4_ATTRIBUTE_SIZE) {
+    if (addressBytes.length == IPV4_ADDRESS_SIZE) {
       family = IPV4_FAMILY_CODE;
       xAddress = generateIPV4XAddress(addressBytes);
       value = new byte[IPV4_ATTRIBUTE_SIZE];
-    } else if (addressBytes.length == IPV6_ATTRIBUTE_SIZE) {
+    } else if (addressBytes.length == IPV6_ADDRESS_SIZE) {
       family = IPV6_FAMILY_CODE;
       xAddress = generateIPV6XAddress(addressBytes, transactionID);
       value = new byte[IPV6_ATTRIBUTE_SIZE];
@@ -41,7 +41,7 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
       throw new RuntimeException(
                                  "address is not the right size. It was " + addressBytes.length +
                                  " bytes. XOR Mapped Address attributes must be either " +
-                                 IPV4_ATTRIBUTE_SIZE + " or " + IPV6_ATTRIBUTE_SIZE + " bytes.");
+                                 IPV4_ADDRESS_SIZE + " or " + IPV6_ADDRESS_SIZE + " bytes.");
     }
 
     combineXORMappedAddressComponents(value, family, xPort, xAddress);
