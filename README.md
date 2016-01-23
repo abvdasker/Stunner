@@ -4,8 +4,8 @@ This is an incomplete STUN server implementation aiming for compliance with with
 
 Roadmap
 ---
-1. [ ] Data modeling, request/response business logic
-2. [ ] UDP Support
+1. [x] Data modeling, request/response business logic
+2. [x] UDP Support
 3. [ ] TCP support
 4. [ ] Integration testing with [RFC 5769](https://tools.ietf.org/html/rfc5769) test vectors & simple client
 
