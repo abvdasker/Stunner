@@ -1,3 +1,6 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/4e851a87f23945f8b1b697367f06b619)](https://www.codacy.com/app/hal-c-rogers/Stunner)
+[![Circle CI](https://circleci.com/gh/abvdasker/Stunner.svg?style=shield)](https://circleci.com/gh/abvdasker/Stunner)
+
 Stunner
 ===
 This is an incomplete STUN server implementation aiming for compliance with with [RFC 5389](https://tools.ietf.org/html/rfc5389). Currently supports only UDP but will also support TCP when finished. TLS support likely will not be provided (this can probably be achieved using a reverse proxy). A release after 1.0 may support [RFC 5780](https://tools.ietf.org/html/rfc5780).
