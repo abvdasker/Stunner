@@ -18,8 +18,6 @@ import java.io.IOException;
 
 public class StunServer {
 
-  private static final int PORT_NUMBER = 8000;
-  private static final int MAX_BUFFER_BYTES = 7000; // probably too large
   private static final Logger log = new Logger();
 
   public static void main(String[] args) throws IOException, Exception {
