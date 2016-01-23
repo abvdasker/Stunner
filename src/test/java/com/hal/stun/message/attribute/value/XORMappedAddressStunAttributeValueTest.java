@@ -1,6 +1,5 @@
 package com.hal.stun.message.attribute.value;
 
-import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.StunMessageTestData;
 
 import org.junit.Test;

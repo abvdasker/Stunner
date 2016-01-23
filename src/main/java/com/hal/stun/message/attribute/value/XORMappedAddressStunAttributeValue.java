@@ -2,13 +2,10 @@ package com.hal.stun.message.attribute.value;
 
 import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.StunParseException;
-import com.hal.stun.message.StunHeader;
 import com.hal.stun.message.MagicCookie;
 
-import java.util.Arrays;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 
 public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttributeValue {
 
