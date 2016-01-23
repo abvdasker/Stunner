@@ -1,3 +1,36 @@
 Stunner
 ===
-Eventually a Stun server implemented in Java with no dependencies.
+This is an incomplete STUN server implementation aiming for compliance with with [RFC 5389](https://tools.ietf.org/html/rfc5389). Currently supports only UDP but will also support TCP when finished. TLS support likely will not be provided (this can probably be achieved using a reverse proxy). A release after 1.0 may support [RFC 5780](https://tools.ietf.org/html/rfc5780).
+
+Roadmap
+---
+1. [ ] Data modeling, request/response business logic
+2. [ ] UDP Support
+3. [ ] TCP support
+4. [ ] Integration testing with [RFC 5769](https://tools.ietf.org/html/rfc5769) test vectors & simple client
+
+Building
+---
+This project was designed to require no dependencies beyond the Java standard libraries.
+
+<h3>JDK >= 6</h3>
+<pre>
+$ git clone https://github.com/abvdasker/Stunner
+$ cd Stunner
+$ ./buid.sh
+</pre>
+<h3>Ant</h3>
+Building with Ant will allow you to run the test suite as part of the build process.
+<pre>
+$ git clone https://github.com/abvdasker/Stunner
+$ cd Stunner
+$ ant build (with tests)
+</pre>
+OR
+<pre>
+$ ant dist (without tests)
+</pre>
+
+Running
+---
+<pre>$ java -jar Stunner.jar</pre>
