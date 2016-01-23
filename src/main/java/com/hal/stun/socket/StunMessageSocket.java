@@ -1,23 +1,26 @@
 package com.hal.stun.socket;
 
+import java.io.IOException;
+
 public abstract class StunMessageSocket {
 
   private static final int DEFAULT_PORT = 3478;
 
   protected final int port;
 
-  public StunListener(int port) {
+  public StunMessageSocket(int port) throws IOException {
     this.port = port;
     setupSocket();
   }
 
-  public StunListener() {
+  public StunMessageSocket() throws IOException {
     this.port = DEFAULT_PORT;
+    setupSocket();
   }
 
-  private abstract void setupSocket();
+  protected abstract void setupSocket() throws IOException;
 
-  private abstract NetworkMessage listen();
+  public abstract NetworkMessage listen() throws IOException;
 
-  private abstract boolean transmit(NetworkMessage message);
+  public abstract boolean transmit(NetworkMessage message) throws IOException;
 }

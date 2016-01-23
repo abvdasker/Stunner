@@ -3,19 +3,29 @@ package com.hal.stun.socket;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.InetSocketAddres;
+import java.net.InetSocketAddress;
+
+import java.io.IOException;
 
 public class UDPStunMessageSocket extends StunMessageSocket {
 
   private static final int MAX_PACKET_SIZE_BYTES = 1280; // MTU 
 
-  private final DatagramSocket socket;
+  private DatagramSocket socket;
 
-  private void setupSocket() {
+  public UDPStunMessageSocket() throws IOException {
+    super();
+  }
+
+  public UDPStunMessageSocket(int port) throws IOException {
+    super(port);
+  }
+
+  protected void setupSocket() throws IOException {
     socket = new DatagramSocket(port);
   }
 
-  private NetworkMessage listen() {
+  public NetworkMessage listen() throws IOException {
     byte[] packetWrapper = new byte[MAX_PACKET_SIZE_BYTES];
     DatagramPacket packet = new DatagramPacket(packetWrapper, packetWrapper.length);
 
@@ -30,9 +40,9 @@ public class UDPStunMessageSocket extends StunMessageSocket {
     return new NetworkMessage(socketAddress, requestData);
   }
 
-  private boolean transmit(NetworkMessage message) {
+  public boolean transmit(NetworkMessage message) throws IOException {
     byte[] messageData = message.getData();
-    DatagramPacket packet = new DatagramPacket(message.getData(), message.getAddress(), message.getPort());
+    DatagramPacket packet = new DatagramPacket(messageData, messageData.length, message.getAddress(), message.getPort());
     socket.send(packet);
     return true;
   }

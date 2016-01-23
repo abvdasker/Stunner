@@ -1,19 +1,22 @@
 package com.hal.stun.socket;
 
 import java.net.InetSocketAddress;
+import java.net.InetAddress;
 
-public NetworkMessage {
+import java.io.IOException;
+
+public class NetworkMessage {
 
   private final byte[] data;
   private final InetSocketAddress socketAddress;
 
-  public NetworkRequest(InetSocketAddress socketAddress, byte[] data) {
+  public NetworkMessage(InetSocketAddress socketAddress, byte[] data) {
     this.data = data;
     this.socketAddress = socketAddress;
   }
 
   public byte[] getData() {
-    return requestData;
+    return data;
   }
 
   public InetSocketAddress getSocketAddress() {
