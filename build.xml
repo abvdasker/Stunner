@@ -7,9 +7,21 @@
   <property name="ivy.install.version" value="2.4.0" />
   <property name="ivy.jar.dir" value="${basedir}/ivy" />
   <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy-${ivy.install.version}.jar" />
-  
-  <target name="download-ivy" unless="skip.download" description="download ivy">
+
+  <target name="check-ivy">
     <mkdir dir="${ivy.jar.dir}" />
+    <pathconvert property="ivy-exists" setonempty="false" pathsep=" ">
+      <path>
+        <fileset dir="${ivy.jar.dir}" includes="ivy-2.*" />
+      </path>
+    </pathconvert>
+  </target>
+
+  <target name="dont-download-ivy" depends="check-ivy" if="ivy-exists" description="log ivy not downloaded">
+    <echo>Ivy not downloaded, already exists</echo>
+  </target>
+  
+  <target name="download-ivy" depends="dont-download-ivy" unless="ivy-exists" description="download ivy">
     <echo message="downloading ivy..." />
     <get src="http://central.maven.org/maven2/org/apache/ivy/ivy/2.4.0/ivy-2.4.0.jar" dest="${ivy.jar.file}" usetimestamp="true" />
   </target>
@@ -19,7 +31,7 @@
       <fileset file="${ivy.jar.file}" />
     </path>
     <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
-  </target>  
+  </target>
 
   <!-- build project -->
 
@@ -41,16 +53,18 @@
   </target>
 
   <target name="resolve" depends="install-ivy" description="retrieve dependencies with ivy">
-    <ivy:retrieve conf="test" pattern="${build}/lib/[conf]/[artifact](-[classifier]).[ext]"/>
-
     <ivy:cachepath pathid="test.path" conf="test" />
   </target>
+
+  <target name="download-junit" depends="install-ivy" description="downloads junit">
+    <ivy:retrieve conf="test" pattern="${build}/lib/[conf]/[artifact](-[classifier]).[ext]"/>
+  </target>
   
-  <target name="compile" depends="init, resolve" description="compile the source">
+  <target name="compile" depends="init" description="compile the source">
     <javac srcdir="${src.main}" destdir="${build.main}" debug="true" debuglevel="lines,vars,source" />
   </target>
 
-  <target name="compile-tests" depends="compile" description="compile tests">
+  <target name="compile-tests" depends="resolve, download-junit, compile" description="compile tests">
     <echo>test path: ${toString:test.path}</echo>
     <echo>main classes path: "${build.main}"</echo>
     <echo>test classes path: "${build.test}"</echo>
@@ -61,12 +75,15 @@
         <pathelement path="${build.main}" />
       </classpath>
     </javac>
-
   </target>
 
-  <target name="test" depends="compile-tests" description="Run unit tests" >
+  <target name="test" depends="compile-tests" description="Downloads and compiles everything, then runs tests" >
+    <antcall target="only-test" />
+  </target>
+
+  <target name="only-test" depends="resolve" description="Runs tests. Will fail unless tests have already been compiled">
     <mkdir dir="${test.reports}" />
-    
+
     <junit printsummary="true" haltonerror="true" haltonfailure="true" showoutput="true">
       <classpath>
         <path refid="test.path" />
@@ -81,7 +98,6 @@
         </fileset>
       </batchtest>
     </junit>
-
   </target>
 
   <target name="dist" depends="compile" description="generate the distribution">
