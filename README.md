@@ -24,11 +24,11 @@ Building with Ant will allow you to run the test suite as part of the build proc
 <pre>
 $ git clone https://github.com/abvdasker/Stunner
 $ cd Stunner
-$ ant build (with tests)
+$ ant build
 </pre>
-OR
+OR, without tests:
 <pre>
-$ ant dist (without tests)
+$ ant dist
 </pre>
 
 Running
