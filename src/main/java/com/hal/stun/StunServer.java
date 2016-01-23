@@ -22,7 +22,7 @@ public class StunServer {
   
   public static void main(String[] args) throws IOException, Exception {
     
-    Listener listener = new Listener(PORT_NUMBER);
+    StunSocket udpSocket = new UDPSocket();
     StunApplication application = new StunApplication();
     
     /**
@@ -33,7 +33,7 @@ public class StunServer {
       */
 
     while (true) {
-      InputStream in = listener.listen(); 
+      InputStream in = udpSocket.listen(); 
       byte[] requestBytes = getRequestBytes(in);
       log.print(requestBytes.length + " bytes received");
       InetSocketAddress address = (InetSocketAddress) listener.getRequestAddress();
