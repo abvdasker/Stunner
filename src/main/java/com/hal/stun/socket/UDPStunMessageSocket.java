@@ -25,7 +25,7 @@ public class UDPStunMessageSocket extends StunMessageSocket {
     socket = new DatagramSocket(port);
   }
 
-  protected boolean handle(StunHandler handler) throws IOException {
+  public boolean handle(StunHandler handler) throws IOException {
     NetworkMessage request = listen();
     NetworkMessage response = handler.handle(request);
     transmit(response);

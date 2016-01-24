@@ -29,5 +29,5 @@ public abstract class StunMessageSocket {
    * 3. yields to callback which returns the response data
    * 4. transmits the response data to the client
    */
-  protected abstract boolean handle(StunHandler handler) throws IOException;
+  public abstract boolean handle(StunHandler handler) throws IOException;
 }
