@@ -25,7 +25,14 @@ public class UDPStunMessageSocket extends StunMessageSocket {
     socket = new DatagramSocket(port);
   }
 
-  public NetworkMessage listen() throws IOException {
+  protected boolean handle(StunHandler handler) throws IOException {
+    NetworkMessage request = listen();
+    NetworkMessage response = handler.handle(request);
+    transmit(response);
+    return true;
+  }
+
+  private NetworkMessage listen() throws IOException {
     byte[] packetWrapper = new byte[MAX_PACKET_SIZE_BYTES];
     DatagramPacket packet = new DatagramPacket(packetWrapper, packetWrapper.length);
 
@@ -40,7 +47,7 @@ public class UDPStunMessageSocket extends StunMessageSocket {
     return new NetworkMessage(socketAddress, requestData);
   }
 
-  public boolean transmit(NetworkMessage message) throws IOException {
+  private boolean transmit(NetworkMessage message) throws IOException {
     byte[] messageData = message.getData();
     DatagramPacket packet = new DatagramPacket(messageData, messageData.length, message.getAddress(), message.getPort());
     socket.send(packet);

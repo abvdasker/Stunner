@@ -25,14 +25,16 @@ public class StunServer {
       */
     
     while (true) {
-      NetworkMessage request = udpSocket.listen();
-      byte[] requestBytes = request.getData();
-      InetSocketAddress clientSocketAddress = request.getSocketAddress();
-      log.print(requestBytes.length + " bytes received");
+      udpSocket.handle(new StunHandler() {
+        public NetworkMessage handle(NetworkMessage request) {
+          byte[] requestBytes = request.getData();
+          InetSocketAddress clientSocketAddress = request.getSocketAddress();
+          log.print(requestBytes.length + " bytes received");
 
-      byte[] responseData = application.handle(requestBytes, clientSocketAddress);
-      NetworkMessage response = new NetworkMessage(clientSocketAddress, responseData);
-      udpSocket.transmit(response);
+          byte[] responseData = application.handle(requestBytes, clientSocketAddress);
+          return new NetworkMessage(clientSocketAddress, responseData);
+        }
+      });
     }
 
   }  

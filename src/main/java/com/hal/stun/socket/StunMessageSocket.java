@@ -20,7 +20,14 @@ public abstract class StunMessageSocket {
 
   protected abstract void setupSocket() throws IOException;
 
-  public abstract NetworkMessage listen() throws IOException;
-
-  public abstract boolean transmit(NetworkMessage message) throws IOException;
+  /* 
+   * UDP does not need to maintain connection between listen and transmit but TCP does...
+   * 
+   * Need a method which:
+   * 1. connects, 
+   * 2. receives a message, 
+   * 3. yields to callback which returns the response data
+   * 4. transmits the response data to the client
+   */
+  protected abstract boolean handle(StunHandler handler) throws IOException;
 }
