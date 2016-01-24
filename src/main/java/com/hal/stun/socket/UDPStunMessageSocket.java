@@ -9,8 +9,6 @@ import java.io.IOException;
 
 public class UDPStunMessageSocket extends StunMessageSocket {
 
-  private static final int MAX_PACKET_SIZE_BYTES = 1280; // MTU 
-
   private DatagramSocket socket;
 
   public UDPStunMessageSocket() throws IOException {
@@ -25,11 +23,10 @@ public class UDPStunMessageSocket extends StunMessageSocket {
     socket = new DatagramSocket(port);
   }
 
-  public boolean handle(StunHandler handler) throws IOException {
+  public void handle(StunHandler handler) throws IOException {
     NetworkMessage request = listen();
     NetworkMessage response = handler.handle(request);
     transmit(response);
-    return true;
   }
 
   private NetworkMessage listen() throws IOException {

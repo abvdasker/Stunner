@@ -5,6 +5,7 @@ import java.io.IOException;
 public abstract class StunMessageSocket {
 
   private static final int DEFAULT_PORT = 3478;
+  protected static final int MAX_PACKET_SIZE_BYTES = 1280; // MTU 
 
   protected final int port;
 
@@ -29,5 +30,5 @@ public abstract class StunMessageSocket {
    * 3. yields to callback which returns the response data
    * 4. transmits the response data to the client
    */
-  public abstract boolean handle(StunHandler handler) throws IOException;
+  public abstract void handle(StunHandler handler) throws IOException;
 }
