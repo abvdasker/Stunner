@@ -30,17 +30,21 @@ public class TCPStunMessageSocket extends StunMessageSocket {
 
   public void handle(StunHandler handler) throws IOException {
     Socket connection = socket.accept();
+
+    NetworkMessage request = receive(connection);
+    NetworkMessage response = handler.handle(request);
+    transmit(connection, response);
+    connection.close();
+  }
+
+  private NetworkMessage receive(Socket connection) throws IOException {
     InputStream input = connection.getInputStream();
 
     byte[] requestData = getRequestData(input);
     InetAddress address = connection.getInetAddress();
     int port = connection.getPort();
     InetSocketAddress socketAddress = new InetSocketAddress(address, port);
-
-    NetworkMessage request = new NetworkMessage(socketAddress, requestData);
-    NetworkMessage response = handler.handle(request);
-    transmit(connection, response);
-    connection.close();
+    return new NetworkMessage(socketAddress, requestData);
   }
 
   private void transmit(Socket connection, NetworkMessage response) throws IOException {
