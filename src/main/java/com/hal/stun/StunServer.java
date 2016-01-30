@@ -16,8 +16,8 @@ public class StunServer {
 
   public static void main(String[] args) throws IOException, Exception {
 
-    StunMessageSocket udpSocket = new UDPStunMessageSocket();
-    StunApplication application = new StunApplication();
+    final StunMessageSocket udpSocket = new UDPStunMessageSocket();
+    final StunApplication application = new StunApplication();
     /**
       * The input stream from one request. This stream will
       * close when the connection is closed. Until then it will block
