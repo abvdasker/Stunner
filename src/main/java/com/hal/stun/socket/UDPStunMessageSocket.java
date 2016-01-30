@@ -34,10 +34,7 @@ public class UDPStunMessageSocket extends StunMessageSocket {
 
     socket.receive(packet);
 
-    int dataLengthBytes = packet.getLength();
-    byte[] requestData = new byte[dataLengthBytes];
-    int offset = packet.getOffset();
-    System.arraycopy(packet.getData(), offset, requestData, 0, dataLengthBytes);
+    byte[] requestData = getDataFromPacket(packet);
 
     InetSocketAddress socketAddress = new InetSocketAddress(packet.getAddress(), packet.getPort());
     return new NetworkMessage(socketAddress, requestData);
@@ -48,5 +45,13 @@ public class UDPStunMessageSocket extends StunMessageSocket {
     DatagramPacket packet = new DatagramPacket(messageData, messageData.length, message.getAddress(), message.getPort());
     socket.send(packet);
     return true;
+  }
+
+  public static byte[] getDataFromPacket(DatagramPacket packet) {
+    int dataLengthBytes = packet.getLength();
+    byte[] requestData = new byte[dataLengthBytes];
+    int offset = packet.getOffset();
+    System.arraycopy(packet.getData(), offset, requestData, 0, dataLengthBytes);
+    return requestData;
   }
 }

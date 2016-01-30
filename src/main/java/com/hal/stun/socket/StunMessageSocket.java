@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public abstract class StunMessageSocket {
 
-  private static final int DEFAULT_PORT = 3478;
+  public static final int DEFAULT_PORT = 3478;
   protected static final int MAX_PACKET_SIZE_BYTES = 1280; // MTU 
 
   protected final int port;
