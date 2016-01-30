@@ -12,6 +12,6 @@ public class StunResponseMessageTest {
                                           StunMessageTestData.getRealStunMessageBytes(),
                                           requestAddress);
 
-    StunResponseMessage response = new StunResponseMessage(request);
+    new StunResponseMessage(request);
   }
 }

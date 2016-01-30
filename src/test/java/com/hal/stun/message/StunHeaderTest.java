@@ -100,7 +100,6 @@ public class StunHeaderTest {
   public void testGetInvalidMessageLength()
       throws IllegalAccessException, InvocationTargetException, StunParseException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
-    int expectedMessageLength = 0xffff;
     headerBytes[2] = (byte) 0xff;
     headerBytes[3] = (byte) 0xff; // clear lower 2 bits
     StunMessageTestHelper.invokeWithPossibleParseException(parseMessageLengthMethod, null, headerBytes);

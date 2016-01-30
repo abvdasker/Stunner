@@ -34,5 +34,4 @@ public class StunAttributeTest {
   private byte[] attributeValue() {
     return StunMessageUtils.convertHexToByteArray(ATTRIBUTE_VALUE_HEX);
   }
-  
 }

@@ -105,6 +105,7 @@ public class StunHeader {
     
     int methodBottomSeven = method & 0b01111111;
     int secondByte = (lowerMessageClassBit << 7);
+    secondByte |= methodBottomSeven;
     firstTwoBytes[1] = (byte) secondByte;
     return firstTwoBytes;
   }
@@ -118,7 +119,6 @@ public class StunHeader {
   }
 
   private static byte getMessageClassBits(byte[] header) {
-    byte messageClassBits = 0b0;
     int topBit = header[0] & MASK;
     int lowerBit = header[1] & MASK;
     topBit &= 0b00000001;

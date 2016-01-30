@@ -2,7 +2,6 @@ package com.hal.stun.socket;
 
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import java.io.IOException;
