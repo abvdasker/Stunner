@@ -1,8 +1,10 @@
 package com.hal.stun.client.data;
 
+import static com.hal.stun.message.StunMessageUtils.MASK;
+
 public class ClientTestData {
 
-  public static final byte[] BASIC_REQUEST_IPV4 = {
+  public static final int[] UNCONVERTED_BASIC_REQUEST_IPV4 = {
     0x00, 0x01, 0x00, 0x58,  //    Request type and message length
     0x21, 0x12, 0xa4, 0x42,  //    Magic cookie
     0xb7, 0xe7, 0xa7, 0x01,  // }
@@ -14,7 +16,7 @@ public class ClientTestData {
     0x74, 0x20, 0x63, 0x6c,  // }  ...name
     0x69, 0x65, 0x6e, 0x74,  // }
     0x00, 0x24, 0x00, 0x04,  //    PRIORITY attribute header
-    0x6e, 0x00, 0x01, (byte) 0xff,  //    ICE priority value
+    0x6e, 0x00, 0x01, 0xff,  //    ICE priority value
     0x80, 0x29, 0x00, 0x08,  //    ICE-CONTROLLED attribute header
     0x93, 0x2f, 0xf9, 0xb1,  // }  Pseudo-random tie breaker...
     0x51, 0x26, 0x3b, 0x36,  // }   ...for ICE control
@@ -31,8 +33,9 @@ public class ClientTestData {
     0x80, 0x28, 0x00, 0x04,  //    FINGERPRINT attribute header
     0xe5, 0x7a, 0x3b, 0xcf   //    CRC32 fingerprint
   };
+  public static final byte[] BASIC_REQUEST_IPV4 = convertToBytes(UNCONVERTED_BASIC_REQUEST_IPV4);
 
-  public static final byte[] BASIC_RESPONSE_IPV4 = {
+  public static final int[] UNCONVERTED_BASIC_RESPONSE_IPV4 = {
     0x01, 0x01, 0x00, 0x3c, // Response type and message length
     0x21, 0x12, 0xa4, 0x42, // Magic cookie
     0xb7, 0xe7, 0xa7, 0x01, // }
@@ -54,5 +57,13 @@ public class ClientTestData {
     0x80, 0x28, 0x00, 0x04, // FINGERPRINT attribute header
     0xc0, 0x7d, 0x4c, 0x96 // CRC32 fingerprint
   };
+  public static final byte[] BASIC_RESPONSE_IPV4 = convertToBytes(UNCONVERTED_BASIC_RESPONSE_IPV4);
 
+  public static byte[] convertToBytes(int[] unconverted) {
+    byte[] converted = new byte[unconverted.length];
+    for (int i = 0; i < unconverted.length; i++) {
+      converted[i] = (byte) (MASK & unconverted[i]);
+    }
+    return converted;
+  }
 }
