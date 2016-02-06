@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class StunAttribute {
+
+  private static final int ATTRIBUTE_HEADER_SIZE_BYTES = 4;
   
   private AttributeType attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the size of this attribute's value in bytes
@@ -69,17 +71,19 @@ public class StunAttribute {
     
     int offset = 0;
     int paddedLength = 0;
+    int attributeCount = 1;
+    int headersize = ATTRIBUTE_HEADER_SIZE_BYTES;
     while (offset + paddedLength < attributesBytes.length) {
       int attributeType = StunMessageUtils.extractByteSequence(attributesBytes, offset, 2);
       int length = StunMessageUtils.extractByteSequence(attributesBytes, offset + 2, 2);
+
       paddedLength = length;
-      
       // round up to nearest multiple of 4
       int modValue = paddedLength % 4;
       if (modValue > 0) {
         paddedLength += (4 - modValue);
       }
-      int arrayStart = offset + 4;
+      int arrayStart = offset + ATTRIBUTE_HEADER_SIZE_BYTES;
       int arrayEnd = arrayStart + paddedLength;
       byte[] value = Arrays.copyOfRange(attributesBytes, arrayStart, arrayEnd);
       
@@ -91,7 +95,7 @@ public class StunAttribute {
         throw new RuntimeException(exception);
       }
       attributes.add(new StunAttribute(type, length, value));
-      offset += paddedLength;
+      offset += paddedLength + ATTRIBUTE_HEADER_SIZE_BYTES;
     }
     
     return attributes;
