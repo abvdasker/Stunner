@@ -7,6 +7,7 @@ import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.FingerprintStunAttributeValue;
 import com.hal.stun.message.attribute.value.SoftwareStunAttributeValue;
 import com.hal.stun.message.attribute.value.PriorityStunAttributeValue;
+import com.hal.stun.message.attribute.value.ICEControlledStunAttributeValue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +23,8 @@ public enum AttributeType {
 
   // optional
   SOFTWARE((short) 0x8022, SoftwareStunAttributeValue.class),
-  PRIORITY((short) 0x0024, PriorityStunAttributeValue.class);
+  PRIORITY((short) 0x0024, PriorityStunAttributeValue.class),
+  ICE_CONTROLLED((short) 0x8029, ICEControlledStunAttributeValue.class);
   
   private short type;
   private Class<? extends StunAttributeValue> attributeValueClass;
