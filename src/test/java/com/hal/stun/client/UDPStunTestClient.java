@@ -8,6 +8,7 @@ import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 public class UDPStunTestClient extends StunTestClient {
 
@@ -17,7 +18,7 @@ public class UDPStunTestClient extends StunTestClient {
     super(socketAddress);
   }
 
-  public byte[] send(byte[] data) throws IOException {
+  public byte[] send(byte[] data) throws IOException, SocketTimeoutException {
     DatagramSocket socket = new DatagramSocket(StunMessageSocket.DEFAULT_PORT + 1);
     DatagramPacket request = new DatagramPacket(data, data.length, serverAddress);
     socket.send(request);

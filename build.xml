@@ -83,7 +83,7 @@
   <target name="only-test" depends="resolve" description="Runs tests. Will fail unless tests have already been compiled">
     <mkdir dir="${test.reports}" />
 
-    <junit printsummary="true" haltonerror="true" haltonfailure="true" showoutput="true">
+    <junit printsummary="true" haltonerror="true" haltonfailure="false" showoutput="true" failureproperty="test.failed">
       <classpath>
         <path refid="test.path" />
         <pathelement location="${build.main}" />
@@ -97,6 +97,7 @@
         </fileset>
       </batchtest>
     </junit>
+    <fail message="Test FAILURE detected, check test results." if="test.failed" />
   </target>
 
   <target name="dist" depends="compile" description="generate the distribution">
