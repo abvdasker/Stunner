@@ -3,7 +3,6 @@ package com.hal.stun.message.attribute.value;
 import com.hal.stun.message.StunParseException;
 import java.io.UnsupportedEncodingException;
 
-
 public class SoftwareStunAttributeValue extends StunAttributeValue {
 
   private static final String MESSAGE_ENCODING = "UTF-8";
