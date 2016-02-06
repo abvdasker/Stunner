@@ -5,6 +5,7 @@ import com.hal.stun.message.StunParseException;
 
 public class PriorityStunAttributeValue extends StunAttributeValue {
 
+  private static final int PRIORITY_LENGTH_BYTES = 4;
   private long priority = 0;
 
   public PriorityStunAttributeValue(byte[] value) throws StunParseException {
@@ -12,7 +13,7 @@ public class PriorityStunAttributeValue extends StunAttributeValue {
   }
 
   protected boolean isValid() {
-    return value.length == 4;
+    return value.length == PRIORITY_LENGTH_BYTES;
   }
 
   protected void parseValueBytes() throws StunParseException {

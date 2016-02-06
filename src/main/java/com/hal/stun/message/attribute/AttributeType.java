@@ -8,6 +8,7 @@ import com.hal.stun.message.attribute.value.FingerprintStunAttributeValue;
 import com.hal.stun.message.attribute.value.SoftwareStunAttributeValue;
 import com.hal.stun.message.attribute.value.PriorityStunAttributeValue;
 import com.hal.stun.message.attribute.value.ICEControlledStunAttributeValue;
+import com.hal.stun.message.attribute.value.UsernameStunAttributeValue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -17,14 +18,15 @@ public enum AttributeType {
   // 16-bit attribute type
 
   // required
-  MAPPED_ADDRESS((short) 0x0001, MappedAddressStunAttributeValue.class),
-  XOR_MAPPED_ADDRESS((short) 0x0020, XORMappedAddressStunAttributeValue.class),
-  FINGERPRINT((short) 0x8028, FingerprintStunAttributeValue.class),
+  MAPPED_ADDRESS     ((short) 0x0001, MappedAddressStunAttributeValue.class),
+  XOR_MAPPED_ADDRESS ((short) 0x0020, XORMappedAddressStunAttributeValue.class),
+  FINGERPRINT        ((short) 0x8028, FingerprintStunAttributeValue.class),
+  USERNAME           ((short) 0x0006, UsernameStunAttributeValue.class),
 
   // optional
-  SOFTWARE((short) 0x8022, SoftwareStunAttributeValue.class),
-  PRIORITY((short) 0x0024, PriorityStunAttributeValue.class),
-  ICE_CONTROLLED((short) 0x8029, ICEControlledStunAttributeValue.class);
+  SOFTWARE           ((short) 0x8022, SoftwareStunAttributeValue.class),
+  PRIORITY           ((short) 0x0024, PriorityStunAttributeValue.class),
+  ICE_CONTROLLED     ((short) 0x8029, ICEControlledStunAttributeValue.class);
   
   private short type;
   private Class<? extends StunAttributeValue> attributeValueClass;

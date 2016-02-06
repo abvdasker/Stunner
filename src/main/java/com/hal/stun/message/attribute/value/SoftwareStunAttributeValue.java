@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 public class SoftwareStunAttributeValue extends StunAttributeValue {
 
   private static final String MESSAGE_ENCODING = "UTF-8";
-  private static final int MAX_MESSAGE_LENGTH = 128;
+  private static final int MAX_MESSAGE_LENGTH = 127;
   private String message;
 
   public SoftwareStunAttributeValue(byte[] value) throws StunParseException {
@@ -26,6 +26,6 @@ public class SoftwareStunAttributeValue extends StunAttributeValue {
   }
 
   protected boolean isValid() {
-    return message.length() < MAX_MESSAGE_LENGTH;
+    return message.length() <= MAX_MESSAGE_LENGTH;
   }
 }
