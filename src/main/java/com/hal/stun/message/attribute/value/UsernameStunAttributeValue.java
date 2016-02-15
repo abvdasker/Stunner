@@ -12,6 +12,10 @@ public class UsernameStunAttributeValue extends StunAttributeValue {
     super(value);
   }
 
+  public String getUsername() {
+    return username;
+  }
+
   protected boolean isValid() {
     return value.length <= MAXIMUM_USERNAME_LENGTH_BYTES;
   }
