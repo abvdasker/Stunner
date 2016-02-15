@@ -18,12 +18,13 @@ public class StunAttribute {
   public StunAttribute(AttributeType attributeType, int length, byte[] value) throws StunParseException {
     this.attributeType = attributeType;
     this.length = length;
-    this.attributeValue = attributeType.buildAttributeValue(value);
     verifyValueLength(value);
+    byte[] actualValue = valueFromLength(value, length);
+    this.attributeValue = attributeType.buildAttributeValue(actualValue);
   }
 
   private void verifyValueLength(byte[] value) throws StunParseException {
-    if (value.length != length) {
+    if (!lengthIsValid(value)) {
       String valueHex = StunMessageUtils.convertByteArrayToHex(value);
       throw new StunParseException("attribute valueHex " + valueHex + " is " + value.length 
         + " bytes, but the attribute length specified is " + length);
@@ -70,23 +71,20 @@ public class StunAttribute {
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     
     int offset = 0;
-    int paddedLength = 0;
     int attributeCount = 1;
     int headersize = ATTRIBUTE_HEADER_SIZE_BYTES;
+    int paddedLength = 0;
     while (offset + paddedLength < attributesBytes.length) {
       int attributeType = StunMessageUtils.extractByteSequence(attributesBytes, offset, 2);
       int length = StunMessageUtils.extractByteSequence(attributesBytes, offset + 2, 2);
+      // the length is in the attribute header.
+      // Anything extra is discarded
 
-      paddedLength = length;
-      // round up to nearest multiple of 4
-      int modValue = paddedLength % 4;
-      if (modValue > 0) {
-        paddedLength += (4 - modValue);
-      }
       int arrayStart = offset + ATTRIBUTE_HEADER_SIZE_BYTES;
+      paddedLength = roundUpLength(length);
       int arrayEnd = arrayStart + paddedLength;
       byte[] value = Arrays.copyOfRange(attributesBytes, arrayStart, arrayEnd);
-      
+
       AttributeType type;
       try {
         type = AttributeType.fromBytes((short) attributeType);
@@ -95,6 +93,7 @@ public class StunAttribute {
         throw new RuntimeException(exception);
       }
       attributes.add(new StunAttribute(type, length, value));
+
       offset += paddedLength + ATTRIBUTE_HEADER_SIZE_BYTES;
     }
     
@@ -108,5 +107,23 @@ public class StunAttribute {
     if (attributesBytes.length < 8) {
       throw new StunParseException("there must be at least one attribute of 16 bytes or more.");
     }
+  }
+
+  private static int roundUpLength(int length) {
+    int paddedLength = length;
+    // round up to nearest multiple of 4
+    int modValue = paddedLength % 4;
+    if (modValue > 0) {
+      paddedLength += (4 - modValue);
+    }
+    return paddedLength;
+  }
+
+  private static byte[] valueFromLength(byte[] rawValue, int length) {
+    return Arrays.copyOfRange(rawValue, 0, length);
+  }
+
+  private boolean lengthIsValid(byte[] value) {
+    return (length <= value.length) && (length > value.length - 4);
   }
 }
