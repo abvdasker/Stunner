@@ -1,6 +1,7 @@
 package com.hal.stun;
 
 import com.hal.stun.socket.StunMessageSocket;
+import com.hal.stun.message.StunMessage;
 import java.net.InetSocketAddress;
 
 import com.hal.stun.client.StunTestClient;
@@ -25,6 +26,7 @@ public class StunServerTest {
         = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, StunMessageSocket.DEFAULT_PORT);
       StunTestClient client = new UDPStunTestClient(serverAddress);
       byte[] response = client.send(ClientTestData.BASIC_REQUEST_IPV4);
+      StunMessage message = new StunMessage(response, serverAddress);
       System.out.println("Server response: " + response);
     } catch (SocketTimeoutException exception) {
       Assert.fail();

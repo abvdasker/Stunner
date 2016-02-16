@@ -40,11 +40,6 @@ public class StunResponseMessage extends StunMessage {
       StunAttribute xORAddressAttribute = new StunAttribute(AttributeType.XOR_MAPPED_ADDRESS, attributeValueBytes.length, attributeValueBytes);
       // TODO: pad attribute bytes up to nearest multiple of 4
       attributes.add(xORAddressAttribute);
-
-      
-      // convert to hex
-      // build stun attribute
-      // add new attribute to list
     }
     return attributes;
   }

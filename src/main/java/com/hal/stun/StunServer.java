@@ -18,12 +18,6 @@ public class StunServer {
 
     final StunMessageSocket udpSocket = new UDPStunMessageSocket();
     final StunApplication application = new StunApplication();
-    /**
-      * The input stream from one request. This stream will
-      * close when the connection is closed. Until then it will block
-      * on read(). Use a input read to parse the request into lines.
-      * when an empty line is received, that is the end of the request.
-      */
     
     while (true) {
       udpSocket.handle(new StunHandler() {
