@@ -12,8 +12,6 @@ public class MessageIntegrityStunAttributeValue extends StunAttributeValue {
 
   private static final int BYTE_SIZE = 20;
 
-  private byte[] hmac;
-  
   public MessageIntegrityStunAttributeValue(byte[] value) throws StunParseException {
     super(value);
   }
@@ -31,7 +29,7 @@ public class MessageIntegrityStunAttributeValue extends StunAttributeValue {
     } catch (InvalidKeyException exception) {
       return false;
     }
-    return result == hmac;
+    return result == value;
   }
 
   protected boolean isValid() {
@@ -39,7 +37,6 @@ public class MessageIntegrityStunAttributeValue extends StunAttributeValue {
   }
 
   protected void parseValueBytes() throws StunParseException {
-    hmac = value;
   }
 
   private static byte[] computeKey(String username, String realm, String password) {
