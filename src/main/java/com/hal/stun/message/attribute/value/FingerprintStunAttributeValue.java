@@ -1,5 +1,7 @@
 package com.hal.stun.message.attribute.value;
 
+import com.hal.stun.message.StunMessageUtils;
+
 import com.hal.stun.message.StunParseException;
 import java.util.zip.CRC32;
 
@@ -13,7 +15,7 @@ public class FingerprintStunAttributeValue extends StunAttributeValue {
   }
 
   public boolean isValid() {
-    return value == VALUE_SIZE_BYTES;
+    return value.length == VALUE_SIZE_BYTES;
   }
 
   public void parseValueBytes() throws StunParseException {
@@ -21,8 +23,11 @@ public class FingerprintStunAttributeValue extends StunAttributeValue {
 
   public boolean verifyMessageIntegrity(byte[] messageBytes) {
     CRC32 crc = new CRC32();
-    byte[] xORedMessageBytes
-    byte result = crc.update(messageBytes);
-    // TODO: how to compute this XOR since messageBytes is so much larger?
+    crc.update(messageBytes);
+    long crcResult = crc.getValue();
+    byte[] result = StunMessageUtils.convert((int) crcResult);
+    byte[] xORValueBytes = StunMessageUtils.convert((int) XOR_VALUE);
+    byte[] xORedResult = StunMessageUtils.xOR(result, xORValueBytes);
+    return xORedResult == value;
   }
 }

@@ -1,6 +1,7 @@
 package com.hal.stun.message;
 
 import java.util.List;
+import java.nio.ByteBuffer;
 
 public class StunMessageUtils {
 
@@ -101,5 +102,22 @@ public class StunMessageUtils {
     }
     byte val = (byte) (Integer.parseInt(chars, 16) & MASK);
     return val;
+  }
+
+  public static byte[] convert(int number) {
+    return ByteBuffer.allocate(4).putInt(number).array();
+  }
+
+  public static byte[] convert(short number) {
+    return ByteBuffer.allocate(2).putShort(number).array();
+  }
+
+  public static byte[] xOR(byte[] first, byte[] second) {
+    byte[] result = new byte[first.length];
+    for (int i = 0; i < first.length; i++) {
+      int signedResult = first[i] ^ second[i];
+      result[i] = (byte) (signedResult & MASK);
+    }
+    return result;
   }
 }

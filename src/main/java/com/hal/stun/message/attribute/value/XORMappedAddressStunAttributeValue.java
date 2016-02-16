@@ -59,44 +59,29 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
   }
 
   private static short generateXPort(int port) {
-    byte lowerByte = (byte) (port);
-    byte upperByte = (byte) (port >>> 8);
+    byte[] portBytes = StunMessageUtils.convert((short) port);
 
     short magicCookieTopBytes = MagicCookie.getTopTwoBytes();
-    byte magicCookieTopByte = unsignByte(magicCookieTopBytes >>> 8);
-    byte magicCookieSecondTopByte = (byte) (magicCookieTopBytes);
+    byte[] magicCookieBytes = StunMessageUtils.convert(magicCookieTopBytes);
 
-    byte xoredUpperByte = unsignByte(upperByte ^ magicCookieTopByte);
-    byte xoredLowerByte = unsignByte(lowerByte ^ magicCookieSecondTopByte);
+    byte[] xORedResult = StunMessageUtils.xOR(portBytes, magicCookieBytes);
 
-    short xPort = unsignShort(xoredUpperByte);
+    short xPort = unsignShort(xORedResult[0]);
     xPort <<= 8;
-    xPort |= unsignShort(xoredLowerByte);
+    xPort |= unsignShort(xORedResult[1]);
 
     return xPort;
   }
 
   private static byte[] generateIPV4XAddress(byte[] address) {
     byte[] magicCookieBytes = MagicCookie.getBytesBigEndian();
-    byte[] xAddress = new byte[address.length];
-    for (int i = 0; i < xAddress.length; i++) {
-      xAddress[i] = unsignByte(magicCookieBytes[i] ^ address[i]);
-    }
-    return xAddress;
+    return StunMessageUtils.xOR(magicCookieBytes, address);
   }
 
   private static byte[] generateIPV6XAddress(byte[] address, byte[] transactionID) {
     byte[] magicCookieBytes = MagicCookie.getBytesBigEndian();
-    byte[] xAddress = new byte[address.length];
-
     byte[] magicCookiePlusTransactionID = combineArrays(magicCookieBytes, transactionID);
-
-    for (int i = 0; i < address.length; i++) {
-      byte operand = magicCookiePlusTransactionID[i];
-      xAddress[i] = unsignByte(operand ^ address[i]);
-    }
-
-    return xAddress;
+    return StunMessageUtils.xOR(magicCookiePlusTransactionID, address);
   }
 
   private static byte[] combineArrays(byte[] first, byte[] second) {

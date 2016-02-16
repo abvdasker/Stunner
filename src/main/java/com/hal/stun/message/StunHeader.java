@@ -78,12 +78,10 @@ public class StunHeader {
     byte[] firstTwoBytes = generateMessageClassAndMethodBytes(messageClass, method);
     headerBytes[0] = firstTwoBytes[0];
     headerBytes[1] = firstTwoBytes[1];
-    
-    // set next two bytes using the 16-bit message length
-    byte upperMessageLength = (byte) (messageLength >>> 8);
-    byte lowerMessageLength = (byte) (messageLength);
-    headerBytes[2] = upperMessageLength;
-    headerBytes[3] = lowerMessageLength;
+
+    byte[] messageLengthBytes = StunMessageUtils.convert((short) messageLength);
+    headerBytes[2] = messageLengthBytes[0];
+    headerBytes[3] = messageLengthBytes[1];
     
     // set next 4 bytes to the magic cookie by shifting and truncating
     headerBytes[4] = MagicCookie.getByte(3);
