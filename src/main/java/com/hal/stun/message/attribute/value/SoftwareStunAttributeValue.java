@@ -13,6 +13,10 @@ public class SoftwareStunAttributeValue extends StunAttributeValue {
     super(value);
   }
 
+  public SoftwareStunAttributeValue(String softwareName) throws StunParseException {
+    super(buildValueBytes(softwareName));
+  }
+
   public String getMessage() {
     return message;
   }
@@ -27,5 +31,9 @@ public class SoftwareStunAttributeValue extends StunAttributeValue {
 
   protected boolean isValid() {
     return message.length() <= MAX_MESSAGE_LENGTH;
+  }
+
+  private static byte[] buildValueBytes(String softwareName) {
+    return softwareName.getBytes();
   }
 }

@@ -15,8 +15,8 @@ public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
     super(value);
   }
 
-  protected ErrorCodeStunAttributeValue(int errorCode, String reason) {
-    super(buildErrorBytes(erorrCode, reason));
+  protected ErrorCodeStunAttributeValue(int errorCode, String reason) throws StunParseException {
+    super(buildErrorBytes(errorCode, reason));
   }
 
   public String getReason() {
@@ -54,7 +54,7 @@ public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
     byte[] result = new byte[4 + reasonBytes.length];
     result[2] = errorClass;
     result[3] = number;
-    System.arraycopy(reasonBytes, 0, result, 4, reason.length);
+    System.arraycopy(reasonBytes, 0, result, 4, reasonBytes.length);
     return result;
   }
 }
