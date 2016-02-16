@@ -14,6 +14,7 @@ public class StunMessage {
   protected InetSocketAddress address;
 
   public StunMessage(byte[] message, InetSocketAddress address) throws StunParseException {
+    // TODO: log formatted raw message
     this.messageBytes = message;
     this.address = address;
     header = new StunHeader(getHeaderBytes(message));
