@@ -23,6 +23,12 @@ public class StunAttribute {
     this.attributeValue = attributeType.buildAttributeValue(actualValue);
   }
 
+  public StunAttribute(AttributeType attributeType, StunAttributeValue attributeValue) {
+    this.attributeType = attributeType;
+    this.length = attributeValue.getBytes().length;
+    this.attributeValue = attributeValue;
+  }
+
   private void verifyValueLength(byte[] value) throws StunParseException {
     if (!lengthIsValid(value)) {
       String valueHex = StunMessageUtils.convertByteArrayToHex(value);
@@ -45,7 +51,7 @@ public class StunAttribute {
     List<byte[]> unjoinedAttributeBytes = new ArrayList<byte[]>();
     unjoinedAttributeBytes.add(typeBytes);
     unjoinedAttributeBytes.add(lengthBytes);
-    unjoinedAttributeBytes.add(getValueBytes());
+    unjoinedAttributeBytes.add(attributeValue.getPaddedBytes());
 
     return StunMessageUtils.joinByteArrays(unjoinedAttributeBytes);
   }
@@ -56,10 +62,6 @@ public class StunAttribute {
   
   public int getLength() {
     return length;
-  }
-
-  public byte[] getValueBytes() {
-    return attributeValue.getBytes();
   }
 
   public StunAttributeValue getValue() {
@@ -81,7 +83,7 @@ public class StunAttribute {
       // Anything extra is discarded
 
       int arrayStart = offset + ATTRIBUTE_HEADER_SIZE_BYTES;
-      paddedLength = roundUpLength(length);
+      paddedLength = StunMessageUtils.nextMultipleOfFour(length);
       int arrayEnd = arrayStart + paddedLength;
       byte[] value = Arrays.copyOfRange(attributesBytes, arrayStart, arrayEnd);
 
@@ -108,16 +110,6 @@ public class StunAttribute {
     if (attributesBytes.length < 8) {
       throw new StunParseException("there must be at least one attribute of 16 bytes or more.");
     }
-  }
-
-  private static int roundUpLength(int length) {
-    int paddedLength = length;
-    // round up to nearest multiple of 4
-    int modValue = paddedLength % 4;
-    if (modValue > 0) {
-      paddedLength += (4 - modValue);
-    }
-    return paddedLength;
   }
 
   private static byte[] valueFromLength(byte[] rawValue, int length) {

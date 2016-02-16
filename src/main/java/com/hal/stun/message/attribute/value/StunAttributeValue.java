@@ -22,6 +22,13 @@ public abstract class StunAttributeValue {
   public byte[] getBytes() {
     return value;
   }
+
+  public byte[] getPaddedBytes() {
+    int size = StunMessageUtils.nextMultipleOfFour(value.length);
+    byte[] paddedBytes = new byte[size];
+    System.arraycopy(value, 0, paddedBytes, 0, value.length);
+    return paddedBytes;
+  }
   
   protected abstract void parseValueBytes() throws StunParseException;
   protected abstract boolean isValid();

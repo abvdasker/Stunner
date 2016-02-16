@@ -120,4 +120,14 @@ public class StunMessageUtils {
     }
     return result;
   }
+
+  public static int nextMultipleOfFour(int number) {
+    int nextMultiple = number;
+    // round up to nearest multiple of 4
+    int modValue = number % 4;
+    if (modValue > 0) {
+      nextMultiple += (4 - modValue);
+    }
+    return nextMultiple;
+  }
 }
