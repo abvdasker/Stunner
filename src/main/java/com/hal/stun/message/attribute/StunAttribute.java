@@ -31,7 +31,7 @@ public class StunAttribute {
     }
   }
 
-  public byte[] toByteArray() {
+  public byte[] getBytes() {
     byte[] typeBytes = new byte[2];
     byte[] lengthBytes = new byte[2];
     
@@ -65,7 +65,7 @@ public class StunAttribute {
   public StunAttributeValue getValue() {
     return attributeValue;
   }
-  
+
   public static List<StunAttribute> parseAttributes(byte[] attributesBytes) throws StunParseException {
     validateAttributesBytes(attributesBytes);
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
@@ -85,6 +85,7 @@ public class StunAttribute {
       int arrayEnd = arrayStart + paddedLength;
       byte[] value = Arrays.copyOfRange(attributesBytes, arrayStart, arrayEnd);
 
+      System.out.println("type: " + attributeType + ", length: " + length + ", padded length: " + paddedLength);
       AttributeType type;
       try {
         type = AttributeType.fromBytes((short) attributeType);

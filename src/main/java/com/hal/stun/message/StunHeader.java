@@ -52,6 +52,10 @@ public class StunHeader {
   public int getMessageLength() {
     return messageLength;
   }
+
+  public byte[] getBytes() {
+    return headerBytes;
+  }
   
   private void parse(byte[] headerBytes) throws StunParseException {
     verifyFirstByte(headerBytes);

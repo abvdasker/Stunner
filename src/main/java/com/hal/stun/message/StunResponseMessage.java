@@ -19,7 +19,6 @@ public class StunResponseMessage extends StunMessage {
       messageLength,
       requestMessage.getHeader().getTransactionID()
     );
-    
   }
   
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) throws StunParseException {

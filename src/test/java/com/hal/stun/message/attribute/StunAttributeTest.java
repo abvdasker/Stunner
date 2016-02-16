@@ -21,10 +21,10 @@ public class StunAttributeTest {
   }
 
   @Test
-  public void testToByteArray() throws Exception {
+  public void testGetBytes() throws Exception {
     int expectedLength = 8 + 4;
     StunAttribute attribute = new StunAttribute(AttributeType.MAPPED_ADDRESS, expectedLength - 4, attributeValue());
-    byte[] attributeBytes = attribute.toByteArray();
+    byte[] attributeBytes = attribute.getBytes();
     Assert.assertEquals(expectedLength, attributeBytes.length);
     String expectedAttributeHex = "00010008" + ATTRIBUTE_VALUE_HEX;
     byte[] expectedAttributeBytes = StunMessageUtils.convertHexToByteArray(expectedAttributeHex);

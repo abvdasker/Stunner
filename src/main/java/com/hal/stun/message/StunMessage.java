@@ -27,8 +27,18 @@ public class StunMessage {
   
   // convert the header and attributes 
   // back into a byte array if it doesn't exist
-  public byte[] toByteArray() {
-    return null;
+  public byte[] getBytes() {
+    byte[] headerBytes = header.getBytes();
+    int messageByteLength = header.getMessageLength() + headerBytes.length;
+    byte[] messageBytes = new byte[messageByteLength];
+    int messageOffset = headerBytes.length;
+    System.arraycopy(headerBytes, 0, messageBytes, 0, headerBytes.length);
+    for (StunAttribute attribute : attributes) {
+      byte[] attributeBytes = attribute.getBytes();
+      System.arraycopy(attributeBytes, 0, messageBytes, messageOffset, attributeBytes.length);
+      messageOffset += attributeBytes.length;
+    }
+    return messageBytes;
   }
 
   public List<StunAttribute> getAttributes() {
@@ -40,7 +50,6 @@ public class StunMessage {
   }
   
   protected StunMessage() {
-    
   }
 
   private static byte[] getHeaderBytes(byte[] message) throws StunParseException {

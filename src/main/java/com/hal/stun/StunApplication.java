@@ -18,7 +18,7 @@ class StunApplication {
   public byte[] handle(byte[] rawRequest, InetSocketAddress address) throws UnsupportedStunClassException, StunParseException {
     StunMessage request = new StunMessage(rawRequest, address);
     StunMessage response = buildResponse(request);
-    return response.toByteArray();
+    return response.getBytes();
   }
   
   public static StunMessage buildResponse(StunMessage request) throws UnsupportedStunClassException, StunParseException {
@@ -27,9 +27,11 @@ class StunApplication {
     StunMessage response;
     switch(requestMessageClass) {
     case REQUEST:
+      System.out.println("REQUEST");
       response = handleRequest(request);
       break;
     case INDICATION:
+      System.out.println("INDICATION");
       handleIndication(request);
       response = null;
       break;

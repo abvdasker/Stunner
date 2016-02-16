@@ -9,6 +9,7 @@ import com.hal.stun.message.attribute.value.SoftwareStunAttributeValue;
 import com.hal.stun.message.attribute.value.PriorityStunAttributeValue;
 import com.hal.stun.message.attribute.value.ICEControlledStunAttributeValue;
 import com.hal.stun.message.attribute.value.UsernameStunAttributeValue;
+import com.hal.stun.message.attribute.value.MessageIntegrityStunAttributeValue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +23,7 @@ public enum AttributeType {
   XOR_MAPPED_ADDRESS ((short) 0x0020, XORMappedAddressStunAttributeValue.class),
   FINGERPRINT        ((short) 0x8028, FingerprintStunAttributeValue.class),
   USERNAME           ((short) 0x0006, UsernameStunAttributeValue.class),
+  MESSAGE_INTEGRITY  ((short) 0x0008, MessageIntegrityStunAttributeValue.class),
 
   // optional
   SOFTWARE           ((short) 0x8022, SoftwareStunAttributeValue.class),
