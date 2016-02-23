@@ -27,8 +27,10 @@ public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
     return reservedBitsAreZero() &&
       getReasonBytes().length <= MAX_REASON_SIZE_BYTES;
   }
-  
+
   protected void parseValueBytes() throws StunParseException {
+    errorClass = getErrorClass();
+    number = getNumber();
     reason = new String(getReasonBytes());
   }
 
@@ -45,6 +47,14 @@ public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
 
   private byte[] getReasonBytes() {
     return Arrays.copyOfRange(value, 5, value.length);
+  }
+
+  private byte getErrorClass() {
+    return value[3];
+  }
+
+  private byte getNumber() {
+    return value[4];
   }
 
   private static byte[] buildErrorBytes(int errorCode, String reason) {

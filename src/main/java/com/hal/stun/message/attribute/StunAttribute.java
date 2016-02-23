@@ -78,7 +78,6 @@ public class StunAttribute {
     
     int offset = 0;
     int attributeCount = 1;
-    int headersize = ATTRIBUTE_HEADER_SIZE_BYTES;
     int paddedLength = 0;
     while (offset + paddedLength < attributesBytes.length) {
       int attributeType = StunMessageUtils.extractByteSequence(attributesBytes, offset, 2);

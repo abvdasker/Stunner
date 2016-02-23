@@ -54,16 +54,19 @@ public class TCPStunMessageSocket extends StunMessageSocket {
   }
 
   private byte[] getRequestData(InputStream input) throws IOException {
-    if (!(input instanceof BufferedInputStream)) {
-      input = new BufferedInputStream(input);
+    BufferedInputStream bufferedInput;
+    if (input instanceof BufferedInputStream) {
+      bufferedInput = (BufferedInputStream) input;
+    } else {
+      bufferedInput = new BufferedInputStream(input);
     }
     ByteBuffer byteBuffer = ByteBuffer.allocate(MAX_PACKET_SIZE_BYTES);
     byte inputByte;
-    while((inputByte = (byte) input.read()) != -1) {
+    while((inputByte = (byte) bufferedInput.read()) != -1) {
       byteBuffer.put(inputByte);
     }
 
-    input.close();
+    bufferedInput.close();
     byteBuffer.compact();
     return byteBuffer.array();
   }
