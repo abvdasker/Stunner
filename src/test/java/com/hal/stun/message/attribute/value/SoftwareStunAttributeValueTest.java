@@ -23,7 +23,7 @@ public class SoftwareStunAttributeValueTest {
 
   @Test
   public void testGetValue() throws Exception {
-    SoftwareStunAttributeValue value = new SoftwareStunAttributeValue(SOFTWARE_ATTRIBUTE_VALUE);
+    new SoftwareStunAttributeValue(SOFTWARE_ATTRIBUTE_VALUE);
   }
 
   @Test(expected = StunParseException.class)
