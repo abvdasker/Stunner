@@ -29,7 +29,8 @@ public abstract class StunAttributeValue {
     System.arraycopy(value, 0, paddedBytes, 0, value.length);
     return paddedBytes;
   }
-  
+
+  // TODO: make exception more specific
   protected abstract void parseValueBytes() throws StunParseException;
   protected abstract boolean isValid();
   

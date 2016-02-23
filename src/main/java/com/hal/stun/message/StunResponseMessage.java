@@ -12,6 +12,7 @@ public class StunResponseMessage extends StunMessage {
 
   private static final String SOFTWARE_NAME = "STUNNER STUN server;" + System.getProperty("os.name") + ";Java " + System.getProperty("java.version");
 
+  // TODO: fix data modeling. Avoid multiple constructors of superclass
   public StunResponseMessage(StunMessage requestMessage) throws StunParseException {
     super();
     this.attributes = buildResponseAttributes(requestMessage);
