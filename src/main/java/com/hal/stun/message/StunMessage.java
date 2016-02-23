@@ -7,7 +7,7 @@ import java.util.List;
 import java.net.InetSocketAddress;
 
 public class StunMessage {
-  
+
   protected byte[] messageBytes;
   protected StunHeader header;
   protected List<StunAttribute> attributes;
@@ -21,21 +21,22 @@ public class StunMessage {
     header.validateMessageLength(message);
     attributes = StunAttribute.parseAttributes(getAttributesBytes(message));
   }
-  
+
   public StunHeader getHeader() {
     return header;
   }
-  
-  // convert the header and attributes 
-  // back into a byte array if it doesn't exist
+
   public byte[] getBytes() {
     byte[] headerBytes = header.getBytes();
     int messageByteLength = header.getMessageLength() + headerBytes.length;
     byte[] messageBytes = new byte[messageByteLength];
     int messageOffset = headerBytes.length;
     System.arraycopy(headerBytes, 0, messageBytes, 0, headerBytes.length);
+    System.out.println("total message length: " + messageByteLength);
     for (StunAttribute attribute : attributes) {
+      System.out.println("message offset: " + messageOffset);
       byte[] attributeBytes = attribute.getBytes();
+      System.out.println("attribute byte length: " + attributeBytes.length);
       System.arraycopy(attributeBytes, 0, messageBytes, messageOffset, attributeBytes.length);
       messageOffset += attributeBytes.length;
     }
@@ -49,7 +50,7 @@ public class StunMessage {
   public InetSocketAddress getAddress() {
     return address;
   }
-  
+
   protected StunMessage() {
   }
 

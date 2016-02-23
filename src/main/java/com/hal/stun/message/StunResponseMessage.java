@@ -23,7 +23,7 @@ public class StunResponseMessage extends StunMessage {
       requestMessage.getHeader().getTransactionID()
     );
   }
-  
+
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) throws StunParseException {
     StunHeader header = request.getHeader();
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
@@ -43,15 +43,14 @@ public class StunResponseMessage extends StunMessage {
     }
     return attributes;
   }
-  
+
   // avoid this inefficiency by simply adding 4 to the attribute's length field
   private static int getAttributeListByteLength(List<StunAttribute> responseAttributes) {
     int responseBodyByteLength = 0;
     for (StunAttribute attribute : responseAttributes) {
-      responseBodyByteLength += attribute.getLength() + 4;
+      responseBodyByteLength += attribute.getWholeLength();
     }
     
     return responseBodyByteLength;
   }
-  
 }

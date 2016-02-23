@@ -19,8 +19,8 @@ public class StunAttribute {
     this.attributeType = attributeType;
     this.length = length;
     verifyValueLength(value);
-    byte[] actualValue = valueFromLength(value, length);
-    this.attributeValue = attributeType.buildAttributeValue(actualValue);
+    byte[] unpaddedValue = valueFromLength(value, length);
+    this.attributeValue = attributeType.buildAttributeValue(unpaddedValue);
   }
 
   public StunAttribute(AttributeType attributeType, StunAttributeValue attributeValue) {
@@ -62,6 +62,10 @@ public class StunAttribute {
   
   public int getLength() {
     return length;
+  }
+
+  public int getWholeLength() {
+    return StunMessageUtils.nextMultipleOfFour(length) + ATTRIBUTE_HEADER_SIZE_BYTES;
   }
 
   public StunAttributeValue getValue() {

@@ -2,12 +2,12 @@ package com.hal.stun.message;
 
 public enum MessageClass {
 
-  /*TODO: write enum of message classes
-    * 0b00 - requeust
-    * 0b01 - indication
-    * 0b10 - success response
-    * 0b11 - error response
-    */
+  /*
+   * 0b00 - requeust
+   * 0b01 - indication
+   * 0b10 - success response
+   * 0b11 - error response
+   */
 
   REQUEST((byte) 0b00),
   INDICATION((byte) 0b01),

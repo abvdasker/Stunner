@@ -130,4 +130,27 @@ public class StunMessageUtils {
     }
     return nextMultiple;
   }
+
+  public static String convertToBinaryString(byte[] bytes) {
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < bytes.length; i++) {
+      byte bite = bytes[i];
+      StringBuffer byteBuffer = new StringBuffer(8);
+      for (int j = 0; j < 8; j++) {
+        int shifted = bite >>> j;
+        if ((shifted & 1) == 1) {
+          byteBuffer.append('1');
+        } else {
+          byteBuffer.append('0');
+        }
+      }
+      buffer.append(byteBuffer.reverse());
+      if (i % 2 == 1) {
+        buffer.append('\n');
+      } else {
+        buffer.append(' ');
+      }
+    }
+    return buffer.toString();
+  }
 }

@@ -18,17 +18,18 @@ public class StunServer {
 
     final StunMessageSocket udpSocket = new UDPStunMessageSocket();
     final StunApplication application = new StunApplication();
-    
+
     while (true) {
       udpSocket.handle(new StunHandler() {
         public NetworkMessage handle(NetworkMessage request) throws IOException {
           byte[] requestBytes = request.getData();
           InetSocketAddress clientSocketAddress = request.getSocketAddress();
           log.print(requestBytes.length + " bytes received");
-          
+
           byte[] responseData;
           try {
             responseData = application.handle(requestBytes, clientSocketAddress);
+            System.out.println("response length: " + responseData.length);
           } catch (Exception exception) {
             throw new RuntimeException(exception);
           }

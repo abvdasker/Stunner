@@ -20,7 +20,7 @@ class StunApplication {
     StunMessage response = buildResponse(request);
     return response.getBytes();
   }
-  
+
   public static StunMessage buildResponse(StunMessage request) throws UnsupportedStunClassException, StunParseException {
     StunHeader header = request.getHeader();
     MessageClass requestMessageClass = header.getMessageClass();
@@ -40,19 +40,19 @@ class StunApplication {
     default:
       throw new UnsupportedStunClassException(requestMessageClass);
     }
-    
+
     return response;
   }
-  
+
   public static StunMessage handleRequest(StunMessage request) throws StunParseException {
     StunMessage response = new StunResponseMessage(request);
     return response;
   }
-  
+
   //TODO: implement indication
   public static void handleIndication(StunMessage request) {
   }
-  
+
   public static class UnsupportedStunClassException extends Exception {
     
     public UnsupportedStunClassException(MessageClass messageClass) {

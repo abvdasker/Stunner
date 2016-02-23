@@ -73,8 +73,6 @@ public class StunHeader {
                                             int messageLength,
                                             byte[] transactionID) {
     byte[] headerBytes = new byte[HEADER_SIZE];
-    
-    // set the first two bytes (annoying due to mixed method and class encoding)
     byte[] firstTwoBytes = generateMessageClassAndMethodBytes(messageClass, method);
     headerBytes[0] = firstTwoBytes[0];
     headerBytes[1] = firstTwoBytes[1];
@@ -83,13 +81,10 @@ public class StunHeader {
     headerBytes[2] = messageLengthBytes[0];
     headerBytes[3] = messageLengthBytes[1];
     
-    // set next 4 bytes to the magic cookie by shifting and truncating
     headerBytes[4] = MagicCookie.getByte(3);
     headerBytes[5] = MagicCookie.getByte(2);
     headerBytes[6] = MagicCookie.getByte(1);
     headerBytes[7] = MagicCookie.getByte(0);
-    
-    // use built-in method to convert hex string to byte array to set next 24 bytes (96 bits) at indices 8-32
     
     return headerBytes;
   }
@@ -101,12 +96,12 @@ public class StunHeader {
     int lowerMessageClassBit = topMessageClassBit & 0b1;
     
     int methodTopFive = method >>> 7;
-    int firstByte = (method << 1);
+    int firstByte = (methodTopFive << 1);
     firstByte |= topMessageClassBit;
     firstTwoBytes[0] = (byte) firstByte;
     
     int methodBottomSeven = method & 0b01111111;
-    int secondByte = (lowerMessageClassBit << 7);
+    int secondByte = (lowerMessageClassBit << 4);
     secondByte |= methodBottomSeven;
     firstTwoBytes[1] = (byte) secondByte;
     return firstTwoBytes;

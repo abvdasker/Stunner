@@ -27,7 +27,7 @@ public class StunServerTest {
       StunTestClient client = new UDPStunTestClient(serverAddress);
       byte[] response = client.send(ClientTestData.BASIC_REQUEST_IPV4);
       StunMessage message = new StunMessage(response, serverAddress);
-      System.out.println("Server response: " + response);
+      System.out.println("Server response: " + response.length);
     } catch (SocketTimeoutException exception) {
       Assert.fail();
     } finally {
