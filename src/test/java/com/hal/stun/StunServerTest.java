@@ -31,6 +31,9 @@ public class StunServerTest {
       String expectedResponseHex = formatByteArray(ClientTestData.BASIC_RESPONSE_IPV4);
       String actualResponseHex = formatByteArray(response);
       System.out.println("expected response: \n" + expectedResponseHex + "\n\n actual response: \n" + actualResponseHex + " \n");
+      /* TODO: Need to compare specific data and attributes rather than whole 
+         response; alternately be able to run server in some sort of 
+         "test mode" for test vector compatibility */
       Assert.assertEquals("response message matches expected response",
                           ClientTestData.BASIC_RESPONSE_IPV4,
                           response);
