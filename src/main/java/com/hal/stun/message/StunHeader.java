@@ -85,7 +85,9 @@ public class StunHeader {
     headerBytes[5] = MagicCookie.getByte(2);
     headerBytes[6] = MagicCookie.getByte(1);
     headerBytes[7] = MagicCookie.getByte(0);
-    
+
+    System.arraycopy(transactionID, 0, headerBytes, 8, transactionID.length);
+
     return headerBytes;
   }
   
