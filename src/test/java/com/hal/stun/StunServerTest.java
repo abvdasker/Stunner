@@ -4,6 +4,8 @@ import com.hal.stun.socket.StunMessageSocket;
 import com.hal.stun.message.StunMessage;
 import java.net.InetSocketAddress;
 
+import javax.xml.bind.DatatypeConverter;
+
 import com.hal.stun.client.StunTestClient;
 import com.hal.stun.client.UDPStunTestClient;
 import com.hal.stun.client.data.ClientTestData;
@@ -26,9 +28,12 @@ public class StunServerTest {
         = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, StunMessageSocket.DEFAULT_PORT);
       StunTestClient client = new UDPStunTestClient(serverAddress);
       byte[] response = client.send(ClientTestData.BASIC_REQUEST_IPV4);
-      new StunMessage(response, serverAddress);
-      // TODO: Add expectations around response
-      System.out.println("Server response: " + response.length);
+      String expectedResponseHex = formatByteArray(ClientTestData.BASIC_RESPONSE_IPV4);
+      String actualResponseHex = formatByteArray(response);
+      System.out.println("expected response: \n" + expectedResponseHex + "\n\n actual response: \n" + actualResponseHex + " \n");
+      Assert.assertEquals("response message matches expected response",
+                          ClientTestData.BASIC_RESPONSE_IPV4,
+                          response);
     } catch (SocketTimeoutException exception) {
       Assert.fail();
     } finally {
@@ -49,5 +54,22 @@ public class StunServerTest {
     Thread serverThread = new Thread(server);
     serverThread.start();
     return serverThread;
+  }
+
+  private static String formatByteArray(byte[] bytes) {
+    String bytesHex = DatatypeConverter.printHexBinary(bytes);
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < bytesHex.length(); i++) {
+      char c = bytesHex.charAt(i);
+      if (i > 0) {
+        if (i % 8 == 0) {
+          buffer.append('\n');
+        } else if (i % 2 == 0) {
+          buffer.append(' ');
+        }
+      }
+      buffer.append(c);
+    }
+    return buffer.toString();
   }
 }
