@@ -89,7 +89,6 @@ public class StunAttribute {
       int arrayEnd = arrayStart + paddedLength;
       byte[] value = Arrays.copyOfRange(attributesBytes, arrayStart, arrayEnd);
 
-      System.out.println("type: " + attributeType + ", length: " + length + ", padded length: " + paddedLength);
       AttributeType type;
       try {
         type = AttributeType.fromBytes((short) attributeType);
