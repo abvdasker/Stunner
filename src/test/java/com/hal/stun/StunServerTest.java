@@ -1,13 +1,11 @@
 package com.hal.stun;
 
 import com.hal.stun.socket.StunMessageSocket;
-import com.hal.stun.message.StunMessage;
 import java.net.InetSocketAddress;
 
 import com.hal.stun.client.StunTestClient;
 import com.hal.stun.client.UDPStunTestClient;
 import com.hal.stun.client.data.ClientTestData;
-import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 import org.junit.Test;
 import org.junit.Before;
