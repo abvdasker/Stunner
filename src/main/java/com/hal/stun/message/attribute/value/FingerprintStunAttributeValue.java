@@ -8,7 +8,7 @@ import java.util.zip.CRC32;
 public class FingerprintStunAttributeValue extends StunAttributeValue {
 
   private static final long XOR_VALUE = 0x5354554e;
-  private static final int VALUE_SIZE_BYTES = 4;
+  public static final int VALUE_SIZE_BYTES = 4;
 
   public FingerprintStunAttributeValue(byte[] value) throws StunParseException {
     super(value);
@@ -21,13 +21,21 @@ public class FingerprintStunAttributeValue extends StunAttributeValue {
   public void parseValueBytes() throws StunParseException {
   }
 
+  public void update(byte[] messageBytes) {
+    this.value = fingerprint(messageBytes);
+  }
+
   public boolean verifyMessageIntegrity(byte[] messageBytes) {
+    byte[] fingerprint = fingerprint(messageBytes);
+    return fingerprint == value;
+  }
+
+  private byte[] fingerprint(byte[] messageBytes) {
     CRC32 crc = new CRC32();
     crc.update(messageBytes);
     long crcResult = crc.getValue();
     byte[] result = StunMessageUtils.convert((int) crcResult);
     byte[] xORValueBytes = StunMessageUtils.convert((int) XOR_VALUE);
-    byte[] xORedResult = StunMessageUtils.xOR(result, xORValueBytes);
-    return xORedResult == value;
+    return StunMessageUtils.xOR(result, xORValueBytes);
   }
 }

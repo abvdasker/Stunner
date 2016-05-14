@@ -6,7 +6,7 @@ public class StunHeader {
   
   // NEVER FORGET to mask when upcasting from unsigned byte to int
   public static final int HEADER_SIZE = 20;
-  public static final short BINDING_METHOD = 0b000000000001;
+  public static final short BINDING_METHOD = 0b1;
   
   private byte[] headerBytes;
   private MessageClass messageClass;
@@ -93,9 +93,9 @@ public class StunHeader {
   
   private static byte[] generateMessageClassAndMethodBytes(MessageClass messageClass, short method) {
     byte[] firstTwoBytes = new byte[2];
-    int messageClassBits = messageClass.getClassBits() & MASK;
+    int messageClassBits = messageClass.getClassBits();
     int topMessageClassBit = messageClassBits >>> 1;
-    int lowerMessageClassBit = topMessageClassBit & 0b1;
+    int lowerMessageClassBit = messageClassBits & 0b1;
     
     int methodTopFive = method >>> 7;
     int firstByte = (methodTopFive << 1);

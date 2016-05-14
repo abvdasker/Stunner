@@ -9,6 +9,8 @@ import java.net.InetSocketAddress;
 
 public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttributeValue {
 
+  private static InetSocketAddress overrideAddress = null;
+
   public XORMappedAddressStunAttributeValue(byte[] value) throws StunParseException {
     super(value);
   }
@@ -19,6 +21,9 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
   }
 
   private static byte[] generateFrom(InetSocketAddress address, byte[] transactionID) {
+    if (overrideAddress != null) {
+      address = overrideAddress;
+    }
     InetAddress baseAddress = address.getAddress();
     byte[] addressBytes = baseAddress.getAddress();
 
@@ -109,5 +114,9 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
 
   private static short unsignShort(int number) {
     return (short) (number & StunMessageUtils.MASK);
+  }
+
+  public static void setOverrideAddress(InetSocketAddress address) {
+    overrideAddress = address;
   }
 }

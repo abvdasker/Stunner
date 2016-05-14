@@ -19,16 +19,16 @@ public enum AttributeType {
   // 16-bit attribute type
 
   // required
-  MAPPED_ADDRESS     ((short) 0x0001, MappedAddressStunAttributeValue.class),
   XOR_MAPPED_ADDRESS ((short) 0x0020, XORMappedAddressStunAttributeValue.class),
   FINGERPRINT        ((short) 0x8028, FingerprintStunAttributeValue.class),
-  USERNAME           ((short) 0x0006, UsernameStunAttributeValue.class),
-  MESSAGE_INTEGRITY  ((short) 0x0008, MessageIntegrityStunAttributeValue.class),
 
   // optional
   SOFTWARE           ((short) 0x8022, SoftwareStunAttributeValue.class),
   PRIORITY           ((short) 0x0024, PriorityStunAttributeValue.class),
-  ICE_CONTROLLED     ((short) 0x8029, ICEControlledStunAttributeValue.class);
+  ICE_CONTROLLED     ((short) 0x8029, ICEControlledStunAttributeValue.class),
+  USERNAME           ((short) 0x0006, UsernameStunAttributeValue.class),
+  MESSAGE_INTEGRITY  ((short) 0x0008, MessageIntegrityStunAttributeValue.class),
+  MAPPED_ADDRESS     ((short) 0x0001, MappedAddressStunAttributeValue.class);
   
   private short type;
   private Class<? extends StunAttributeValue> attributeValueClass;

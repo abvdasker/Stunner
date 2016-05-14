@@ -4,6 +4,7 @@ import com.hal.stun.message.attribute.AttributeType;
 import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.SoftwareStunAttributeValue;
+import com.hal.stun.message.attribute.value.FingerprintStunAttributeValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +17,21 @@ public class StunResponseMessage extends StunMessage {
   // TODO: fix data modeling. Avoid multiple constructors of superclass
   public StunResponseMessage(StunMessage requestMessage) throws StunParseException {
     super();
-    this.attributes = buildResponseAttributes(requestMessage);
+    attributes = buildResponseAttributes(requestMessage);
     int messageLength = getAttributeListByteLength(attributes);
-    this.header = new StunHeader(
+    header = new StunHeader(
       MessageClass.SUCCESS,
       StunHeader.BINDING_METHOD,
       messageLength,
       requestMessage.getHeader().getTransactionID()
     );
+    for (StunAttribute attribute : attributes) {
+      if (attribute.getAttributeType() == AttributeType.FINGERPRINT) {
+        FingerprintStunAttributeValue value = (FingerprintStunAttributeValue) attribute.getValue();
+        value.update(getBytesNoFingerprint());
+        break;
+      }
+    }
   }
 
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) throws StunParseException {
@@ -40,8 +48,12 @@ public class StunResponseMessage extends StunMessage {
       XORMappedAddressStunAttributeValue xORMappedAddress = new XORMappedAddressStunAttributeValue(request.getAddress(), header.getTransactionID());
       byte[] attributeValueBytes = xORMappedAddress.getBytes();
       StunAttribute xORAddressAttribute = new StunAttribute(AttributeType.XOR_MAPPED_ADDRESS, attributeValueBytes.length, attributeValueBytes);
-      // TODO: pad attribute bytes up to nearest multiple of 4
       attributes.add(xORAddressAttribute);
+
+      StunAttribute fingerprintAttribute = new StunAttribute(AttributeType.FINGERPRINT,
+                                                             FingerprintStunAttributeValue.VALUE_SIZE_BYTES,
+                                                             new byte[FingerprintStunAttributeValue.VALUE_SIZE_BYTES]);
+      attributes.add(fingerprintAttribute);
     }
     return attributes;
   }

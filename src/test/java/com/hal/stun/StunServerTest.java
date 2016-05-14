@@ -8,6 +8,7 @@ import com.hal.stun.client.StunTestClient;
 import com.hal.stun.client.UDPStunTestClient;
 import com.hal.stun.client.data.ClientTestData;
 import com.hal.stun.message.StunMessageUtils;
+import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.Assert;
@@ -17,6 +18,13 @@ import java.net.SocketTimeoutException;
 public class StunServerTest {
 
   private static final String LOCAL_SERVER_ADDRESS_V4 = "127.0.0.1";
+
+  @Before
+  public void beforeEach() {
+    // hack to avoid binding socket to unavailable port
+    InetSocketAddress fakeRequestAddress = new InetSocketAddress("192.0.2.1", 32853);
+    XORMappedAddressStunAttributeValue.setOverrideAddress(fakeRequestAddress);
+  }
 
   @Test
   public void testUDPOverIPv4() throws Exception {
@@ -30,12 +38,9 @@ public class StunServerTest {
       String expectedResponseHex = StunMessageUtils.formatByteArray(ClientTestData.BASIC_RESPONSE_IPV4);
       String actualResponseHex = StunMessageUtils.formatByteArray(response);
       System.out.println("expected response: \n" + expectedResponseHex + "\n\n actual response: \n" + actualResponseHex + " \n");
-      /* TODO: Need to compare specific data and attributes rather than whole 
-         response; alternately be able to run server in some sort of 
-         "test mode" for test vector compatibility */
-      Assert.assertEquals("response message matches expected response",
-                          ClientTestData.BASIC_RESPONSE_IPV4,
-                          response);
+      Assert.assertArrayEquals("response message matches expected response",
+                               ClientTestData.BASIC_RESPONSE_IPV4,
+                               response);
     } catch (SocketTimeoutException exception) {
       Assert.fail();
     } finally {

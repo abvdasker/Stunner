@@ -4,7 +4,7 @@ import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.StunParseException;
 
 public abstract class StunAttributeValue {
-  
+
   protected byte[] value;
   public StunAttributeValue(byte[] value) throws StunParseException {
     this.value = value;
