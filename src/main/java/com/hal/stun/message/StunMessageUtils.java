@@ -2,6 +2,7 @@ package com.hal.stun.message;
 
 import java.util.List;
 import java.nio.ByteBuffer;
+import javax.xml.bind.DatatypeConverter;
 
 public class StunMessageUtils {
 
@@ -150,6 +151,23 @@ public class StunMessageUtils {
       } else {
         buffer.append(' ');
       }
+    }
+    return buffer.toString();
+  }
+
+  public static String formatByteArray(byte[] bytes) {
+    String bytesHex = DatatypeConverter.printHexBinary(bytes);
+    StringBuffer buffer = new StringBuffer();
+    for (int i = 0; i < bytesHex.length(); i++) {
+      char c = bytesHex.charAt(i);
+      if (i > 0) {
+        if (i % 8 == 0) {
+          buffer.append('\n');
+        } else if (i % 2 == 0) {
+          buffer.append(' ');
+        }
+      }
+      buffer.append(c);
     }
     return buffer.toString();
   }

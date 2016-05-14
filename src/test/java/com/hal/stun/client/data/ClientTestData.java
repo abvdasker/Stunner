@@ -66,4 +66,24 @@ public class ClientTestData {
     }
     return converted;
   }
+
+  public static byte[] getTransactionID() {
+    byte[] transactionId = new byte[12];
+    int offset = 8;
+    for (int i = offset; i < offset + transactionId.length; i++) {
+      int transactionIdIndex = i - offset;
+      transactionId[transactionIdIndex] = BASIC_REQUEST_IPV4[i];
+    }
+    return transactionId;
+  }
+
+  public static byte[] getXORMappedAddressBytesV4() {
+    byte[] xORMappedAddressBytes = new byte[8];
+    int offset = 40;
+    for (int i = offset; i < offset + xORMappedAddressBytes.length; i++) {
+      int addressIndex = i - offset;
+      xORMappedAddressBytes[addressIndex] = BASIC_RESPONSE_IPV4[i];
+    }
+    return xORMappedAddressBytes;
+  }
 }
