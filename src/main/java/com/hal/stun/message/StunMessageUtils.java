@@ -32,7 +32,6 @@ public class StunMessageUtils {
                                                 int bytesToExtract,
                                                 boolean preserveLeadingZeroes) {
     StringBuffer outputBuffer = new StringBuffer();
-    int endIndex = startByteIndex + bytesToExtract;
 
     int chunk = 0;
     for (int i = 0; i < bytesToExtract; i++) {

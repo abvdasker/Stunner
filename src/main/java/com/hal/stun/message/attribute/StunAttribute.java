@@ -77,7 +77,6 @@ public class StunAttribute {
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     
     int offset = 0;
-    int attributeCount = 1;
     int paddedLength = 0;
     while (offset + paddedLength < attributesBytes.length) {
       int attributeType = StunMessageUtils.extractByteSequence(attributesBytes, offset, 2);

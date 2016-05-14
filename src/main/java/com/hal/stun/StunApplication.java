@@ -9,10 +9,6 @@ import com.hal.stun.message.StunParseException;
 import java.net.InetSocketAddress;
 
 class StunApplication {
-  
-  public StunApplication() {
-  }
-
   // handler also needs some info about the connection like
   // source IP, request received time, etc.
   public byte[] handle(byte[] rawRequest, InetSocketAddress address) throws UnsupportedStunClassException, StunParseException {

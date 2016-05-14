@@ -74,14 +74,7 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
     thisPort |= (value[3] & StunMessageUtils.MASK);
     return thisPort;
   }
-  
-  private void printBytes() {
-    System.out.println("attribute contents");
-    for (int i = 0; i < value.length; i++) {
-      System.out.println(i + ": " + (value[i] & StunMessageUtils.MASK));
-    }
-  }
-  
+
   protected boolean isValid() {
     if (value[0] != 0) {
       return false;
