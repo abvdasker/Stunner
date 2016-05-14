@@ -12,7 +12,6 @@ public class StunMessageUtils {
     if (bytesToExtract > 4) {
       throw new RuntimeException("cannot cram more than 4 bytes into an int");
     }
-    int endIndex = startByteIndex + bytesToExtract;
     
     int bytesAsInt = 0;
     for (int i = 0; i < bytesToExtract; i++) {
