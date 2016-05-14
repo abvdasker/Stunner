@@ -35,9 +35,6 @@ public class StunServerTest {
         = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, StunMessageSocket.DEFAULT_PORT);
       StunTestClient client = new UDPStunTestClient(serverAddress);
       byte[] response = client.send(ClientTestData.BASIC_REQUEST_IPV4);
-      String expectedResponseHex = StunMessageUtils.formatByteArray(ClientTestData.BASIC_RESPONSE_IPV4);
-      String actualResponseHex = StunMessageUtils.formatByteArray(response);
-      System.out.println("expected response: \n" + expectedResponseHex + "\n\n actual response: \n" + actualResponseHex + " \n");
       Assert.assertArrayEquals("response message matches expected response",
                                ClientTestData.BASIC_RESPONSE_IPV4,
                                response);
