@@ -5,6 +5,7 @@ import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.StunParseException;
 import java.util.zip.CRC32;
 
+// TODO: write a spec of this using the payload from the test vector
 public class FingerprintStunAttributeValue extends StunAttributeValue {
 
   private static final long XOR_VALUE = 0x5354554e;
