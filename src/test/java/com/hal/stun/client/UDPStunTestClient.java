@@ -9,17 +9,19 @@ import java.net.DatagramPacket;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.SocketException;
 
 public class UDPStunTestClient extends StunTestClient {
 
   private static final int DEFAULT_TIMEOUT_MILLIS = 1000;
 
-  public UDPStunTestClient(InetSocketAddress socketAddress) {
+  private static DatagramSocket socket;
+  public UDPStunTestClient(InetSocketAddress socketAddress) throws SocketException {
     super(socketAddress);
+    socket = new DatagramSocket(StunMessageSocket.DEFAULT_PORT + 1);
   }
 
   public byte[] send(byte[] data) throws IOException, SocketTimeoutException {
-    DatagramSocket socket = new DatagramSocket(StunMessageSocket.DEFAULT_PORT + 1);
     DatagramPacket request = new DatagramPacket(data, data.length, serverAddress);
     socket.send(request);
 

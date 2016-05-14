@@ -53,6 +53,27 @@ public class ClientTestData {
   };
   public static final byte[] BASIC_RESPONSE_IPV4 = convertToBytes(UNCONVERTED_BASIC_RESPONSE_IPV4);
 
+  public static final int[] UNCONVERTED_BASIC_RESPONSE_IPV6 = {
+    0x01, 0x01, 0x00, 0x30, // Response type and message length
+    0x21, 0x12, 0xa4, 0x42, // Magic cookie
+    0xb7, 0xe7, 0xa7, 0x01, // }
+    0xbc, 0x34, 0xd6, 0x86, // }  Transaction ID
+    0xfa, 0x87, 0xdf, 0xae, // }
+    0x80, 0x22, 0x00, 0x0b, // SOFTWARE attribute header
+    0x74, 0x65, 0x73, 0x74, // }
+    0x20, 0x76, 0x65, 0x63, // }  UTF-8 server name
+    0x74, 0x6f, 0x72, 0x00, // } <- last byte is unimportant padded value
+    0x00, 0x20, 0x00, 0x14, // XOR-MAPPED-ADDRESS attribute header
+    0x00, 0x02, 0xa1, 0x47, // Address family (IPv6) and xor'd mapped port number
+    0x01, 0x13, 0xa9, 0xfa, // }
+    0xa5, 0xd3, 0xf1, 0x79, // }  Xor'd mapped IPv6 address
+    0xbc, 0x25, 0xf4, 0xb5, // }
+    0xbe, 0xd2, 0xb9, 0xd9, // }
+    0x80, 0x28, 0x00, 0x04, // FINGERPRINT attribute header
+    0x3b, 0xb2, 0x57, 0x9e  // CRC32 fingerprint
+  };
+  public static final byte[] BASIC_RESPONSE_IPV6 = convertToBytes(UNCONVERTED_BASIC_RESPONSE_IPV6);
+
   public static byte[] convertToBytes(int[] unconverted) {
     byte[] converted = new byte[unconverted.length];
     for (int i = 0; i < unconverted.length; i++) {
