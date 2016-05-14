@@ -19,10 +19,6 @@ public class SoftwareStunAttributeValue extends StunAttributeValue {
     super(buildValueBytes(softwareName));
   }
 
-  public String getMessage() {
-    return message;
-  }
-
   protected void parseValueBytes() throws StunParseException {
     try {
       message = new String(value, MESSAGE_ENCODING);

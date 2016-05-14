@@ -18,12 +18,11 @@ public class SoftwareStunAttributeValueTest {
 
   @Test
   public void testInitialize() throws Exception {
-    new SoftwareStunAttributeValue(SOFTWARE_ATTRIBUTE_VALUE);
-  }
-
-  @Test
-  public void testGetValue() throws Exception {
-    new SoftwareStunAttributeValue(SOFTWARE_ATTRIBUTE_VALUE);
+    try {
+      new SoftwareStunAttributeValue(SOFTWARE_ATTRIBUTE_VALUE);
+    } catch (Exception exception) {
+      Assert.fail();
+    }
   }
 
   @Test(expected = StunParseException.class)
