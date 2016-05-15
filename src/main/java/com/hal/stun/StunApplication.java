@@ -23,11 +23,9 @@ class StunApplication {
     StunMessage response;
     switch(requestMessageClass) {
     case REQUEST:
-      System.out.println("REQUEST");
       response = handleRequest(request);
       break;
     case INDICATION:
-      System.out.println("INDICATION");
       handleIndication(request);
       response = null;
       break;
