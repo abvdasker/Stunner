@@ -84,21 +84,25 @@ public class ClientTestData {
 
   public static byte[] getTransactionID() {
     byte[] transactionId = new byte[12];
-    int offset = 8;
-    for (int i = offset; i < offset + transactionId.length; i++) {
-      int transactionIdIndex = i - offset;
-      transactionId[transactionIdIndex] = BASIC_REQUEST_IPV4[i];
-    }
+    System.arraycopy(BASIC_REQUEST_IPV4, 8, transactionId, 0, transactionId.length);
     return transactionId;
   }
 
   public static byte[] getXORMappedAddressBytesV4() {
     byte[] xORMappedAddressBytes = new byte[8];
-    int offset = 40;
-    for (int i = offset; i < offset + xORMappedAddressBytes.length; i++) {
-      int addressIndex = i - offset;
-      xORMappedAddressBytes[addressIndex] = BASIC_RESPONSE_IPV4[i];
-    }
+    System.arraycopy(BASIC_RESPONSE_IPV4, 40, xORMappedAddressBytes, 0, xORMappedAddressBytes.length);
     return xORMappedAddressBytes;
+  }
+
+  public static byte[] getMessageNoFingerprintV6() {
+    byte[] messageNoFingerprint = new byte[BASIC_RESPONSE_IPV6.length - 8];
+    System.arraycopy(BASIC_RESPONSE_IPV6, 0, messageNoFingerprint, 0, messageNoFingerprint.length);
+    return messageNoFingerprint;
+  }
+
+  public static byte[] getFingerprintValueV6() {
+    byte[] fingerprintValue = new byte[4];
+    System.arraycopy(BASIC_RESPONSE_IPV6, BASIC_RESPONSE_IPV6.length - 4, fingerprintValue, 0, fingerprintValue.length);
+    return fingerprintValue;
   }
 }

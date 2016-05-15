@@ -11,7 +11,7 @@ public abstract class StunAttributeValue {
     parseValueBytes();
     validate();
   }
-  
+
   private void validate() throws StunParseException {
     if (!isValid()) {
       String attributeValueHex = StunMessageUtils.convertByteArrayToHex(value);
@@ -33,5 +33,4 @@ public abstract class StunAttributeValue {
   // TODO: make exception more specific
   protected abstract void parseValueBytes() throws StunParseException;
   protected abstract boolean isValid();
-  
 }
