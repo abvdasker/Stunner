@@ -10,8 +10,9 @@ Roadmap to 1.0
 1. [x] Data modeling, request/response business logic
 2. [x] UDP Support
 3. [x] TCP support
-4. [ ] Integration testing with [RFC 5769](https://tools.ietf.org/html/rfc5769) test vectors & simple client
+4. [x] Integration testing with [RFC 5769](https://tools.ietf.org/html/rfc5769) test vectors & simple client
 5. [ ] Improved CLI
+6. [ ] Threadpooled request handling
 
 Building
 ---
