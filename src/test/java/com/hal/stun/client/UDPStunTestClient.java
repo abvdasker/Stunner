@@ -25,7 +25,6 @@ public class UDPStunTestClient extends StunTestClient {
 
     byte[] responseData = new byte[StunMessageSocket.MAX_PACKET_SIZE_BYTES];
     DatagramPacket response = new DatagramPacket(responseData, responseData.length);
-    socket.setSoTimeout(DEFAULT_TIMEOUT_MILLIS);
     socket.receive(response);
 
     return UDPStunMessageSocket.getDataFromPacket(response);
