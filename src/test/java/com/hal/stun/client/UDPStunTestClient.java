@@ -13,11 +13,9 @@ import java.net.SocketException;
 
 public class UDPStunTestClient extends StunTestClient {
 
-  private static final int DEFAULT_TIMEOUT_MILLIS = 1000;
-
   private static DatagramSocket socket;
-  public UDPStunTestClient(InetSocketAddress socketAddress) throws SocketException {
-    super(socketAddress);
+  public UDPStunTestClient(InetSocketAddress serverAddress) throws SocketException {
+    super(serverAddress);
     socket = new DatagramSocket(StunMessageSocket.DEFAULT_PORT + 1);
   }
 
@@ -31,5 +29,10 @@ public class UDPStunTestClient extends StunTestClient {
     socket.receive(response);
 
     return UDPStunMessageSocket.getDataFromPacket(response);
+  }
+
+  public void close() {
+    socket.disconnect();
+    socket.close();
   }
 }

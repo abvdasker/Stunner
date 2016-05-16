@@ -1,5 +1,7 @@
 package com.hal.stun.socket;
 
+import com.hal.stun.message.StunMessageUtils;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.InetAddress;
@@ -34,7 +36,9 @@ public class TCPStunMessageSocket extends StunMessageSocket {
     NetworkMessage request = receive(connection);
     NetworkMessage response = handler.handle(request);
     transmit(connection, response);
-    connection.close();
+    if (!connection.isClosed()) {
+      connection.close();
+    }
   }
 
   private NetworkMessage receive(Socket connection) throws IOException {
@@ -51,24 +55,21 @@ public class TCPStunMessageSocket extends StunMessageSocket {
     OutputStream output = connection.getOutputStream();
     output.write(response.getData());
     output.flush();
+    connection.shutdownOutput();
   }
 
   private byte[] getRequestData(InputStream input) throws IOException {
-    BufferedInputStream bufferedInput;
-    if (input instanceof BufferedInputStream) {
-      bufferedInput = (BufferedInputStream) input;
-    } else {
-      bufferedInput = new BufferedInputStream(input);
-    }
     ByteBuffer byteBuffer = ByteBuffer.allocate(MAX_PACKET_SIZE_BYTES);
-    byte inputByte;
-    while((inputByte = (byte) bufferedInput.read()) != -1) {
-      byteBuffer.put(inputByte);
+    int inputByte;
+    while((inputByte = input.read()) != -1) {
+      byteBuffer.put((byte) inputByte);
     }
 
-    bufferedInput.close();
-    byteBuffer.compact();
-    return byteBuffer.array();
+    int bytesRead = byteBuffer.position();
+    byte[] request = new byte[bytesRead];
+    System.arraycopy(byteBuffer.array(), 0, request, 0, bytesRead);
+
+    return request;
   }
 
 }
