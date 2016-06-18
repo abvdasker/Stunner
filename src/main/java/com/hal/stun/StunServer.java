@@ -15,25 +15,35 @@ public class StunServer {
 
   private static final Logger log = new Logger();
 
-  public static final int DEFAULT_TCP_PORT = 8000;
-  public static final int DEFAULT_UDP_PORT = 8001;
+  private static Arguments parsedArgs;
 
   public static void main(String[] args) throws IOException, Exception {
-    Thread tcpServerThread = createTCPServer();
-    Thread udpServerThread = createUDPServer();
-    tcpServerThread.start();
-    udpServerThread.start();
+    parsedArgs = new ArgumentParser(args).parse();
+
+    boolean runUDP = parsedArgs.get("--udp");
+    boolean runTCP = parsedArgs.get("--tcp");
+
+    if (runUDP) {
+      Thread tcpServerThread = createTCPServer();
+      udpServerThread.start();
+    }
+    if (runTCP) {
+      Thread udpServerThread = createUDPServer();
+      tcpServerThread.start();
+    }
   }
 
   private static Thread createTCPServer() throws IOException {
     final StunHandler handler = createStunHandler();
-    final StunMessageSocket tcpSocket = new TCPStunMessageSocket(DEFAULT_TCP_PORT);
+    int tcpPort = parsedArgs.getInt("--tcpport");
+    final StunMessageSocket tcpSocket = new TCPStunMessageSocket(tcpPort);
     return new Thread(createServer(tcpSocket, handler));
   }
 
   private static Thread createUDPServer() throws IOException {
     final StunHandler handler = createStunHandler();
-    final StunMessageSocket udpSocket = new UDPStunMessageSocket(DEFAULT_UDP_PORT);
+    int udpPort = parsedArgs.getInt("--udpport");
+    final StunMessageSocket udpSocket = new UDPStunMessageSocket(udpPort);
     return new Thread(createServer(udpSocket, handler));
   }
 

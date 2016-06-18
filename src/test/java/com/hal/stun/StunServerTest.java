@@ -1,13 +1,14 @@
 package com.hal.stun;
 
 import com.hal.stun.socket.StunMessageSocket;
-import java.net.InetSocketAddress;
-
+import com.hal.stun.cli.ArgumentParser;
 import com.hal.stun.client.StunTestClient;
 import com.hal.stun.client.UDPStunTestClient;
 import com.hal.stun.client.TCPStunTestClient;
 import com.hal.stun.client.data.ClientTestData;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
+import java.net.InetSocketAddress;
+
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -38,7 +39,7 @@ public class StunServerTest {
     // hack to avoid binding socket to unavailable port
     setOverrideAddress("192.0.2.1");
     InetSocketAddress serverAddress
-      = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, StunServer.DEFAULT_UDP_PORT);
+      = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, ArgumentParser.DEFAULT_UDP_PORT);
 
     StunTestClient client = new UDPStunTestClient(serverAddress);
     try {
@@ -56,7 +57,7 @@ public class StunServerTest {
     // hack to avoid binding socket to unavailable port
     setOverrideAddress("2001:db8:1234:5678:11:2233:4455:6677");
     InetSocketAddress serverAddress
-      = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, StunServer.DEFAULT_UDP_PORT);
+      = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, ArgumentParser.DEFAULT_UDP_PORT);
 
     StunTestClient client = new UDPStunTestClient(serverAddress);
     try {
@@ -73,7 +74,7 @@ public class StunServerTest {
   public void testIPv4OverTCP() throws Exception {
     setOverrideAddress("192.0.2.1");
     InetSocketAddress serverAddress
-      = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, StunServer.DEFAULT_TCP_PORT);
+      = new InetSocketAddress(LOCAL_SERVER_ADDRESS_V4, ArgumentParser.DEFAULT_TCP_PORT);
 
     StunTestClient client = new TCPStunTestClient(serverAddress);
     try {

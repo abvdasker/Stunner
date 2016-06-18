@@ -3,47 +3,56 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 
 public class ArgumentParser {
 
-  // --uport (-up), --tport (-tp), --udp(-udp), --tcp(-tcp), --threads(-t)
+  public static final int DEFAULT_TCP_PORT = 8000;
+  public static final int DEFAULT_UDP_PORT = 8001;
 
   private List<String> args;
   public ArgumentParser(String[] args) {
     this.args = Arrags.asList(args);
   }
 
-  public Map<String, Argument> parse() throws ArgumentParseException {
-    Mpp<String, Argument> parsedArguments = new HashMap<String, String>();
-    for (ArgumentDefinition definition : argumentDefinitions) {
-      int indexOfArg = args.indexOf(definition.getKey());
-
-      Argument newArgument;
-      if (indexOfArg != -1) {
-        newArgument = parseArgument(indexOfArg, args, definition);
-      } else if (definition.hasDefault()) {
-        newArgument = definition.getDefault();
-      } else {
-        throw new ArgumentParseException("Missing required argument" + definition.getKey());
-      }
-      parsedArguments.put(newArgument.getName(), newArgument);
-    }
-    return parsedArguments;
+  public Arguments parse() throws ArgumentParseException {
+    Map<String, String> parsedArguments = new HashMap<String, String>();
+    addValue(parsedArguments, "--tcpport", "-tport", DEFAULT_TCP_PORT + "");
+    addValue(parsedArguments, "--udpport", "-uport", DEFAULT_UDP_PORT + "");
+    addValue(parsedArguments, "--threads", "-t", "2");
+    addFlagValue(parsedArguments, "--udp", "-tcp", "false");
+    addFlagValue(parsedArguments, "--tcp", "-tcp", "true");
+    return new Arguments(parsedArguments);
   }
 
-  private static Argument parseArgument(int index, List<String> args, ArgumentDefinition definition) {
-    Argument parsedArgument;
-    if (definition.isFlag()) {
-      parsedArgument = new Argument(args[index]);
-    } else {
-      if (index + 1 >= args.length) {
-        throw new ArgumentParseException("Missing value of argument " + args[index]);
-      } else {
-        parsedArgument = new Argument(args[index], args[index + 1]);
-      }
+  private void addValue(Map<String, String> parsedArguments, String name, String shortName, String defaultValue) throws ArgumentParseException {
+    int index = args.indexOf(name);
+    if (index == -1) {
+      index = args.indexOf(shortName);
     }
 
-    return parsedArgument;
+    if (index != -1) {
+      String value;
+      try {
+        value = args.get(index + 1);
+      } catch (IndexOutOfBoundsException exception) {
+        throw new ArgumentParseException("Missing value for arg " + args.get(index));
+      }
+      parsedArguments.put(name, value);
+    } else {
+      parsedArguments.put(name, defaultValue);
+    }
+  }
+
+  private void addFlagValue(Map<String, String> parsedArguments, String name, String shortName, String defaultValue) throws ArgumentParseException {
+    int index = args.indexOf(name);
+    if (index == -1) {
+      index = args.indexOf(shortName);
+    }
+
+    if (index != -1) {
+      parsedArguments.put(name, "true");
+    } else {
+      parsedArguments.put(name, defaultValue);
+    }
   }
 }
