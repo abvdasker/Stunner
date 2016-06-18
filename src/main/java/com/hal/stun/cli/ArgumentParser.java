@@ -11,7 +11,7 @@ public class ArgumentParser {
 
   private List<String> args;
   public ArgumentParser(String[] args) {
-    this.args = Arrags.asList(args);
+    this.args = Arrays.asList(args);
   }
 
   public Arguments parse() throws ArgumentParseException {

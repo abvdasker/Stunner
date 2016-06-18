@@ -6,6 +6,8 @@ import com.hal.stun.socket.TCPStunMessageSocket;
 import com.hal.stun.socket.NetworkMessage;
 import com.hal.stun.socket.StunHandler;
 import com.hal.stun.log.Logger;
+import com.hal.stun.cli.ArgumentParser;
+import com.hal.stun.cli.Arguments;
 
 import java.net.InetSocketAddress;
 
@@ -20,16 +22,16 @@ public class StunServer {
   public static void main(String[] args) throws IOException, Exception {
     parsedArgs = new ArgumentParser(args).parse();
 
-    boolean runUDP = parsedArgs.get("--udp");
-    boolean runTCP = parsedArgs.get("--tcp");
+    boolean runUDP = parsedArgs.getBoolean("--udp");
+    boolean runTCP = parsedArgs.getBoolean("--tcp");
 
     if (runUDP) {
       Thread tcpServerThread = createTCPServer();
-      udpServerThread.start();
+      tcpServerThread.start();
     }
     if (runTCP) {
       Thread udpServerThread = createUDPServer();
-      tcpServerThread.start();
+      udpServerThread.start();
     }
   }
 
