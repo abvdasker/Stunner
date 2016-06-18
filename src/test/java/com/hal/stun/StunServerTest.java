@@ -21,6 +21,9 @@ public class StunServerTest {
 
   private static final String LOCAL_SERVER_ADDRESS_V4 = "127.0.0.1";
   private static final int TEST_PORT = 32853;
+  private static final String[] TEST_ARGS = {
+    "--udp", "--tcp"
+  };
 
   private static Thread serverThread;
 
@@ -92,7 +95,7 @@ public class StunServerTest {
     Runnable server = new Runnable() {
         public void run() {
           try {
-            StunServer.main(new String[0]);
+            StunServer.main(TEST_ARGS);
             synchronized (mutex) {
               mutex.notifyAll();
             }
