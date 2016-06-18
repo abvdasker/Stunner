@@ -19,7 +19,6 @@ public class StunServer {
   public static final int DEFAULT_UDP_PORT = 8001;
 
   public static void main(String[] args) throws IOException, Exception {
-
     Thread tcpServerThread = createTCPServer();
     Thread udpServerThread = createUDPServer();
     tcpServerThread.start();
