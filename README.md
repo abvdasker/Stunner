@@ -12,8 +12,9 @@ Roadmap to 1.0
 3. [x] TCP support
 4. [x] Integration testing with [RFC 5769](https://tools.ietf.org/html/rfc5769) test vectors & simple client
 5. [ ] Improved CLI
-6. [ ] Threadpooled request handling
-7. [ ] General cleanup and refactoring
+6. [ ] Logging
+7. [ ] Threadpooled request handling
+8. [ ] General cleanup and refactoring
 
 Building
 ---
