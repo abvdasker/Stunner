@@ -87,10 +87,14 @@ public class StunServerTest {
   }
 
   private static Thread startServer() {
+    final Object mutex = new Object();
     Runnable server = new Runnable() {
         public void run() {
           try {
             StunServer.main(new String[0]);
+            synchronized (mutex) {
+              mutex.notifyAll();
+            }
           } catch (Exception exception) {
             throw new RuntimeException(exception);
           }
@@ -98,6 +102,13 @@ public class StunServerTest {
       };
     Thread serverThread = new Thread(server);
     serverThread.start();
+    try {
+      synchronized (mutex) {
+        mutex.wait(1000);
+      }
+    } catch (InterruptedException exception) {
+      System.out.println("interrupted while waiting on mutex!");
+    }
     return serverThread;
   }
 
