@@ -14,7 +14,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
 
-import java.net.SocketTimeoutException;
 import java.net.SocketException;
 
 public class StunServerTest {

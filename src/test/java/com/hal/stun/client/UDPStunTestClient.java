@@ -13,7 +13,7 @@ import java.net.SocketException;
 
 public class UDPStunTestClient extends StunTestClient {
 
-  private static DatagramSocket socket;
+  private DatagramSocket socket;
   public UDPStunTestClient(InetSocketAddress serverAddress) throws SocketException {
     super(serverAddress);
     socket = new DatagramSocket(StunMessageSocket.DEFAULT_PORT + 1);

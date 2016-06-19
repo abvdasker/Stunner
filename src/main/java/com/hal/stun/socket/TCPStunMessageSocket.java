@@ -1,7 +1,5 @@
 package com.hal.stun.socket;
 
-import com.hal.stun.message.StunMessageUtils;
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.InetAddress;

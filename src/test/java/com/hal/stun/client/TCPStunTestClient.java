@@ -1,7 +1,6 @@
 package com.hal.stun.client;
 
 import com.hal.stun.socket.StunMessageSocket;
-import com.hal.stun.message.StunMessageUtils;
 
 import java.net.Socket;
 import java.net.InetSocketAddress;
@@ -12,7 +11,7 @@ import java.io.IOException;
 
 public class TCPStunTestClient extends StunTestClient {
 
-  private static Socket socket;
+  private Socket socket;
   public TCPStunTestClient(InetSocketAddress serverAddress) throws IOException {
     super(serverAddress);
     socket = new Socket(serverAddress.getAddress(), serverAddress.getPort());
