@@ -3,7 +3,7 @@
 
 Stunner
 ===
-This is an incomplete STUN server implementation aiming for compliance with with [RFC 5389](https://tools.ietf.org/html/rfc5389). Currently supports only UDP but will also support TCP when finished. TLS support likely will not be provided (this can probably be achieved using a reverse proxy). A release after 1.0 may support [RFC 5780](https://tools.ietf.org/html/rfc5780).
+This is an incomplete STUN server implementation aiming for compliance with with [RFC 5389](https://tools.ietf.org/html/rfc5389). TLS support likely will not be provided (this can probably be achieved using a reverse proxy). A release after 1.0 may support [RFC 5780](https://tools.ietf.org/html/rfc5780).
 
 Roadmap to 1.0
 ---
