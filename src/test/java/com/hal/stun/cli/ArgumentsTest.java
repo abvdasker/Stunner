@@ -29,13 +29,13 @@ public class ArgumentsTest {
   }
 
   @Test(expected = ArgumentParseException.class)
-  public void testGetInt() throws ArgumentParseException {
+  public void testGetInvalidInt() throws ArgumentParseException {
     Map<String, String> testMap = new HashMap<String, String>();
     testMap.put("argumentName", "not_a_number");
 
     int result = new Arguments(testMap).getInt("argumentName");
 
-    Assert.assertFail();
+    Assert.fail();
   }
 
   @Test
@@ -43,7 +43,7 @@ public class ArgumentsTest {
     Map<String, String> testMap = new HashMap<String, String>();
     testMap.put("argumentName", "logfile.txt");
 
-    int result = new Arguments(testMap).getString("argumentName");
+    String result = new Arguments(testMap).getString("argumentName");
 
     Assert.assertEquals("logfile.txt", result);
   }
