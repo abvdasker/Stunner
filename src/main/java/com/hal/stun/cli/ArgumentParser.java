@@ -21,6 +21,7 @@ public class ArgumentParser {
     addValue(parsedArguments, "--threads", "-t", "2");
     addFlagValue(parsedArguments, "--udp", "-udp", "false");
     addFlagValue(parsedArguments, "--tcp", "-tcp", "false");
+    addFlagValue(parsedArguments, "--help", "-h", "false");
     Arguments input = new Arguments(parsedArguments);
     if (!input.getBoolean("--udp")) {
       input.setBoolean("--tcp", true);

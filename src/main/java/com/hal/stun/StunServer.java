@@ -9,6 +9,7 @@ import com.hal.stun.log.Logger;
 import com.hal.stun.cli.ArgumentParser;
 import com.hal.stun.cli.Arguments;
 import com.hal.stun.cli.ArgumentParseException;
+import com.hal.stun.cli.Help;
 
 import java.net.InetSocketAddress;
 
@@ -21,18 +22,27 @@ public class StunServer {
   private static Arguments parsedArgs;
 
   public static void main(String[] args) throws Exception {
-    parsedArgs = new ArgumentParser(args).parse();
+    try {
+      parsedArgs = new ArgumentParser(args).parse();
 
-    boolean runUDP = parsedArgs.getBoolean("--udp");
-    boolean runTCP = parsedArgs.getBoolean("--tcp");
+      if (parsedArgs.getBoolean("--help")) {
+        printHelpAndDie(0);
+      }
 
-    if (runUDP) {
-      Thread tcpServerThread = createTCPServer();
-      tcpServerThread.start();
-    }
-    if (runTCP) {
-      Thread udpServerThread = createUDPServer();
-      udpServerThread.start();
+      boolean runUDP = parsedArgs.getBoolean("--udp");
+      boolean runTCP = parsedArgs.getBoolean("--tcp");
+
+      if (runUDP) {
+        Thread tcpServerThread = createTCPServer();
+        tcpServerThread.start();
+      }
+      if (runTCP) {
+        Thread udpServerThread = createUDPServer();
+        udpServerThread.start();
+      }
+    } catch (ArgumentParseException exception) {
+      System.out.println(exception.getMessage() + "\n");
+      printHelpAndDie(1);
     }
   }
 
@@ -81,5 +91,10 @@ public class StunServer {
         return new NetworkMessage(clientSocketAddress, responseData);
       }
     };
+  }
+
+  private static void printHelpAndDie(int exitCode) {
+    System.out.println(Help.getHelpText());
+    System.exit(exitCode);
   }
 }
