@@ -25,4 +25,8 @@ public class Arguments {
   public String getString(String name) {
     return argumentMap.get(name);
   }
+
+  public void setBoolean(String name, boolean value) {
+    argumentMap.put(name, value + "");
+  }
 }

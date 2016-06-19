@@ -19,8 +19,12 @@ public class ArgumentParser {
     addValue(parsedArguments, "--tcpport", "-tport", DEFAULT_TCP_PORT + "");
     addValue(parsedArguments, "--udpport", "-uport", DEFAULT_UDP_PORT + "");
     addValue(parsedArguments, "--threads", "-t", "2");
-    addFlagValue(parsedArguments, "--udp", "-tcp", "false");
-    addFlagValue(parsedArguments, "--tcp", "-tcp", "true");
+    addFlagValue(parsedArguments, "--udp", "-udp", "false");
+    addFlagValue(parsedArguments, "--tcp", "-tcp", "false");
+    Arguments input = new Arguments(parsedArguments);
+    if (!input.getBoolean("--udp")) {
+      input.setBoolean("--tcp", true);
+    }
     return new Arguments(parsedArguments);
   }
 
@@ -43,7 +47,7 @@ public class ArgumentParser {
     }
   }
 
-  private void addFlagValue(Map<String, String> parsedArguments, String name, String shortName, String defaultValue) throws ArgumentParseException {
+  private void addFlagValue(Map<String, String> parsedArguments, String name, String shortName, String defaultValue) {
     int index = args.indexOf(name);
     if (index == -1) {
       index = args.indexOf(shortName);
