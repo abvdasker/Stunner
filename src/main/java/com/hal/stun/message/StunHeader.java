@@ -7,6 +7,8 @@ public class StunHeader {
   // NEVER FORGET to mask when upcasting from unsigned byte to int
   public static final int HEADER_SIZE = 20;
   public static final short BINDING_METHOD = 0b1;
+  public static final int TRANSACTION_ID_START = 8;
+  public static final int TRANSACTION_ID_LENGTH = 12;
   
   private byte[] headerBytes;
   private MessageClass messageClass;
@@ -169,18 +171,9 @@ public class StunHeader {
     return StunMessageUtils.extractByteSequence(header, 4, 4);
   }
 
-  // TODO: store transaction ID as byte array
   private static byte[] parseTransactionID(byte[] header) {
-    // transaction ID can be represented by 3 ints
-    // convert ints to hex string
-    int transactionIDStart = 8;
-    int transactionIDLength = 12;
-    byte[] transactionID = new byte[transactionIDLength];
-    for (int i = transactionIDStart; i < transactionIDStart + transactionIDLength; i++) {
-      int transactionIDIndex = i - transactionIDStart;
-      transactionID[transactionIDIndex] = header[i];
-    }
-
+    byte[] transactionID = new byte[TRANSACTION_ID_LENGTH];
+    System.arraycopy(header, TRANSACTION_ID_START, transactionID, 0, TRANSACTION_ID_LENGTH);
     return transactionID;
   }
 
