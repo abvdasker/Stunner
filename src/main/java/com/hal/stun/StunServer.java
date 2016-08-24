@@ -5,7 +5,6 @@ import com.hal.stun.socket.UDPStunMessageSocket;
 import com.hal.stun.socket.TCPStunMessageSocket;
 import com.hal.stun.socket.NetworkMessage;
 import com.hal.stun.socket.StunHandler;
-import com.hal.stun.log.Logger;
 import com.hal.stun.cli.ArgumentParser;
 import com.hal.stun.cli.Arguments;
 import com.hal.stun.cli.ArgumentParseException;
@@ -16,8 +15,6 @@ import java.net.InetSocketAddress;
 import java.io.IOException;
 
 public class StunServer {
-
-  private static final Logger log = new Logger();
 
   private static Arguments parsedArgs;
 
