@@ -24,7 +24,7 @@ This project was designed to require no dependencies beyond the Java standard li
 ```bash
 $ git clone https://github.com/abvdasker/Stunner
 $ cd Stunner
-$ ./buid.sh
+$ ./build.sh
 ```
 ### Ant
 Building with Ant will allow you to run the test suite as part of the build process.
