@@ -20,24 +20,26 @@ Building
 ---
 This project was designed to require no dependencies beyond the Java standard libraries.
 
-<h3>JDK >= 6</h3>
-<pre>
+### JDK >= 6
+```bash
 $ git clone https://github.com/abvdasker/Stunner
 $ cd Stunner
 $ ./buid.sh
-</pre>
-<h3>Ant</h3>
+```
+### Ant
 Building with Ant will allow you to run the test suite as part of the build process.
-<pre>
+```bash
 $ git clone https://github.com/abvdasker/Stunner
 $ cd Stunner
 $ ant build
-</pre>
+```
 OR, without tests:
-<pre>
+```bash
 $ ant dist
-</pre>
+```
 
 Running
 ---
-<pre>$ java -jar Stunner.jar</pre>
+```bash
+$ java -jar Stunner.jar
+```
