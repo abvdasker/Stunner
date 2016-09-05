@@ -1,5 +1,6 @@
 package com.hal.stun.cli;
 
+import java.util.Map;
 /*
  * 1. Create a hash mapping string keys to argument definitions
  * 2. Iterate over argument string array
@@ -14,6 +15,7 @@ public abstract class ArgumentDefinition<T> {
   protected String shortKey;
   protected String description;
   protected T defaultValue;
+  protected ConditionalValue<T> conditionalValue;
   protected Class<T> valueType;
 
   public String getKey() {
@@ -30,11 +32,7 @@ public abstract class ArgumentDefinition<T> {
 
   abstract public Argument parse(String stringValue) throws ArgumentParseException;
 
-  abstract public Argument getDefaultArgument();
-
-  public boolean hasDefault() {
-    return defaultValue != null;
-  }
+  abstract public Argument getDefaultArgument(Map<String, Argument> otherArgs);
 
   /*
    * Argument definition should include a type for the argument

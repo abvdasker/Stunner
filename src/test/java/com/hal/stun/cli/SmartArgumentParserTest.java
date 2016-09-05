@@ -45,8 +45,19 @@ public class SmartArgumentParserTest {
     Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
 
     boolean useTCP = parsedArgs.get("--tcp").getBoolean();
+    Assert.assertTrue("returns true to use TCP by default",
+                       useTCP);
+  }
+
+  @Test
+  public void testParseDefaultNoTCPWhenUDP() throws Exception {
+    String[] args = { "-udp" };
+    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+
+    boolean useTCP = parsedArgs.get("--tcp").getBoolean();
     Assert.assertFalse("returns false to not use TCP by default",
                        useTCP);
+
   }
 
   @Test

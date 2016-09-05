@@ -1,5 +1,6 @@
 package com.hal.stun.cli;
 
+import java.util.Map;
 import java.lang.reflect.Constructor;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +33,7 @@ public class PairArgumentDefinition<T> extends ArgumentDefinition<T> {
     return new Argument(value);
   }
 
-  public Argument getDefaultArgument() {
+  public Argument getDefaultArgument(Map<String, Argument> otherArgs) {
     return new Argument(defaultValue);
   }
 }

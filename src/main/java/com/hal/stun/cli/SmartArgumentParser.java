@@ -35,9 +35,13 @@ public class SmartArgumentParser {
 
   private static Map<String, ArgumentDefinition> buildDefinitions() {
     Map<String, ArgumentDefinition> definitions = new HashMap<String, ArgumentDefinition>();
+    addDefinition(definitions, new FlagArgumentDefinition("--help",
+                                                          "-h",
+                                                          false,
+                                                          "Show help"));
     addDefinition(definitions, new FlagArgumentDefinition("--tcp",
                                                           "-tcp",
-                                                          false,
+                                                          new TCPDefaultConditionalValue(),
                                                           "Run TCP STUN Server (can be used with --udp)"));
     addDefinition(definitions, new FlagArgumentDefinition("--udp",
                                                           "-udp",
@@ -53,10 +57,6 @@ public class SmartArgumentParser {
                                                                    "-uport",
                                                                    DEFAULT_UDP_PORT,
                                                                    "Port on which to bind the UDP server"));
-    addDefinition(definitions, new FlagArgumentDefinition("--help",
-                                                          "-h",
-                                                          false,
-                                                          "Show help"));
     addDefinition(definitions, new PairArgumentDefinition<Integer>(Integer.class,
                                                                    "--threads",
                                                                    "-t",
@@ -74,8 +74,9 @@ public class SmartArgumentParser {
   private static void addDefaults(Map<String, Argument> arguments, Map<String, ArgumentDefinition> definitions) {
     Set<ArgumentDefinition> dedupedDefinitions = new HashSet<ArgumentDefinition>(definitions.values());
     for (ArgumentDefinition definition : dedupedDefinitions) {
-      if (definition.hasDefault() && !arguments.containsKey(definition.getKey())) {
-        arguments.put(definition.getKey(), definition.getDefaultArgument());
+      if (!arguments.containsKey(definition.getKey())) {
+        Argument defaultValue = definition.getDefaultArgument(arguments);
+        arguments.put(definition.getKey(), defaultValue);
       }
     }
   }
@@ -85,6 +86,13 @@ public class SmartArgumentParser {
       return null;
     } else {
       return argList.remove(0);
+    }
+  }
+
+  private static class TCPDefaultConditionalValue implements ConditionalValue<Boolean> {
+    public Boolean getValue(Map<String, Argument> otherArgs) {
+      return !(otherArgs.containsKey("--udp") &&
+               otherArgs.get("--udp").getBoolean().booleanValue());
     }
   }
 }

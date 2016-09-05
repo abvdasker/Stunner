@@ -12,7 +12,7 @@ public class PairArgumentDefinitionTest {
                                             "-n",
                                             123,
                                             "test number");
-    Argument defaultArgument = definition.getDefaultArgument();
+    Argument defaultArgument = definition.getDefaultArgument(null);
     Assert.assertEquals("returns the default integer argument",
                         123,
                         defaultArgument.getInt().intValue());
