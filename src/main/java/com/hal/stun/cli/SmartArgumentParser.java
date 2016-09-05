@@ -1,6 +1,7 @@
 package com.hal.stun.cli;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
@@ -9,10 +10,14 @@ import java.util.HashSet;
 
 public class SmartArgumentParser {
 
+  public static final int DEFAULT_TCP_PORT = 8000;
+  public static final int DEFAULT_UDP_PORT = 8001;
+  public static final int DEFAULT_THREAD_COUNT = 2;
+
   public static Map<String, Argument> parse(String[] args) throws ArgumentParseException {
     Map<String, ArgumentDefinition> definitions = buildDefinitions();
     Map<String, Argument> values = new HashMap<String, Argument>();
-    List<String> argList = Arrays.asList(args);
+    List<String> argList = new ArrayList<String>(Arrays.asList(args));
 
     while (!argList.isEmpty()) {
       String argument = argList.remove(0);
@@ -20,60 +25,43 @@ public class SmartArgumentParser {
       if (definition == null) {
         throw new ArgumentParseException("Unrecognized argument \"" + argument);
       }
-      String value;
-      if (definition instanceof FlagArgumentDefinition) {
-        value = null;
-      } else {
-        value = argList.remove(0);
-      }
+      String value = getArgumentValue(argList, definition);
       values.put(definition.getKey(), definition.parse(value));
     }
     addDefaults(values, definitions);
 
-    return null;
+    return values;
   }
 
   private static Map<String, ArgumentDefinition> buildDefinitions() {
     Map<String, ArgumentDefinition> definitions = new HashMap<String, ArgumentDefinition>();
-    addDefinition(definitions,
-                  new FlagArgumentDefinition("--tcp",
-                                             "-tcp",
-                                             true,
-                                             "Run TCP STUN Server (can be used with --udp)")
-                  );
-    addDefinition(definitions,
-                  new FlagArgumentDefinition("--udp",
-                                             "-udp",
-                                             false,
-                                             "Run UDP STUN Server (can be used with --tcp)")
-                  );
-    addDefinition(definitions,
-                  new PairArgumentDefinition<Integer>(Integer.class,
-                                                      "--tcpport",
-                                                      "-tport",
-                                                      8000,
-                                                      "Port on which to bind the TCP server")
-                  );
-    addDefinition(definitions,
-                  new PairArgumentDefinition<Integer>(Integer.class,
-                                                      "--udpport",
-                                                      "-uport",
-                                                      8001,
-                                                      "Port on which to bind the UDP server")
-                  );
-    addDefinition(definitions,
-                  new FlagArgumentDefinition("--help",
-                                             "-h",
-                                             false,
-                                             "Show help")
-                  );
-    addDefinition(definitions,
-                  new PairArgumentDefinition<Integer>(Integer.class,
-                                                      "--threads",
-                                                      "-t",
-                                                      2,
-                                                      "Number of threads to use in handler threadpool")
-                  );
+    addDefinition(definitions, new FlagArgumentDefinition("--tcp",
+                                                          "-tcp",
+                                                          false,
+                                                          "Run TCP STUN Server (can be used with --udp)"));
+    addDefinition(definitions, new FlagArgumentDefinition("--udp",
+                                                          "-udp",
+                                                          false,
+                                                          "Run UDP STUN Server (can be used with --tcp)"));
+    addDefinition(definitions, new PairArgumentDefinition<Integer>(Integer.class,
+                                                                   "--tcpport",
+                                                                   "-tport",
+                                                                   DEFAULT_TCP_PORT,
+                                                                   "Port on which to bind the TCP server"));
+    addDefinition(definitions, new PairArgumentDefinition<Integer>(Integer.class,
+                                                                   "--udpport",
+                                                                   "-uport",
+                                                                   DEFAULT_UDP_PORT,
+                                                                   "Port on which to bind the UDP server"));
+    addDefinition(definitions, new FlagArgumentDefinition("--help",
+                                                          "-h",
+                                                          false,
+                                                          "Show help"));
+    addDefinition(definitions, new PairArgumentDefinition<Integer>(Integer.class,
+                                                                   "--threads",
+                                                                   "-t",
+                                                                   DEFAULT_THREAD_COUNT,
+                                                                   "Number of threads to use in handler threadpool"));
 
     return definitions;
   }
@@ -89,6 +77,14 @@ public class SmartArgumentParser {
       if (definition.hasDefault() && !arguments.containsKey(definition.getKey())) {
         arguments.put(definition.getKey(), definition.getDefaultArgument());
       }
+    }
+  }
+
+  private static String getArgumentValue(List<String> argList, ArgumentDefinition definition) {
+    if (definition instanceof FlagArgumentDefinition) {
+      return null;
+    } else {
+      return argList.remove(0);
     }
   }
 }
