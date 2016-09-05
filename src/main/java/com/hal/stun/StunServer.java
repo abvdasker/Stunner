@@ -26,14 +26,14 @@ public class StunServer {
         printHelpAndDie(0);
       }
 
-      boolean runUDP = parsedArgs.get("--udp").getBoolean();
       boolean runTCP = parsedArgs.get("--tcp").getBoolean();
+      boolean runUDP = parsedArgs.get("--udp").getBoolean();
 
-      if (runUDP) {
+      if (runTCP) {
         Thread tcpServerThread = createTCPServer();
         tcpServerThread.start();
       }
-      if (runTCP) {
+      if (runUDP) {
         Thread udpServerThread = createUDPServer();
         udpServerThread.start();
       }
