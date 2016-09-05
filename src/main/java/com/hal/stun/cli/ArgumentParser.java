@@ -24,7 +24,7 @@ public class ArgumentParser {
       String argument = argList.remove(0);
       ArgumentDefinition definition = definitions.get(argument);
       if (definition == null) {
-        throw new ArgumentParseException("Unrecognized argument \"" + argument);
+        throw new ArgumentParseException("Unrecognized argument \"" + argument + "\"");
       }
       String value = getArgumentValue(argList, definition);
       values.put(definition.getKey(), definition.parse(value));
@@ -85,9 +85,11 @@ public class ArgumentParser {
     }
   }
 
-  private static String getArgumentValue(List<String> argList, ArgumentDefinition definition) {
+  private static String getArgumentValue(List<String> argList, ArgumentDefinition definition) throws ArgumentParseException {
     if (definition instanceof FlagArgumentDefinition) {
       return null;
+    } else if (argList.isEmpty()) {
+      throw new ArgumentParseException("Argument " + definition.getKey() + "  requires a value");
     } else {
       return argList.remove(0);
     }
