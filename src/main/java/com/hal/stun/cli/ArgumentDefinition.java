@@ -43,15 +43,4 @@ public abstract class ArgumentDefinition<T> {
     formatter.close();
     return output.toString();
   }
-
-  /*
-   * Argument definition should include a type for the argument
-   * Then initialize the argument using the type to set the 
-   */
-
-  /*
-   * ArgumentDefinition<Integer> httpPortDefinition = new PairArgumentDefinition<Integer>("--httpport", "-hport", 8080);
-   * 
-   * Integer httpPort = httpPortDefinition.parse(value);
-   */
 }
