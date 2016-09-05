@@ -40,9 +40,9 @@ public class PairArgumentDefinition<T> extends ArgumentDefinition<T> {
     try {
       Constructor<T> constructor = valueType.getConstructor(String.class);
       value = constructor.newInstance(stringValue);
-    } catch (InstantiationException exception) {
+    } catch (InvocationTargetException exception) {
       throw new ArgumentParseException("could not parse value \"" + stringValue +
-                                       "\" for argument " + key, exception);
+                                       "\" for argument " + key, exception.getCause());
     } catch (Exception exception) {
       throw new ArgumentParseRuntimeException(exception);
     }

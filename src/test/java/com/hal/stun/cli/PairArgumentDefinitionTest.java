@@ -31,4 +31,15 @@ public class PairArgumentDefinitionTest {
                         456,
                         argument.getInt().intValue());
   }
+
+  @Test(expected = ArgumentParseException.class)
+  public void testParseInvalidString() throws ArgumentParseException {
+    ArgumentDefinition<Integer> definition
+      = new PairArgumentDefinition<Integer>(Integer.class,
+                               "--number",
+                               "-n",
+                               123,
+                               "test number");
+    definition.parse("hello");
+  }
 }

@@ -5,7 +5,7 @@ public class ArgumentParseException extends Exception {
     super(message);
   }
 
-  public ArgumentParseException(String message, Exception parentException) {
+  public ArgumentParseException(String message, Throwable parentException) {
     super(message, parentException);
   }
 }
