@@ -7,7 +7,7 @@ import com.hal.stun.socket.UDPStunMessageSocket;
 import com.hal.stun.socket.TCPStunMessageSocket;
 import com.hal.stun.socket.NetworkMessage;
 import com.hal.stun.socket.StunHandler;
-import com.hal.stun.cli.SmartArgumentParser;
+import com.hal.stun.cli.ArgumentParser;
 import com.hal.stun.cli.Help;
 import com.hal.stun.cli.Argument;
 
@@ -20,7 +20,7 @@ public class StunServer {
 
   public static void main(String[] args) throws Exception {
     try {
-      parsedArgs = SmartArgumentParser.parse(args);
+      parsedArgs = ArgumentParser.parse(args);
 
       if (parsedArgs.get("--help").getBoolean()) {
         printHelpAndDie(0);

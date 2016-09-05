@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
 
-public class SmartArgumentParser {
+public class ArgumentParser {
 
   public static final int DEFAULT_TCP_PORT = 8000;
   public static final int DEFAULT_UDP_PORT = 8001;

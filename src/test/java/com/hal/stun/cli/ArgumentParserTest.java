@@ -5,34 +5,34 @@ import org.junit.Assert;
 
 import java.util.Map;
 
-public class SmartArgumentParserTest {
+public class ArgumentParserTest {
 
   @Test
   public void testParseDefaultTCPPort() throws Exception {
     String[] args = new String[0];
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
 
     int tcpPort = parsedArgs.get("--tcpport").getInt();
     Assert.assertEquals("returns the default tcp port",
-                        SmartArgumentParser.DEFAULT_TCP_PORT,
+                        ArgumentParser.DEFAULT_TCP_PORT,
                         tcpPort);
   }
 
   @Test
   public void testParseDefaultUDPPort() throws Exception {
     String[] args = new String[0];
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
 
     int udpPort = parsedArgs.get("--udpport").getInt();
     Assert.assertEquals("returns the default udp port",
-                        SmartArgumentParser.DEFAULT_UDP_PORT,
+                        ArgumentParser.DEFAULT_UDP_PORT,
                         udpPort);
   }
 
   @Test
   public void testParseDefaultShowHelp() throws Exception {
     String[] args = new String[0];
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
 
     boolean showHelp = parsedArgs.get("--help").getBoolean();
     Assert.assertFalse("returns false to not show help by default",
@@ -42,7 +42,7 @@ public class SmartArgumentParserTest {
   @Test
   public void testParseDefaultUseTCP() throws Exception {
     String[] args = new String[0];
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
 
     boolean useTCP = parsedArgs.get("--tcp").getBoolean();
     Assert.assertTrue("returns true to use TCP by default",
@@ -52,7 +52,7 @@ public class SmartArgumentParserTest {
   @Test
   public void testParseDefaultNoTCPWhenUDP() throws Exception {
     String[] args = { "-udp" };
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
 
     boolean useTCP = parsedArgs.get("--tcp").getBoolean();
     Assert.assertFalse("returns false to not use TCP by default",
@@ -63,7 +63,7 @@ public class SmartArgumentParserTest {
   @Test
   public void testParseDefaultUseUDP() throws Exception {
     String[] args = new String[0];
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
 
     boolean useUDP = parsedArgs.get("--udp").getBoolean();
     Assert.assertFalse("returns false to not use udp by default",
@@ -73,11 +73,11 @@ public class SmartArgumentParserTest {
   @Test
   public void testParseDefaultThreadCount() throws Exception {
     String[] args = new String[0];
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
 
     int threadCount = parsedArgs.get("--threads").getInt();
     Assert.assertEquals("returns the default thread count",
-                        SmartArgumentParser.DEFAULT_THREAD_COUNT,
+                        ArgumentParser.DEFAULT_THREAD_COUNT,
                         threadCount);
   }
 
@@ -91,7 +91,7 @@ public class SmartArgumentParserTest {
       "-h",
       "-t", "7"
     };
-    Map<String, Argument> parsedArgs = SmartArgumentParser.parse(args);
+    Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
     int tcpPort = parsedArgs.get("--tcpport").getInt();
     int udpPort = parsedArgs.get("--udpport").getInt();
     boolean useTCP = parsedArgs.get("--tcp").getBoolean();

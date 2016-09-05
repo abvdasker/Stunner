@@ -16,7 +16,7 @@ public class Help {
   private static final String HELP_HEADER = "\nUsage:\n\n$> java -jar Stunner.jar\n";
 
   public static String getHelpText() {
-    Set<ArgumentDefinition> definitions = SmartArgumentParser.getDefinitionSet();
+    Set<ArgumentDefinition> definitions = ArgumentParser.getDefinitionSet();
     List<String> helpStrings = new ArrayList<String>(definitions.size());
     for (ArgumentDefinition definition : definitions) {
       helpStrings.add(definition.getHelp());
