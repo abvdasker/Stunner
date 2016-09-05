@@ -11,7 +11,6 @@ public class PairArgumentDefinition<T> extends ArgumentDefinition<T> {
     this.shortKey = shortKey;
     this.defaultValue = defaultValue;
     this.description = description;
-    System.out.println("in " + this.key + " constructor " + shortKey + " " + this.shortKey + " description: " + this.description);
   }
 
   public Argument parse(String stringValue) throws ArgumentParseException {
