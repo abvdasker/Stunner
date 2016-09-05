@@ -29,7 +29,7 @@ public class ArgumentParser {
       String value = getArgumentValue(argList, definition);
       values.put(definition.getKey(), definition.parse(value));
     }
-    addDefaults(values, definitions);
+    addDefaults(values);
 
     return values;
   }
@@ -76,7 +76,7 @@ public class ArgumentParser {
     definitions.put(definition.getShortKey(), definition);
   }
 
-  private static void addDefaults(Map<String, Argument> arguments, Map<String, ArgumentDefinition> definitions) {
+  private static void addDefaults(Map<String, Argument> arguments) {
     for (ArgumentDefinition definition : getDefinitionSet()) {
       if (!arguments.containsKey(definition.getKey())) {
         Argument defaultValue = definition.getDefaultArgument(arguments);
