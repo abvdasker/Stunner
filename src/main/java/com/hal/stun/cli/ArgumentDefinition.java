@@ -1,6 +1,7 @@
 package com.hal.stun.cli;
 
 import java.util.Map;
+import java.util.Formatter;
 /*
  * 1. Create a hash mapping string keys to argument definitions
  * 2. Iterate over argument string array
@@ -33,6 +34,15 @@ public abstract class ArgumentDefinition<T> {
   abstract public Argument parse(String stringValue) throws ArgumentParseException;
 
   abstract public Argument getDefaultArgument(Map<String, Argument> otherArgs);
+
+  public String getHelp() {
+    StringBuffer output = new StringBuffer();
+    Formatter formatter = new Formatter(output);
+    formatter.format(" %1$s, %2$s  #  %3$s", key, shortKey, description);
+    formatter.flush();
+    formatter.close();
+    return output.toString();
+  }
 
   /*
    * Argument definition should include a type for the argument

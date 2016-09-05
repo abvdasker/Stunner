@@ -1,33 +1,33 @@
 package com.hal.stun;
 
+import java.util.Map;
+import java.net.InetSocketAddress;
 import com.hal.stun.socket.StunMessageSocket;
 import com.hal.stun.socket.UDPStunMessageSocket;
 import com.hal.stun.socket.TCPStunMessageSocket;
 import com.hal.stun.socket.NetworkMessage;
 import com.hal.stun.socket.StunHandler;
-import com.hal.stun.cli.ArgumentParser;
-import com.hal.stun.cli.Arguments;
-import com.hal.stun.cli.ArgumentParseException;
+import com.hal.stun.cli.SmartArgumentParser;
 import com.hal.stun.cli.Help;
+import com.hal.stun.cli.Argument;
 
-import java.net.InetSocketAddress;
-
+import com.hal.stun.cli.ArgumentParseException;
 import java.io.IOException;
 
 public class StunServer {
 
-  private static Arguments parsedArgs;
+  private static Map<String, Argument> parsedArgs;
 
   public static void main(String[] args) throws Exception {
     try {
-      parsedArgs = new ArgumentParser(args).parse();
+      parsedArgs = SmartArgumentParser.parse(args);
 
-      if (parsedArgs.getBoolean("--help")) {
+      if (parsedArgs.get("--help").getBoolean()) {
         printHelpAndDie(0);
       }
 
-      boolean runUDP = parsedArgs.getBoolean("--udp");
-      boolean runTCP = parsedArgs.getBoolean("--tcp");
+      boolean runUDP = parsedArgs.get("--udp").getBoolean();
+      boolean runTCP = parsedArgs.get("--tcp").getBoolean();
 
       if (runUDP) {
         Thread tcpServerThread = createTCPServer();
@@ -46,14 +46,14 @@ public class StunServer {
   private static Thread createTCPServer() throws IOException, ArgumentParseException {
     final StunHandler handler = createStunHandler();
     int tcpPort = -1;
-    tcpPort = parsedArgs.getInt("--tcpport");
+    tcpPort = parsedArgs.get("--tcpport").getInt();
     final StunMessageSocket tcpSocket = new TCPStunMessageSocket(tcpPort);
     return new Thread(createServer(tcpSocket, handler));
   }
 
   private static Thread createUDPServer() throws IOException, ArgumentParseException {
     final StunHandler handler = createStunHandler();
-    int udpPort = parsedArgs.getInt("--udpport");
+    int udpPort = parsedArgs.get("--udpport").getInt();
     final StunMessageSocket udpSocket = new UDPStunMessageSocket(udpPort);
     return new Thread(createServer(udpSocket, handler));
   }
