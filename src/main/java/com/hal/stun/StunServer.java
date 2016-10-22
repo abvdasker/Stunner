@@ -32,12 +32,10 @@ public class StunServer {
       boolean runUDP = parsedArgs.get("--udp").getBoolean();
 
       if (runTCP) {
-        log.info("starting TCP server");
         Thread tcpServerThread = createTCPServer();
         tcpServerThread.start();
       }
       if (runUDP) {
-        log.info("starting UDP server");
         Thread udpServerThread = createUDPServer();
         udpServerThread.start();
       }
