@@ -52,8 +52,8 @@ public class StunServer {
 
   private static Thread createTCPServer() throws IOException, ArgumentParseException {
     final StunHandler handler = createStunHandler();
-    int tcpPort = -1;
-    tcpPort = parsedArgs.get("--tcpport").getInt();
+    int tcpPort = parsedArgs.get("--tcpport").getInt();
+    logServerStart("TCP", tcpPort);
     final StunMessageSocket tcpSocket = new TCPStunMessageSocket(tcpPort);
     return new Thread(createServer(tcpSocket, handler));
   }
@@ -61,8 +61,13 @@ public class StunServer {
   private static Thread createUDPServer() throws IOException, ArgumentParseException {
     final StunHandler handler = createStunHandler();
     int udpPort = parsedArgs.get("--udpport").getInt();
+    logServerStart("UDP", udpPort);
     final StunMessageSocket udpSocket = new UDPStunMessageSocket(udpPort);
     return new Thread(createServer(udpSocket, handler));
+  }
+
+  private static void logServerStart(String serverType, int port) {
+    log.info(serverType + " server listening on port " + port);
   }
 
   private static Runnable createServer(final StunMessageSocket socket, final StunHandler handler) {
