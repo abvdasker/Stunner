@@ -10,21 +10,30 @@ import javax.xml.bind.DatatypeConverter;
 public class StunMessageFormatter {
 
   public static String formatMessage(StunMessage message) {
-    return "header:\n" + formatHeader(message.getHeader()) +
-      "\n" +
-      "attributes:\n" + formatAttributes(message.getAttributes()) +
-      "\n";
+    StringBuffer messageStringBuffer = new StringBuffer();
+    String spacing = '\n' + spacing(1);
+    messageStringBuffer.append(spacing);
+    messageStringBuffer.append("header:");
+    messageStringBuffer.append(formatHeader(message.getHeader()));
+    messageStringBuffer.append(spacing);
+    messageStringBuffer.append("attributes:");
+    messageStringBuffer.append(formatAttributes(message.getAttributes()));
+    messageStringBuffer.append('\n');
+    return messageStringBuffer.toString();
   }
   
   private static String formatHeader(StunHeader header) {
     StringBuffer headerStringBuffer = new StringBuffer();
+    String spacing = '\n' + spacing(2);
+    headerStringBuffer.append(spacing);
     headerStringBuffer.append(formatMessageClass(header.getMessageClass()));
-    headerStringBuffer.append('\n');
+    headerStringBuffer.append(spacing);
     headerStringBuffer.append(formatMethod(header.getMessageMethod()));
-    headerStringBuffer.append('\n');
+    headerStringBuffer.append(spacing);
     headerStringBuffer.append(formatMessageLength(header.getMessageLength()));
-    headerStringBuffer.append('\n');
+    headerStringBuffer.append(spacing);
     headerStringBuffer.append(formatTransactionID(header.getTransactionID()));
+    headerStringBuffer.append('\n');
     return headerStringBuffer.toString();
   }
 
@@ -32,18 +41,20 @@ public class StunMessageFormatter {
     StringBuffer attributesStringBuffer = new StringBuffer();
     for (StunAttribute attribute : attributes) {
       attributesStringBuffer.append(formatAttribute(attribute));
-      attributesStringBuffer.append('\n');
     }
     return attributesStringBuffer.toString();
   }
 
   private static String formatAttribute(StunAttribute attribute) {
     StringBuffer attributeStringBuffer = new StringBuffer();
+    String spacing = '\n' + spacing(2);
+    attributeStringBuffer.append(spacing);
     attributeStringBuffer.append(formatAttributeType(attribute.getAttributeType()));
-    attributeStringBuffer.append('\n');
+    attributeStringBuffer.append(spacing);
     attributeStringBuffer.append(formatAttributeLength(attribute.getLength()));
-    attributeStringBuffer.append('\n');
+    attributeStringBuffer.append(spacing);
     attributeStringBuffer.append(formatAttributeValue(attribute.getValue()));
+    attributeStringBuffer.append('\n');
     return attributeStringBuffer.toString();
   }
 
@@ -56,7 +67,10 @@ public class StunMessageFormatter {
   }
 
   private static String formatAttributeValue(StunAttributeValue value) {
-    return "value:\n" + value;
+    String valueString = value.toString();
+    String spacing = '\n' + spacing(3);
+    String spacedValueString = valueString.replace("\n", spacing);
+    return "value:\n" + spacing + spacedValueString;
   }
 
   private static String formatTransactionID(byte[] transactionID) {
@@ -77,5 +91,13 @@ public class StunMessageFormatter {
     } else {
       return "method: " + method + " (unrecognized)";
     }
+  }
+
+  private static String spacing(int numSpaces) {
+    StringBuffer spaces = new StringBuffer();
+    for (int i = 0; i < numSpaces; i++) {
+      spaces.append("  ");
+    }
+    return spaces.toString();
   }
 }
