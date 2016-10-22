@@ -5,6 +5,7 @@ import com.hal.stun.message.StunParseException;
 
 import java.util.Arrays;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
 public class MappedAddressStunAttributeValue extends StunAttributeValue {
@@ -87,5 +88,15 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
     
     return false;
   }
-  
+
+  public String toString() {
+    StringBuffer addressStringBuffer = new StringBuffer();
+    addressStringBuffer.append(super.toString());
+    addressStringBuffer.append('\n');
+    InetSocketAddress addressAndPort
+      = new InetSocketAddress(address, port & StunMessageUtils.MASK);
+      addressStringBuffer.append(addressAndPort.toString());
+    return addressStringBuffer.toString();
+  }
+
 }
