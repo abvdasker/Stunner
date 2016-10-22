@@ -20,7 +20,7 @@ public class StunServer {
   private static Map<String, Argument> parsedArgs;
   private static final Logger log = Logger.getLogger(StunServer.class.getName());
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     try {
       parsedArgs = ArgumentParser.parse(args);
 
