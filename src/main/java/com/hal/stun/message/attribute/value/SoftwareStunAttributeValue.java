@@ -32,4 +32,8 @@ public class SoftwareStunAttributeValue extends StunAttributeValue {
   private static byte[] buildValueBytes(String softwareName) {
     return softwareName.getBytes();
   }
+
+  public String toString() {
+    return message;
+  }
 }
