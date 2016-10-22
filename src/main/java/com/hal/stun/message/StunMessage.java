@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import java.net.InetSocketAddress;
 
+// TODO: this should be abstract with request/response subclasses
 public class StunMessage {
 
   protected byte[] messageBytes;
