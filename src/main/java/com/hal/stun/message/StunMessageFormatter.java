@@ -33,13 +33,14 @@ public class StunMessageFormatter {
     headerStringBuffer.append(formatMessageLength(header.getMessageLength()));
     headerStringBuffer.append(spacing);
     headerStringBuffer.append(formatTransactionID(header.getTransactionID()));
-    headerStringBuffer.append('\n');
     return headerStringBuffer.toString();
   }
 
   private static String formatAttributes(List<StunAttribute> attributes) {
     StringBuffer attributesStringBuffer = new StringBuffer();
     for (StunAttribute attribute : attributes) {
+      attributesStringBuffer.append('\n' + spacing(2));
+      attributesStringBuffer.append("attribute:");
       attributesStringBuffer.append(formatAttribute(attribute));
     }
     return attributesStringBuffer.toString();
