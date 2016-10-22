@@ -13,10 +13,12 @@ import com.hal.stun.cli.Argument;
 
 import com.hal.stun.cli.ArgumentParseException;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class StunServer {
 
   private static Map<String, Argument> parsedArgs;
+  private static final Logger log = Logger.getLogger(StunServer.class.getName());
 
   public static void main(String[] args) throws Exception {
     try {
@@ -30,16 +32,21 @@ public class StunServer {
       boolean runUDP = parsedArgs.get("--udp").getBoolean();
 
       if (runTCP) {
+        log.info("starting TCP server");
         Thread tcpServerThread = createTCPServer();
         tcpServerThread.start();
       }
       if (runUDP) {
+        log.info("starting UDP server");
         Thread udpServerThread = createUDPServer();
         udpServerThread.start();
       }
     } catch (ArgumentParseException exception) {
-      System.out.println(exception.getMessage() + "\n");
+      log.severe("Exception parsing arguments:\n" + exception.getMessage());
       printHelpAndDie(1);
+    } catch (Exception exception) {
+      log.severe("Fatal error:\n" + exception.getMessage());
+      System.exit(1);
     }
   }
 
@@ -91,7 +98,7 @@ public class StunServer {
   }
 
   private static void printHelpAndDie(int exitCode) {
-    System.out.println(Help.getHelpText());
+    log.info(Help.getHelpText());
     System.exit(exitCode);
   }
 }

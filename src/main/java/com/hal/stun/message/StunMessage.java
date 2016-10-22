@@ -78,5 +78,9 @@ public class StunMessage {
     
     return attributesBytes;
   }
+
+  public String toString() {
+    return StunMessageFormatter.formatMessage(this);
+  }
   
 }

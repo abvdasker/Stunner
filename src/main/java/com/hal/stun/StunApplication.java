@@ -7,13 +7,18 @@ import com.hal.stun.message.MessageClass;
 import com.hal.stun.message.StunParseException;
 
 import java.net.InetSocketAddress;
+import java.util.logging.Logger;
 
 class StunApplication {
+
+  private static final Logger log = Logger.getLogger(StunApplication.class.getName());
   // handler also needs some info about the connection like
   // source IP, request received time, etc.
   public byte[] handle(byte[] rawRequest, InetSocketAddress address) throws UnsupportedStunClassException, StunParseException {
     StunMessage request = new StunMessage(rawRequest, address);
+    log.info("request:\n" + request);
     StunMessage response = buildResponse(request);
+    log.info("response:\n" + response);
     return response.getBytes();
   }
 

@@ -46,7 +46,7 @@ public class StunHeader {
   public MessageClass getMessageClass() {
     return messageClass;
   }
-  
+
   public byte[] getTransactionID() {
     return transactionID;
   }

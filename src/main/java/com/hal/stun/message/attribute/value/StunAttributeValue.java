@@ -30,6 +30,10 @@ public abstract class StunAttributeValue {
     return paddedBytes;
   }
 
+  public String toString() {
+    return StunMessageUtils.formatByteArray(value);
+  }
+
   // TODO: make exception more specific
   protected abstract void parseValueBytes() throws StunParseException;
   protected abstract boolean isValid();
