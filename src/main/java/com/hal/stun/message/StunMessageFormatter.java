@@ -48,7 +48,7 @@ public class StunMessageFormatter {
 
   private static String formatAttribute(StunAttribute attribute) {
     StringBuffer attributeStringBuffer = new StringBuffer();
-    String spacing = '\n' + spacing(2);
+    String spacing = '\n' + spacing(3);
     attributeStringBuffer.append(spacing);
     attributeStringBuffer.append(formatAttributeType(attribute.getAttributeType()));
     attributeStringBuffer.append(spacing);
@@ -69,7 +69,7 @@ public class StunMessageFormatter {
 
   private static String formatAttributeValue(StunAttributeValue value) {
     String valueString = value.toString();
-    String spacing = '\n' + spacing(3);
+    String spacing = '\n' + spacing(4);
     String spacedValueString = valueString.replace("\n", spacing);
     return "value:\n" + spacing + spacedValueString;
   }
