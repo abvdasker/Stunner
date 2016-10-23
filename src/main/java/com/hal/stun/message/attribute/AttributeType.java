@@ -69,6 +69,7 @@ public enum AttributeType {
       }
     }
 
+    // TODO: only throw if attribute is comprehension-required
     throw new UnrecognizedAttributeTypeException(type);
   }
 
