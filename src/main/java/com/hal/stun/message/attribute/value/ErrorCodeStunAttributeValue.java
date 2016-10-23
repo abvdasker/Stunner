@@ -2,9 +2,10 @@ package com.hal.stun.message.attribute.value;
 
 import java.util.Arrays;
 
+import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.StunParseException; // TODO: Create attribute value-specific sublcass to avoid these imports
 
-public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
+public class ErrorCodeStunAttributeValue extends StunAttributeValue {
 
   private static final int MAX_REASON_SIZE_BYTES = 763;
 
@@ -24,7 +25,7 @@ public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
   }
 
   protected boolean isValid() {
-    return reservedBitsAreZero() &&
+    return value.length > 4 && reservedBitsAreZero() &&
       getReasonBytes().length <= MAX_REASON_SIZE_BYTES;
   }
 
@@ -46,7 +47,7 @@ public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
   }
 
   private byte[] getReasonBytes() {
-    return Arrays.copyOfRange(value, 5, value.length);
+    return Arrays.copyOfRange(value, 4, value.length);
   }
 
   private byte getErrorClass() {
@@ -61,10 +62,21 @@ public abstract class ErrorCodeStunAttributeValue extends StunAttributeValue {
     byte errorClass = (byte) (errorCode / 100);
     byte number = (byte) (errorCode % 100);
     byte[] reasonBytes = reason.getBytes();
-    byte[] result = new byte[4 + reasonBytes.length];
+    int resultLength = 4 + reasonBytes.length;
+    byte[] result = new byte[resultLength];
     result[2] = errorClass;
     result[3] = number;
     System.arraycopy(reasonBytes, 0, result, 4, reasonBytes.length);
     return result;
+  }
+
+  public String toString() {
+    return reason + " (" + getErrorCode() + ")";
+  }
+
+  private int getErrorCode() {
+    int convertedErrorClass = (getErrorClass() & StunMessageUtils.MASK) * 100;
+    int convertedNumber = (getNumber() & StunMessageUtils.MASK);
+    return convertedErrorClass + convertedNumber;
   }
 }

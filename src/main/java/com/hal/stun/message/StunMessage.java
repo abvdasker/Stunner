@@ -60,7 +60,7 @@ public class StunMessage {
   protected StunMessage() {
   }
 
-  private static byte[] getHeaderBytes(byte[] message) throws StunParseException {
+  protected static byte[] getHeaderBytes(byte[] message) throws StunParseException {
     if (message.length < StunHeader.HEADER_SIZE) {
       throw new StunParseException("message was smaller than header size. Header must be 20 bytes");
     }

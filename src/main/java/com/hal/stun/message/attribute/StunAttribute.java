@@ -89,13 +89,7 @@ public class StunAttribute {
       int arrayEnd = arrayStart + paddedLength;
       byte[] value = Arrays.copyOfRange(attributesBytes, arrayStart, arrayEnd);
 
-      AttributeType type;
-      try {
-        type = AttributeType.fromBytes((short) attributeType);
-      } catch (UnrecognizedAttributeTypeException exception) {
-        // TODO: implement error handling to add unrecognized attribute to response.
-        throw new RuntimeException(exception);
-      }
+      AttributeType type = AttributeType.fromBytes((short) attributeType);
       attributes.add(new StunAttribute(type, length, value));
 
       offset += paddedLength + ATTRIBUTE_HEADER_SIZE_BYTES;

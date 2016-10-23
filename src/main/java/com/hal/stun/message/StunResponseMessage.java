@@ -19,52 +19,73 @@ public class StunResponseMessage extends StunMessage {
     super();
     attributes = buildResponseAttributes(requestMessage);
     int messageLength = getAttributeListByteLength(attributes);
-    header = new StunHeader(
-      MessageClass.SUCCESS,
-      StunHeader.BINDING_METHOD,
-      messageLength,
-      requestMessage.getHeader().getTransactionID()
-    );
-    for (StunAttribute attribute : attributes) {
-      if (attribute.getAttributeType() == AttributeType.FINGERPRINT) {
-        FingerprintStunAttributeValue value = (FingerprintStunAttributeValue) attribute.getValue();
-        value.update(getBytesNoFingerprint());
-        break;
-      }
-    }
+    header = new StunHeader(MessageClass.SUCCESS,
+                            StunHeader.BINDING_METHOD,
+                            messageLength,
+                            requestMessage.getHeader().getTransactionID());
+
+    updateFingerprint(attributes);
+  }
+
+  public StunResponseMessage() {
+    super();
   }
 
   private static List<StunAttribute> buildResponseAttributes(StunMessage request) throws StunParseException {
-    StunHeader header = request.getHeader();
+    StunHeader requestHeader = request.getHeader();
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
-    if (header.getMessageMethod() == StunHeader.BINDING_METHOD) {
-
-      SoftwareStunAttributeValue softwareValue = new SoftwareStunAttributeValue(SOFTWARE_NAME);
-      byte[] softwareValueBytes = softwareValue.getBytes();
-      StunAttribute softwareAttribute = new StunAttribute(AttributeType.SOFTWARE, softwareValueBytes.length, softwareValueBytes);
-      attributes.add(softwareAttribute);
-
-      // XOR address
-      XORMappedAddressStunAttributeValue xORMappedAddress = new XORMappedAddressStunAttributeValue(request.getAddress(), header.getTransactionID());
-      byte[] attributeValueBytes = xORMappedAddress.getBytes();
-      StunAttribute xORAddressAttribute = new StunAttribute(AttributeType.XOR_MAPPED_ADDRESS, attributeValueBytes.length, attributeValueBytes);
-      attributes.add(xORAddressAttribute);
-
-      StunAttribute fingerprintAttribute = new StunAttribute(AttributeType.FINGERPRINT,
-                                                             FingerprintStunAttributeValue.VALUE_SIZE_BYTES,
-                                                             new byte[FingerprintStunAttributeValue.VALUE_SIZE_BYTES]);
-      attributes.add(fingerprintAttribute);
+    attributes.add(buildSoftwareAttribute());
+    if (requestHeader.getMessageMethod() == StunHeader.BINDING_METHOD) {
+      attributes.add(buildXORMappedAddressAttribute(request));
     }
+    attributes.add(buildFingerprintAttribute());
+
     return attributes;
   }
 
+  protected static StunAttribute buildSoftwareAttribute() {
+    try {
+      SoftwareStunAttributeValue softwareValue = new SoftwareStunAttributeValue(SOFTWARE_NAME);
+      return new StunAttribute(AttributeType.SOFTWARE, softwareValue);
+    } catch (StunParseException exception) {
+      throw new RuntimeException(exception);
+    }
+  }
+
+  private static StunAttribute buildXORMappedAddressAttribute(StunMessage request) throws StunParseException {
+    StunHeader requestHeader = request.getHeader();
+    XORMappedAddressStunAttributeValue xORMappedAddressValue = new XORMappedAddressStunAttributeValue(request.getAddress(),
+                                                                                                      requestHeader.getTransactionID());
+    return new StunAttribute(AttributeType.XOR_MAPPED_ADDRESS, xORMappedAddressValue);
+  }
+
+  protected static StunAttribute buildFingerprintAttribute() {
+    try {
+      return new StunAttribute(AttributeType.FINGERPRINT,
+                               FingerprintStunAttributeValue.VALUE_SIZE_BYTES,
+                               new byte[FingerprintStunAttributeValue.VALUE_SIZE_BYTES]);
+    } catch (StunParseException exception) {
+      throw new RuntimeException(exception);
+    }
+  }
+
   // avoid this inefficiency by simply adding 4 to the attribute's length field
-  private static int getAttributeListByteLength(List<StunAttribute> responseAttributes) {
+  protected static int getAttributeListByteLength(List<StunAttribute> responseAttributes) {
     int responseBodyByteLength = 0;
     for (StunAttribute attribute : responseAttributes) {
       responseBodyByteLength += attribute.getWholeLength();
     }
     
     return responseBodyByteLength;
+  }
+
+  protected void updateFingerprint(List<StunAttribute> responseAttributes) {
+    for (StunAttribute attribute : responseAttributes) {
+      if (attribute.getAttributeType() == AttributeType.FINGERPRINT) {
+        FingerprintStunAttributeValue value = (FingerprintStunAttributeValue) attribute.getValue();
+        value.update(getBytesNoFingerprint());
+        break;
+      }
+    }
   }
 }

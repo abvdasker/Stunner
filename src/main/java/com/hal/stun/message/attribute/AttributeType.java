@@ -1,6 +1,7 @@
 package com.hal.stun.message.attribute;
 
 import com.hal.stun.message.StunParseException;
+import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.value.MappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
@@ -10,6 +11,7 @@ import com.hal.stun.message.attribute.value.PriorityStunAttributeValue;
 import com.hal.stun.message.attribute.value.ICEControlledStunAttributeValue;
 import com.hal.stun.message.attribute.value.UsernameStunAttributeValue;
 import com.hal.stun.message.attribute.value.MessageIntegrityStunAttributeValue;
+import com.hal.stun.message.attribute.value.ErrorCodeStunAttributeValue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -28,7 +30,8 @@ public enum AttributeType {
   ICE_CONTROLLED     ((short) 0x8029, ICEControlledStunAttributeValue.class),
   USERNAME           ((short) 0x0006, UsernameStunAttributeValue.class),
   MESSAGE_INTEGRITY  ((short) 0x0008, MessageIntegrityStunAttributeValue.class),
-  MAPPED_ADDRESS     ((short) 0x0001, MappedAddressStunAttributeValue.class);
+  MAPPED_ADDRESS     ((short) 0x0001, MappedAddressStunAttributeValue.class),
+  ERROR_CODE         ((short) 0x0009, ErrorCodeStunAttributeValue.class);
   
   private short type;
   private Class<? extends StunAttributeValue> attributeValueClass;
@@ -40,15 +43,15 @@ public enum AttributeType {
   public short getTypeBytes() {
     return type;
   }
-  
+
   public StunAttributeValue buildAttributeValue(byte[] value)
       throws StunParseException {
     try {
       Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(byte[].class);
       return constructor.newInstance(value);
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
-      throw new RuntimeException("could not instantiate class", exception);
-    } catch (InvocationTargetException exception) {
+    } catch (NoSuchMethodException | IllegalAccessException exception) {
+      throw new RuntimeException(exception);
+    } catch (InstantiationException | InvocationTargetException exception) {
       Throwable cause = exception.getCause();
       if (cause instanceof StunParseException) {
         throw (StunParseException) cause;
@@ -65,7 +68,6 @@ public enum AttributeType {
       }
     }
     
-    // TODO: should probably have its own error
     throw new UnrecognizedAttributeTypeException(type);
   }
   
