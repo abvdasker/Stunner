@@ -38,16 +38,9 @@ public class StunAttribute {
   }
 
   public byte[] getBytes() {
-    byte[] typeBytes = new byte[2];
-    byte[] lengthBytes = new byte[2];
-    
-    short attributeTypeValue = attributeType.getTypeBytes();
-    typeBytes[0] = (byte) (attributeTypeValue >>> 8);
-    typeBytes[1] = (byte) attributeTypeValue;
+    byte[] typeBytes = StunMessageUtils.toBytes(attributeType.getTypeBytes());
+    byte[] lengthBytes = StunMessageUtils.toBytes((short) length);
 
-    lengthBytes[0] = (byte) (length >>> 8);
-    lengthBytes[1] = (byte) length;
-    
     List<byte[]> unjoinedAttributeBytes = new ArrayList<byte[]>();
     unjoinedAttributeBytes.add(typeBytes);
     unjoinedAttributeBytes.add(lengthBytes);

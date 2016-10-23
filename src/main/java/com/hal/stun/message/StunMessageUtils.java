@@ -169,4 +169,20 @@ public class StunMessageUtils {
     }
     return buffer.toString();
   }
+
+  public static byte[] toBytes(short bytePair) {
+    byte[] bytes = new byte[2];
+    bytes[0] = (byte) ((bytePair >>> 8) & MASK);
+    bytes[1] = (byte) (bytePair & MASK);
+    return bytes;
+  }
+
+  public static short toShort(byte[] bytes) {
+    if (bytes.length != 2) {
+      throw new IllegalArgumentException("only a byte array of size 2 can be converted to a short");
+    }
+    short attributeType = (short) (bytes[0] << 8);
+    attributeType |= (short) bytes[1];
+    return attributeType;
+  }
 }

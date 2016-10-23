@@ -6,14 +6,18 @@ import javax.xml.bind.DatatypeConverter;
 
 public class UnrecognizedAttributeTypeException extends StunParseException {
 
+  private short attributeType;
   public UnrecognizedAttributeTypeException(short type) {
-    super("Unrecognized attribute type: " + convertType(type));
+    super("Unrecognized attribute type: " + formatType(type));
+    this.attributeType = type;
   }
 
-  private static String convertType(short type) {
-    byte[] typeBytes = new byte[2];
-    typeBytes[0] = (byte) (type >>> 8);
-    typeBytes[1] = (byte) type;
+  public short getAttributeType() {
+    return attributeType;
+  }
+
+  private static String formatType(short type) {
+    byte[] typeBytes = StunMessageUtils.toBytes(type);
     return DatatypeConverter.printHexBinary(typeBytes);
   }
 

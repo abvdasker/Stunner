@@ -1,5 +1,7 @@
 package com.hal.stun.message;
 
+import com.hal.stun.message.attribute.AttributeType;
+
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -61,6 +63,32 @@ public class StunMessageUtilsTest {
     Assert.assertEquals(result[1], (byte) 1);
     Assert.assertEquals(result[2], (byte) 7);
     Assert.assertEquals(result[3], (byte) 208);
+  }
+
+  @Test
+  public void testToShort() {
+    byte[] bytes = {
+      (byte) 0xFA,
+      (byte) 0x0A
+    };
+
+    short result = StunMessageUtils.toShort(bytes);
+
+    Assert.assertEquals((short) 0xFA0A, result);
+  }
+
+  @Test
+  public void testToBytes() {
+    short bytePair = (short) 0xFA0A;
+    byte[] result = StunMessageUtils.toBytes(bytePair);
+
+    byte[] expectedResult = {
+      (byte) 0xFA,
+      (byte) 0x0A
+    };
+
+    Assert.assertArrayEquals(expectedResult,
+                             result);
   }
   
 }

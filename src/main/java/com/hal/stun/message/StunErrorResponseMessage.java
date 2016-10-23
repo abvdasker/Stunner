@@ -5,14 +5,16 @@ import java.util.ArrayList;
 
 import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.attribute.AttributeType;
+import com.hal.stun.message.attribute.UnrecognizedAttributeTypeException;
 import com.hal.stun.message.attribute.value.SoftwareStunAttributeValue;
 import com.hal.stun.message.attribute.value.FingerprintStunAttributeValue;
 import com.hal.stun.message.attribute.value.BadRequestErrorCodeStunAttributeValue;
+import com.hal.stun.message.errorattributefactory.ErrorAttributeFactory;
 
-public class StunParseErrorResponseMessage extends StunResponseMessage {
-  public StunParseErrorResponseMessage(byte[] rawRequest, StunParseException exception) {
+public class StunErrorResponseMessage extends StunResponseMessage {
+  public StunErrorResponseMessage(byte[] rawRequest, ErrorAttributeFactory errorAttributeFactory) {
     super();
-    attributes = buildResponseAttributes(exception);
+    attributes = buildResponseAttributes(errorAttributeFactory);
     int messageLength = getAttributeListByteLength(attributes);
     byte[] transactionID;
     try {
@@ -28,22 +30,11 @@ public class StunParseErrorResponseMessage extends StunResponseMessage {
     updateFingerprint(attributes);
   }
 
-  private static List<StunAttribute> buildResponseAttributes(StunParseException exception) {
+  private static List<StunAttribute> buildResponseAttributes(ErrorAttributeFactory errorAttributeFactory) {
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     attributes.add(buildSoftwareAttribute());
-    attributes.add(buildErrorCodeAttribute(exception));
+    attributes.addAll(errorAttributeFactory.build());
     attributes.add(buildFingerprintAttribute());
     return attributes;
-  }
-
-  private static StunAttribute buildErrorCodeAttribute(StunParseException exception) {
-    BadRequestErrorCodeStunAttributeValue errorCodeValue;
-    try {
-      errorCodeValue = new BadRequestErrorCodeStunAttributeValue(exception.getMessage());
-    } catch (StunParseException attributeValueParseException) {
-      throw new RuntimeException("Error creating error code attribute value");
-    }
-    return new StunAttribute(AttributeType.ERROR_CODE,
-                             errorCodeValue);
   }
 }

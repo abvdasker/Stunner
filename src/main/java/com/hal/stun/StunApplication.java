@@ -2,10 +2,16 @@ package com.hal.stun;
 
 import com.hal.stun.message.StunMessage;
 import com.hal.stun.message.StunResponseMessage;
-import com.hal.stun.message.StunParseErrorResponseMessage;
+import com.hal.stun.message.StunErrorResponseMessage;
 import com.hal.stun.message.StunHeader;
 import com.hal.stun.message.MessageClass;
+import com.hal.stun.message.errorattributefactory.ErrorAttributeFactory;
+import com.hal.stun.message.errorattributefactory.UnrecognizedAttributeErrorAttributeFactory;
+import com.hal.stun.message.errorattributefactory.ServerErrorAttributeFactory;
+import com.hal.stun.message.errorattributefactory.InvalidRequestErrorAttributeFactory;
+
 import com.hal.stun.message.StunParseException;
+import com.hal.stun.message.attribute.UnrecognizedAttributeTypeException;
 
 import java.net.InetSocketAddress;
 import java.util.logging.Logger;
@@ -15,14 +21,22 @@ class StunApplication {
   private static final Logger log = Logger.getLogger(StunApplication.class.getName());
   // handler also needs some info about the connection like
   // source IP, request received time, etc.
-  public byte[] handle(byte[] rawRequest, InetSocketAddress address) throws UnsupportedStunClassException {
-    StunMessage response;
+  public byte[] handle(byte[] rawRequest, InetSocketAddress address) {
+    StunMessage response = null;
+    ErrorAttributeFactory errorAttributeFactory = null;
     try {
       StunMessage request = new StunMessage(rawRequest, address);
       log.info("request:\n" + request);
       response = buildResponse(request);
+    } catch (UnrecognizedAttributeTypeException  exception) {
+      errorAttributeFactory = new UnrecognizedAttributeErrorAttributeFactory(exception);
     } catch (StunParseException exception) {
-      response = new StunParseErrorResponseMessage(rawRequest, exception);
+      errorAttributeFactory = new InvalidRequestErrorAttributeFactory(exception);
+    } catch (Exception exception) {
+      errorAttributeFactory = new ServerErrorAttributeFactory(exception);
+    }
+    if (response == null) {
+      response = new StunErrorResponseMessage(rawRequest, errorAttributeFactory);
     }
     log.info("response:\n" + response);
     return response.getBytes();

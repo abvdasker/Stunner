@@ -38,7 +38,7 @@ public class ErrorCodeStunAttributeValue extends StunAttributeValue {
   private boolean reservedBitsAreZero() {
     boolean topByteIsZero = value[0] == 0;
     boolean secondByteIsZero = value[1] == 0;
-    int thirdByte = value[3];
+    int thirdByte = value[2];
     int thirdByteTopFiveBits = thirdByte >>> 3;
     boolean thirdByteTopFiveBitsAreZero = thirdByteTopFiveBits == 0;
     return topByteIsZero &&

@@ -12,12 +12,13 @@ import com.hal.stun.message.attribute.value.ICEControlledStunAttributeValue;
 import com.hal.stun.message.attribute.value.UsernameStunAttributeValue;
 import com.hal.stun.message.attribute.value.MessageIntegrityStunAttributeValue;
 import com.hal.stun.message.attribute.value.ErrorCodeStunAttributeValue;
+import com.hal.stun.message.attribute.value.UnknownAttributesAttributeValue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public enum AttributeType {
-  
+
   // 16-bit attribute type
 
   // required
@@ -31,15 +32,16 @@ public enum AttributeType {
   USERNAME           ((short) 0x0006, UsernameStunAttributeValue.class),
   MESSAGE_INTEGRITY  ((short) 0x0008, MessageIntegrityStunAttributeValue.class),
   MAPPED_ADDRESS     ((short) 0x0001, MappedAddressStunAttributeValue.class),
-  ERROR_CODE         ((short) 0x0009, ErrorCodeStunAttributeValue.class);
-  
+  ERROR_CODE         ((short) 0x0009, ErrorCodeStunAttributeValue.class),
+  UNKNOWN_ATTRIBUTES ((short) 0x000A, UnknownAttributesAttributeValue.class);
+
   private short type;
   private Class<? extends StunAttributeValue> attributeValueClass;
   private AttributeType(short type, Class<? extends StunAttributeValue> attributeValueClass) {
     this.type = type;
     this.attributeValueClass = attributeValueClass;
   }
-  
+
   public short getTypeBytes() {
     return type;
   }
@@ -60,15 +62,15 @@ public enum AttributeType {
       }
     }
   }
-  
+
   public static AttributeType fromBytes(short type) throws UnrecognizedAttributeTypeException {
     for (AttributeType attributeType : AttributeType.values()) {
       if (attributeType.getTypeBytes() == type) {
         return attributeType;
       }
     }
-    
+
     throw new UnrecognizedAttributeTypeException(type);
   }
-  
+
 }
