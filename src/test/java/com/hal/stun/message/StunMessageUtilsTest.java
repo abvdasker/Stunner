@@ -1,7 +1,5 @@
 package com.hal.stun.message;
 
-import com.hal.stun.message.attribute.AttributeType;
-
 import org.junit.Test;
 import org.junit.Assert;
 

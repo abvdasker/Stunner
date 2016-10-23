@@ -20,7 +20,7 @@ public class UnrecognizedAttributeErrorAttributeFactory implements ErrorAttribut
   public List<StunAttribute> build() {
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     attributes.add(buildUnknownAttributesAttribute(exception));
-    attributes.add(buildUnknownAttributeErrorCodeAttribute(exception));
+    attributes.add(buildUnknownAttributeErrorCodeAttribute());
     return attributes;
   }
 
@@ -34,7 +34,7 @@ public class UnrecognizedAttributeErrorAttributeFactory implements ErrorAttribut
     }
   }
 
-  private StunAttribute buildUnknownAttributeErrorCodeAttribute(UnrecognizedAttributeTypeException unrecognizedException) {
+  private StunAttribute buildUnknownAttributeErrorCodeAttribute() {
     try {
       UnknownAttributeErrorCodeStunAttributeValue value
         = new UnknownAttributeErrorCodeStunAttributeValue("Unknown comprehension-required attribute type found in list of request attributes");

@@ -4,11 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.hal.stun.message.attribute.StunAttribute;
-import com.hal.stun.message.attribute.AttributeType;
-import com.hal.stun.message.attribute.UnrecognizedAttributeTypeException;
-import com.hal.stun.message.attribute.value.SoftwareStunAttributeValue;
-import com.hal.stun.message.attribute.value.FingerprintStunAttributeValue;
-import com.hal.stun.message.attribute.value.BadRequestErrorCodeStunAttributeValue;
 import com.hal.stun.message.errorattributefactory.ErrorAttributeFactory;
 
 public class StunErrorResponseMessage extends StunResponseMessage {
