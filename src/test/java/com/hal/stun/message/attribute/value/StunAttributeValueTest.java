@@ -27,6 +27,11 @@ public class StunAttributeValueTest {
     }
   }
 
+  @Test(expected = StunParseException.class)
+  public void testInvalidStunAttributeValue() throws StunParseException {
+    new InvalidTestStunAttributeValue(new byte[0]);
+  }
+
   private static class TestStunAttributeValue extends StunAttributeValue {
     public TestStunAttributeValue(byte[] value) throws StunParseException {
       super(value);
@@ -37,6 +42,19 @@ public class StunAttributeValueTest {
 
     protected boolean isValid() {
       return true;
+    }
+  }
+
+  private static class InvalidTestStunAttributeValue extends StunAttributeValue {
+    public InvalidTestStunAttributeValue(byte[] value) throws StunParseException {
+      super(value);
+    }
+
+    protected void parseValueBytes() throws StunParseException {
+    }
+
+    protected boolean isValid() {
+      return false;
     }
   }
 
