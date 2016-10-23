@@ -41,7 +41,7 @@ public class ErrorCodeStunAttributeValueTest {
 
   @Test(expected = StunParseException.class)
   public void testInvalidReservedBitsNonZero() throws StunParseException {
-        byte[] valueBytes = {
+    byte[] valueBytes = {
       (byte) 0,
       (byte) 0,
       (byte) 20,
@@ -50,6 +50,13 @@ public class ErrorCodeStunAttributeValueTest {
 
     ErrorCodeStunAttributeValue value = new ErrorCodeStunAttributeValue(valueBytes);
 
+    Assert.fail("should raise a parsing exception but did not");
+  }
+
+  @Test(expected = StunParseException.class)
+  public void testInvalidReasonTooLong() throws StunParseException {
+    byte[] valueBytes = new byte[ErrorCodeStunAttributeValue.MAX_REASON_SIZE_BYTES + 4 + 1];
+    ErrorCodeStunAttributeValue value = new ErrorCodeStunAttributeValue(valueBytes);
     Assert.fail("should raise a parsing exception but did not");
   }
 

@@ -7,7 +7,7 @@ import com.hal.stun.message.StunParseException; // TODO: Create attribute value-
 
 public class ErrorCodeStunAttributeValue extends StunAttributeValue {
 
-  private static final int MAX_REASON_SIZE_BYTES = 763;
+  public static final int MAX_REASON_SIZE_BYTES = 763;
 
   private String reason;
   public ErrorCodeStunAttributeValue(byte[] value) throws StunParseException {
