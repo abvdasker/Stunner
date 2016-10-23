@@ -22,8 +22,18 @@ public class ErrorCodeStunAttributeValue extends StunAttributeValue {
     return reason;
   }
 
+  public String toString() {
+    return reason + " (" + getErrorCode() + ")";
+  }
+
+  public int getErrorCode() {
+    int convertedErrorClass = (getErrorClass() & StunMessageUtils.MASK) * 100;
+    int convertedNumber = (getNumber() & StunMessageUtils.MASK);
+    return convertedErrorClass + convertedNumber;
+  }
+
   protected boolean isValid() {
-    return value.length > 4 && reservedBitsAreZero() &&
+    return value.length >= 4 && reservedBitsAreZero() &&
       getReasonBytes().length <= MAX_REASON_SIZE_BYTES;
   }
 
@@ -47,11 +57,11 @@ public class ErrorCodeStunAttributeValue extends StunAttributeValue {
   }
 
   private byte getErrorClass() {
-    return value[3];
+    return value[2];
   }
 
   private byte getNumber() {
-    return value[4];
+    return value[3];
   }
 
   private static byte[] buildErrorBytes(int errorCode, String reason) {
@@ -66,13 +76,4 @@ public class ErrorCodeStunAttributeValue extends StunAttributeValue {
     return result;
   }
 
-  public String toString() {
-    return reason + " (" + getErrorCode() + ")";
-  }
-
-  private int getErrorCode() {
-    int convertedErrorClass = (getErrorClass() & StunMessageUtils.MASK) * 100;
-    int convertedNumber = (getNumber() & StunMessageUtils.MASK);
-    return convertedErrorClass + convertedNumber;
-  }
 }
