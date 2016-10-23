@@ -136,4 +136,10 @@ public class ClientTestData {
     System.arraycopy(BASIC_RESPONSE_IPV6, BASIC_RESPONSE_IPV6.length - 4, fingerprintValue, 0, fingerprintValue.length);
     return fingerprintValue;
   }
+
+  public static byte[] getUsernameValueV4() {
+    byte[] usernameValue = new byte[9];
+    System.arraycopy(BASIC_REQUEST_IPV4, (16 * 4), usernameValue, 0, usernameValue.length);
+    return usernameValue;
+  }
 }
