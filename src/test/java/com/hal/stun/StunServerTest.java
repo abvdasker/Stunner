@@ -1,6 +1,5 @@
 package com.hal.stun;
 
-import com.hal.stun.socket.StunMessageSocket;
 import com.hal.stun.cli.ArgumentParser;
 import com.hal.stun.client.StunTestClient;
 import com.hal.stun.client.UDPStunTestClient;

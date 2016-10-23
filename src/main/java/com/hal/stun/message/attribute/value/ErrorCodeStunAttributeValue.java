@@ -9,8 +9,6 @@ public class ErrorCodeStunAttributeValue extends StunAttributeValue {
 
   private static final int MAX_REASON_SIZE_BYTES = 763;
 
-  private byte errorClass;
-  private byte number;
   private String reason;
   public ErrorCodeStunAttributeValue(byte[] value) throws StunParseException {
     super(value);
@@ -30,8 +28,6 @@ public class ErrorCodeStunAttributeValue extends StunAttributeValue {
   }
 
   protected void parseValueBytes() throws StunParseException {
-    errorClass = getErrorClass();
-    number = getNumber();
     reason = new String(getReasonBytes());
   }
 

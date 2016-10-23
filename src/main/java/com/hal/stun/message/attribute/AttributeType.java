@@ -1,7 +1,6 @@
 package com.hal.stun.message.attribute;
 
 import com.hal.stun.message.StunParseException;
-import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.value.MappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
