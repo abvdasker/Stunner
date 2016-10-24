@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 
 public abstract class StunMessage {
 
-  protected byte[] messageBytes;
   protected StunHeader header;
   protected List<StunAttribute> attributes;
   protected InetSocketAddress address;

@@ -10,8 +10,9 @@ import java.net.InetSocketAddress;
 
 public class StunRequestMessage extends StunMessage {
 
+  private byte[] messageBytes;
   public StunRequestMessage(byte[] message, InetSocketAddress address) throws StunParseException {
-    this.messageBytes = message;
+    messageBytes = message;
     this.address = address;
     header = new StunHeader(getHeaderBytes(message));
     header.validateMessageLength(message);
