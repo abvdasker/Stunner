@@ -63,11 +63,11 @@ class StunApplication {
   }
 
   public static class UnsupportedStunClassException extends Exception {
-    
+
     public UnsupportedStunClassException(MessageClass messageClass) {
       super("stun message type " + messageClass.name() + " is not supported by the STUN server");
     }
-    
+
   }
-  
+
 }
