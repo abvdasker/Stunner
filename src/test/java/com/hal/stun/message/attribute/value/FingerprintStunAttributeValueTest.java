@@ -17,7 +17,7 @@ public class FingerprintStunAttributeValueTest {
   @Test(expected = StunParseException.class)
   public void testValidationTooLong() throws StunParseException {
     byte[] attributeValueBytes = new byte[FingerprintStunAttributeValue.VALUE_SIZE_BYTES + 1];
-    StunAttributeValue value = new FingerprintStunAttributeValue(attributeValueBytes);
+    new FingerprintStunAttributeValue(attributeValueBytes);
     Assert.fail();
   }
 

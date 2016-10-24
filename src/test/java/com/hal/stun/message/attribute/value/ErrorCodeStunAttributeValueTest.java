@@ -48,7 +48,7 @@ public class ErrorCodeStunAttributeValueTest {
       (byte) 0
     };
 
-    ErrorCodeStunAttributeValue value = new ErrorCodeStunAttributeValue(valueBytes);
+    new ErrorCodeStunAttributeValue(valueBytes);
 
     Assert.fail("should raise a parsing exception but did not");
   }
@@ -56,7 +56,7 @@ public class ErrorCodeStunAttributeValueTest {
   @Test(expected = StunParseException.class)
   public void testInvalidReasonTooLong() throws StunParseException {
     byte[] valueBytes = new byte[ErrorCodeStunAttributeValue.MAX_REASON_SIZE_BYTES + 4 + 1];
-    ErrorCodeStunAttributeValue value = new ErrorCodeStunAttributeValue(valueBytes);
+    new ErrorCodeStunAttributeValue(valueBytes);
     Assert.fail("should raise a parsing exception but did not");
   }
 
