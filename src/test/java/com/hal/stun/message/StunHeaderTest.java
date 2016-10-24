@@ -19,13 +19,12 @@ public class StunHeaderTest {
 
   @BeforeClass
   public static void beforeAll() throws NoSuchMethodException {
-    
     verifyFirstByteMethod = StunHeader.class.getDeclaredMethod("verifyFirstByte", byte[].class);
     verifyFirstByteMethod.setAccessible(true);
-    
+
     verifyMagicCookieMethod = StunHeader.class.getDeclaredMethod("verifyMagicCookie", byte[].class);
     verifyMagicCookieMethod.setAccessible(true);
-    
+
     getMessageClassBitsMethod = StunHeader.class.getDeclaredMethod("getMessageClassBits", byte[].class);
     getMessageClassBitsMethod.setAccessible(true);
 
@@ -34,16 +33,15 @@ public class StunHeaderTest {
 
     getMessageMethodMethod = StunHeader.class.getDeclaredMethod("getMessageMethod", byte[].class);
     getMessageMethodMethod.setAccessible(true);
-    
   }
-  
+
   @Test
   public void testVerifyFirstByte() 
       throws StunParseException, IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
     StunMessageTestHelper.invokeWithPossibleParseException(verifyFirstByteMethod, null, headerBytes);
   }
-  
+
   @Test(expected = StunParseException.class)
   public void testVerifyFirstByteWithBitSet() 
       throws StunParseException, IllegalAccessException, InvocationTargetException {
@@ -62,7 +60,7 @@ public class StunHeaderTest {
     Assert.assertEquals("message class retrieved from header matches that set in header",
       expectedClassBits, actualClassBits);
   }
-  
+
   @Test
   public void testVerifyMagicCookie()
       throws StunParseException, IllegalAccessException, InvocationTargetException {
@@ -81,7 +79,6 @@ public class StunHeaderTest {
 
     StunMessageTestHelper.invokeWithPossibleParseException(verifyMagicCookieMethod, null, headerBytes);
   }
-  
 
   @Test
   public void testGetMessageLength() throws IllegalAccessException, InvocationTargetException {
@@ -95,7 +92,7 @@ public class StunHeaderTest {
     Assert.assertEquals("message length should match that set in header",
       expectedMessageLength, actualMessageLength);
   }
-  
+
   @Test(expected = StunParseException.class)
   public void testGetInvalidMessageLength()
       throws IllegalAccessException, InvocationTargetException, StunParseException {
@@ -104,7 +101,7 @@ public class StunHeaderTest {
     headerBytes[3] = (byte) 0xff; // clear lower 2 bits
     StunMessageTestHelper.invokeWithPossibleParseException(parseMessageLengthMethod, null, headerBytes);
   }
-  
+
   @Test
   public void testGetMessageMethod() throws IllegalAccessException, InvocationTargetException {
     byte[] headerBytes = new byte[StunHeader.HEADER_SIZE];
