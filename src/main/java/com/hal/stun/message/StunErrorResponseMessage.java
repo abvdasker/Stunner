@@ -7,8 +7,8 @@ import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.errorattributefactory.ErrorAttributeFactory;
 
 public class StunErrorResponseMessage extends StunResponseMessage {
+
   public StunErrorResponseMessage(byte[] rawRequest, ErrorAttributeFactory errorAttributeFactory) {
-    super();
     attributes = buildResponseAttributes(errorAttributeFactory);
     int messageLength = getAttributeListByteLength(attributes);
     byte[] transactionID;
@@ -32,4 +32,5 @@ public class StunErrorResponseMessage extends StunResponseMessage {
     attributes.add(buildFingerprintAttribute());
     return attributes;
   }
+
 }

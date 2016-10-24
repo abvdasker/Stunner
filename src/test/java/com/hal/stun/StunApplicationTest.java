@@ -1,6 +1,10 @@
 package com.hal.stun;
 
+
+import com.hal.stun.message.StunMessageUtils;
+
 import com.hal.stun.message.StunMessage;
+import com.hal.stun.message.StunRequestMessage;
 import com.hal.stun.message.StunHeader;
 import com.hal.stun.message.MessageClass;
 import com.hal.stun.message.attribute.StunAttribute;
@@ -19,7 +23,7 @@ public class StunApplicationTest {
 
     byte[] rawResponse = application.handle(rawRequest, null);
 
-    StunMessage parsedResponse = new StunMessage(rawResponse, null);
+    StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
     StunHeader responseHeader = parsedResponse.getHeader();
     Assert.assertEquals("Message class of response header is ERROR",
                         MessageClass.ERROR,
@@ -33,7 +37,7 @@ public class StunApplicationTest {
 
     byte[] rawResponse = application.handle(rawRequest, null);
 
-    StunMessage parsedResponse = new StunMessage(rawResponse, null);
+    StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
     StunAttribute errorAttribute = null;
     for (StunAttribute attribute : parsedResponse.getAttributes()) {
       if (attribute.getAttributeType() == AttributeType.ERROR_CODE) {

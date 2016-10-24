@@ -4,14 +4,13 @@ import java.net.InetSocketAddress;
 
 import org.junit.Test;
 
-public class StunResponseMessageTest {
+public class StunSuccessResponseMessageTest {
   @Test
   public void testInitialize() throws StunParseException {
     InetSocketAddress requestAddress = new InetSocketAddress(StunMessageTestData.REAL_STUN_ADDRESS, 1234);
-    StunMessage request = new StunMessage(
-                                          StunMessageTestData.getRealStunMessageBytes(),
-                                          requestAddress);
+    StunRequestMessage request = new StunRequestMessage(StunMessageTestData.getRealStunMessageBytes(),
+                                                        requestAddress);
 
-    new StunResponseMessage(request);
+    new StunSuccessResponseMessage(request);
   }
 }

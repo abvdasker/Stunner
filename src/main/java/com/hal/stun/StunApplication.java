@@ -1,7 +1,9 @@
 package com.hal.stun;
 
 import com.hal.stun.message.StunMessage;
+import com.hal.stun.message.StunRequestMessage;
 import com.hal.stun.message.StunResponseMessage;
+import com.hal.stun.message.StunSuccessResponseMessage;
 import com.hal.stun.message.StunErrorResponseMessage;
 import com.hal.stun.message.StunHeader;
 import com.hal.stun.message.MessageClass;
@@ -22,10 +24,10 @@ class StunApplication {
   // handler also needs some info about the connection like
   // source IP, request received time, etc.
   public byte[] handle(byte[] rawRequest, InetSocketAddress address) {
-    StunMessage response = null;
     ErrorAttributeFactory errorAttributeFactory = null;
+    StunResponseMessage response = null;
     try {
-      StunMessage request = new StunMessage(rawRequest, address);
+      StunRequestMessage request = new StunRequestMessage(rawRequest, address);
       log.info("request:\n" + request);
       response = buildResponse(request);
     } catch (UnrecognizedAttributeTypeException  exception) {
@@ -42,13 +44,13 @@ class StunApplication {
     return response.getBytes();
   }
 
-  private static StunMessage buildResponse(StunMessage request) throws UnsupportedStunClassException, StunParseException {
+  private static StunResponseMessage buildResponse(StunRequestMessage request) throws UnsupportedStunClassException, StunParseException {
     StunHeader header = request.getHeader();
     MessageClass requestMessageClass = header.getMessageClass();
-    StunMessage response;
+    StunResponseMessage response;
     switch(requestMessageClass) {
     case REQUEST:
-      response = new StunResponseMessage(request);
+      response = new StunSuccessResponseMessage(request);
       break;
     case INDICATION:
     case SUCCESS:

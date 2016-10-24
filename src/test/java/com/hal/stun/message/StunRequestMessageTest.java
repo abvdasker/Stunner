@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class StunMessageTest {
+public class StunRequestMessageTest {
   private static final String HEX_ENCODED_STUN_REQUEST = "0001000c2112A442115cfdfe3a1b4139e4fc98310020000800013e837f000001";
 
   private static Method getHeaderBytesMethod;
@@ -52,8 +52,8 @@ public class StunMessageTest {
   }
   
   @Test
-  public void testInitializeStunMessage() throws Exception {
-    new StunMessage(getTestStunRequest(), null);
+  public void testInitializeStunRequestMessage() throws Exception {
+    new StunRequestMessage(getTestStunRequest(), null);
   }
   
   private static byte[] getTestStunRequest() {

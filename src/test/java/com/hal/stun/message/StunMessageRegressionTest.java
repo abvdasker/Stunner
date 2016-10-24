@@ -11,10 +11,10 @@ import org.junit.Assert;
 
 public class StunMessageRegressionTest {
   @Test
-  public void testStunMessage() throws Exception {
+  public void testStunRequestMessage() throws Exception {
     InetSocketAddress address = new InetSocketAddress(StunMessageTestData.REAL_STUN_ADDRESS, 2000);
     byte[] messageBytes = StunMessageTestHelper.convertArray(StunMessageTestData.REAL_STUN_MESSAGE);
-    StunMessage message = new StunMessage(messageBytes, address);
+    StunMessage message = new StunRequestMessage(messageBytes, address);
     StunHeader header = message.getHeader();
     List<StunAttribute> attributes = message.getAttributes();
     StunAttribute attribute = attributes.get(0);
