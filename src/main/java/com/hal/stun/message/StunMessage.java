@@ -3,7 +3,6 @@ package com.hal.stun.message;
 import com.hal.stun.message.attribute.StunAttribute;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.net.InetSocketAddress;
 
 public abstract class StunMessage {

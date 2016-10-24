@@ -1,6 +1,5 @@
 package com.hal.stun;
 
-import com.hal.stun.message.StunMessage;
 import com.hal.stun.message.StunRequestMessage;
 import com.hal.stun.message.StunResponseMessage;
 import com.hal.stun.message.StunSuccessResponseMessage;
