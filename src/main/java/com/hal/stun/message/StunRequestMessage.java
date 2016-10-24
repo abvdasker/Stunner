@@ -2,9 +2,6 @@ package com.hal.stun.message;
 
 import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.attribute.StunAttribute;
-import com.hal.stun.message.attribute.AttributeType;
-import java.util.List;
-import java.util.ArrayList;
 
 import java.net.InetSocketAddress;
 

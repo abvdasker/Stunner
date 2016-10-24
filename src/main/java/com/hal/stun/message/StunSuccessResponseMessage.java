@@ -3,8 +3,6 @@ package com.hal.stun.message;
 import com.hal.stun.message.attribute.AttributeType;
 import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
-import com.hal.stun.message.attribute.value.SoftwareStunAttributeValue;
-import com.hal.stun.message.attribute.value.FingerprintStunAttributeValue;
 
 import java.util.ArrayList;
 import java.util.List;
