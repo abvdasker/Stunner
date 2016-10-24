@@ -1,10 +1,9 @@
 package com.hal.stun.message.attribute;
 
-import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.StunMessageUtils;
 import javax.xml.bind.DatatypeConverter;
 
-public class UnrecognizedAttributeTypeException extends StunParseException {
+public class UnrecognizedAttributeTypeException extends StunAttributeParseException {
 
   private short attributeType;
   public UnrecognizedAttributeTypeException(short type) {

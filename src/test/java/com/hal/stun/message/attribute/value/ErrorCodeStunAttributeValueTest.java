@@ -1,7 +1,5 @@
 package com.hal.stun.message.attribute.value;
 
-import com.hal.stun.message.StunParseException;
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -39,8 +37,8 @@ public class ErrorCodeStunAttributeValueTest {
                         errorCode);
   }
 
-  @Test(expected = StunParseException.class)
-  public void testInvalidReservedBitsNonZero() throws StunParseException {
+  @Test(expected = StunAttributeValueParseException.class)
+  public void testInvalidReservedBitsNonZero() throws StunAttributeValueParseException {
     byte[] valueBytes = {
       (byte) 0,
       (byte) 0,
@@ -53,8 +51,8 @@ public class ErrorCodeStunAttributeValueTest {
     Assert.fail("should raise a parsing exception but did not");
   }
 
-  @Test(expected = StunParseException.class)
-  public void testInvalidReasonTooLong() throws StunParseException {
+  @Test(expected = StunAttributeValueParseException.class)
+  public void testInvalidReasonTooLong() throws StunAttributeValueParseException {
     byte[] valueBytes = new byte[ErrorCodeStunAttributeValue.MAX_REASON_SIZE_BYTES + 4 + 1];
     new ErrorCodeStunAttributeValue(valueBytes);
     Assert.fail("should raise a parsing exception but did not");

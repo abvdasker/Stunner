@@ -1,6 +1,5 @@
 package com.hal.stun.message.attribute;
 
-import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.attribute.value.StunAttributeValue;
 import com.hal.stun.message.attribute.value.MappedAddressStunAttributeValue;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
@@ -15,6 +14,8 @@ import com.hal.stun.message.attribute.value.UnknownAttributesAttributeValue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import com.hal.stun.message.attribute.value.StunAttributeValueParseException;
 
 public enum AttributeType {
 
@@ -46,16 +47,16 @@ public enum AttributeType {
   }
 
   public StunAttributeValue buildAttributeValue(byte[] value)
-      throws StunParseException {
+      throws StunAttributeValueParseException {
     try {
       Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(byte[].class);
       return constructor.newInstance(value);
-    } catch (NoSuchMethodException | IllegalAccessException exception) {
+    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
       throw new RuntimeException(exception);
-    } catch (InstantiationException | InvocationTargetException exception) {
+    } catch (InvocationTargetException exception) {
       Throwable cause = exception.getCause();
-      if (cause instanceof StunParseException) {
-        throw (StunParseException) cause;
+      if (cause instanceof StunAttributeValueParseException) {
+        throw (StunAttributeValueParseException) cause;
       } else {
         throw new RuntimeException(cause);
       }

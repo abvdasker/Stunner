@@ -1,6 +1,5 @@
 package com.hal.stun.message.attribute;
 
-import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.StunMessageUtils;
 
 import org.junit.Test;
@@ -15,8 +14,8 @@ public class StunAttributeTest {
     new StunAttribute(AttributeType.MAPPED_ADDRESS, 8, attributeValue());
   }
 
-  @Test(expected = StunParseException.class)
-  public void testInitializeStunAttributeSizeMismatch() throws StunParseException, Exception {
+  @Test(expected = StunAttributeParseException.class)
+  public void testInitializeStunAttributeSizeMismatch() throws StunAttributeParseException, Exception {
     new StunAttribute(AttributeType.MAPPED_ADDRESS, 7, attributeValue());
   }
 

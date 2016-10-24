@@ -1,6 +1,5 @@
 package com.hal.stun.message.attribute;
 
-import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.StunMessageUtils;
 import com.hal.stun.message.attribute.value.StunAttributeValue;
 
@@ -15,7 +14,7 @@ public class StunAttribute {
   private AttributeType attributeType; // the attribute type to be set by the implementing subclass
   private int length; // the size of this attribute's value in bytes
   private StunAttributeValue attributeValue;
-  public StunAttribute(AttributeType attributeType, int length, byte[] value) throws StunParseException {
+  public StunAttribute(AttributeType attributeType, int length, byte[] value) throws StunAttributeParseException {
     this.attributeType = attributeType;
     this.length = length;
     verifyValueLength(value);
@@ -29,10 +28,10 @@ public class StunAttribute {
     this.attributeValue = attributeValue;
   }
 
-  private void verifyValueLength(byte[] value) throws StunParseException {
+  private void verifyValueLength(byte[] value) throws StunAttributeParseException {
     if (!lengthIsValid(value)) {
       String valueHex = StunMessageUtils.convertByteArrayToHex(value);
-      throw new StunParseException("attribute valueHex " + valueHex + " is " + value.length 
+      throw new StunAttributeParseException("attribute valueHex " + valueHex + " is " + value.length 
         + " bytes, but the attribute length specified is " + length);
     }
   }
@@ -65,7 +64,7 @@ public class StunAttribute {
     return attributeValue;
   }
 
-  public static List<StunAttribute> parseAttributes(byte[] attributesBytes) throws StunParseException {
+  public static List<StunAttribute> parseAttributes(byte[] attributesBytes) throws StunAttributeParseException {
     validateAttributesBytes(attributesBytes);
     List<StunAttribute> attributes = new ArrayList<StunAttribute>();
     
@@ -91,12 +90,12 @@ public class StunAttribute {
     return attributes;
   }
   
-  private static void validateAttributesBytes(byte[] attributesBytes) throws StunParseException {
+  private static void validateAttributesBytes(byte[] attributesBytes) throws StunAttributeParseException {
     if (attributesBytes.length % 4 != 0) {
-      throw new StunParseException("attributes must have bit count that is multiple of 32");
+      throw new StunAttributeParseException("attributes must have bit count that is multiple of 32");
     }
     if (attributesBytes.length < 8) {
-      throw new StunParseException("there must be at least one attribute of 16 bytes or more.");
+      throw new StunAttributeParseException("there must be at least one attribute of 16 bytes or more.");
     }
   }
 

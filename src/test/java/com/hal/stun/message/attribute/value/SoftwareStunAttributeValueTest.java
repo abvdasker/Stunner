@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.Assert;
 import java.util.Arrays;
 
-import com.hal.stun.message.StunParseException;
-
 public class SoftwareStunAttributeValueTest {
 
   private static final byte[] SOFTWARE_ATTRIBUTE_VALUE
@@ -37,7 +35,7 @@ public class SoftwareStunAttributeValueTest {
                         message);
   }
 
-  @Test(expected = StunParseException.class)
+  @Test(expected = StunAttributeValueParseException.class)
   public void testMessageIsTooLong() throws Exception {
     new SoftwareStunAttributeValue(MESSAGE_TOO_LONG.getBytes());
   }

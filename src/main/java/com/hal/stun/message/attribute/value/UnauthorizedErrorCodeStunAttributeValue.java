@@ -1,9 +1,7 @@
 package com.hal.stun.message.attribute.value;
 
-import com.hal.stun.message.StunParseException;
-
 public class UnauthorizedErrorCodeStunAttributeValue extends ErrorCodeStunAttributeValue {
-  public UnauthorizedErrorCodeStunAttributeValue(String reason) throws StunParseException {
+  public UnauthorizedErrorCodeStunAttributeValue(String reason) throws StunAttributeValueParseException {
     super(401, reason);
   }
 }

@@ -1,21 +1,20 @@
 package com.hal.stun.message.attribute.value;
 
 import com.hal.stun.message.StunMessageUtils;
-import com.hal.stun.message.StunParseException;
 
 public abstract class StunAttributeValue {
 
   protected byte[] value;
-  public StunAttributeValue(byte[] value) throws StunParseException {
+  public StunAttributeValue(byte[] value) throws StunAttributeValueParseException {
     this.value = value;
     parseValueBytes();
     validate();
   }
 
-  private void validate() throws StunParseException {
+  private void validate() throws StunAttributeValueParseException {
     if (!isValid()) {
       String attributeValueHex = StunMessageUtils.convertByteArrayToHex(value);
-      throw new StunParseException("could not parse attribute value " + attributeValueHex);
+      throw new StunAttributeValueParseException("could not parse attribute value " + attributeValueHex);
     }
   }
 
@@ -35,6 +34,6 @@ public abstract class StunAttributeValue {
   }
 
   // TODO: make exception more specific
-  protected abstract void parseValueBytes() throws StunParseException;
+  protected abstract void parseValueBytes() throws StunAttributeValueParseException;
   protected abstract boolean isValid();
 }

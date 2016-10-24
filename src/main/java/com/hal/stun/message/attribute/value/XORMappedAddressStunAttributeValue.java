@@ -1,7 +1,6 @@
 package com.hal.stun.message.attribute.value;
 
 import com.hal.stun.message.StunMessageUtils;
-import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.MagicCookie;
 
 import java.net.InetAddress;
@@ -11,12 +10,12 @@ public class XORMappedAddressStunAttributeValue extends MappedAddressStunAttribu
 
   private static InetSocketAddress overrideAddress = null;
 
-  public XORMappedAddressStunAttributeValue(byte[] value) throws StunParseException {
+  public XORMappedAddressStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
     super(value);
   }
 
   // TODO: need to pass in transaction ID for XOR operation
-  public XORMappedAddressStunAttributeValue(InetSocketAddress address, byte[] transactionID) throws StunParseException {
+  public XORMappedAddressStunAttributeValue(InetSocketAddress address, byte[] transactionID) throws StunAttributeValueParseException {
     super(generateFrom(address, transactionID));
   }
 

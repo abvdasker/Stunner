@@ -3,18 +3,17 @@ package com.hal.stun.message.attribute.value;
 import java.util.Arrays;
 
 import com.hal.stun.message.StunMessageUtils;
-import com.hal.stun.message.StunParseException; // TODO: Create attribute value-specific sublcass to avoid these imports
 
 public class ErrorCodeStunAttributeValue extends StunAttributeValue {
 
   public static final int MAX_REASON_SIZE_BYTES = 763;
 
   private String reason;
-  public ErrorCodeStunAttributeValue(byte[] value) throws StunParseException {
+  public ErrorCodeStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
     super(value);
   }
 
-  protected ErrorCodeStunAttributeValue(int errorCode, String reason) throws StunParseException {
+  protected ErrorCodeStunAttributeValue(int errorCode, String reason) throws StunAttributeValueParseException {
     super(buildErrorBytes(errorCode, reason));
   }
 
@@ -37,7 +36,7 @@ public class ErrorCodeStunAttributeValue extends StunAttributeValue {
       getReasonBytes().length <= MAX_REASON_SIZE_BYTES;
   }
 
-  protected void parseValueBytes() throws StunParseException {
+  protected void parseValueBytes() throws StunAttributeValueParseException {
     reason = new String(getReasonBytes());
   }
 

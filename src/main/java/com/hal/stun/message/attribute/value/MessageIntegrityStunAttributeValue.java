@@ -4,7 +4,6 @@ import java.security.MessageDigest;
 import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.Mac;
 
-import com.hal.stun.message.StunParseException;
 import java.security.NoSuchAlgorithmException;
 import java.security.InvalidKeyException;
 
@@ -12,7 +11,7 @@ public class MessageIntegrityStunAttributeValue extends StunAttributeValue {
 
   private static final int BYTE_SIZE = 20;
 
-  public MessageIntegrityStunAttributeValue(byte[] value) throws StunParseException {
+  public MessageIntegrityStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
     super(value);
   }
 
@@ -36,7 +35,7 @@ public class MessageIntegrityStunAttributeValue extends StunAttributeValue {
     return value.length == BYTE_SIZE;
   }
 
-  protected void parseValueBytes() throws StunParseException {
+  protected void parseValueBytes() throws StunAttributeValueParseException {
   }
 
   private static byte[] computeKey(String username, String realm, String password) {

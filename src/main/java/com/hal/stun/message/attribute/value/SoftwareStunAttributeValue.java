@@ -1,6 +1,5 @@
 package com.hal.stun.message.attribute.value;
 
-import com.hal.stun.message.StunParseException;
 import java.io.UnsupportedEncodingException;
 
 public class SoftwareStunAttributeValue extends StunAttributeValue {
@@ -9,15 +8,15 @@ public class SoftwareStunAttributeValue extends StunAttributeValue {
   private static final int MAX_MESSAGE_LENGTH = 127;
   private String message;
 
-  public SoftwareStunAttributeValue(byte[] value) throws StunParseException {
+  public SoftwareStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
     super(value);
   }
 
-  public SoftwareStunAttributeValue(String softwareName) throws StunParseException {
+  public SoftwareStunAttributeValue(String softwareName) throws StunAttributeValueParseException {
     super(buildValueBytes(softwareName));
   }
 
-  protected void parseValueBytes() throws StunParseException {
+  protected void parseValueBytes() throws StunAttributeValueParseException {
     try {
       message = new String(value, MESSAGE_ENCODING);
     } catch (UnsupportedEncodingException exception) {

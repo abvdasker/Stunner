@@ -1,7 +1,6 @@
 package com.hal.stun.message.attribute.value;
 
 import com.hal.stun.message.StunMessageUtils;
-import com.hal.stun.message.StunParseException;
 
 import java.util.Arrays;
 import java.net.InetAddress;
@@ -36,11 +35,11 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
   private short port;
   private InetAddress address;
   
-  public MappedAddressStunAttributeValue(byte[] value) throws StunParseException {
+  public MappedAddressStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
     super(value);
   }
 
-  public MappedAddressStunAttributeValue() throws StunParseException {
+  public MappedAddressStunAttributeValue() throws StunAttributeValueParseException {
     super(null);
   }
   
@@ -56,7 +55,7 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
     return address;
   }
 
-  protected void parseValueBytes() throws StunParseException {
+  protected void parseValueBytes() throws StunAttributeValueParseException {
     addressFamily = value[1];
     port = parsePort();
 
@@ -64,7 +63,7 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
     try {
       address = InetAddress.getByAddress(addressBytes);
     } catch (UnknownHostException exception) {
-      throw new StunParseException("could not parse internet address", exception);
+      throw new StunAttributeValueParseException("could not parse internet address", exception);
     }
   }
   

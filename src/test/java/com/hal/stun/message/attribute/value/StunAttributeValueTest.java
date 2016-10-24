@@ -1,7 +1,5 @@
 package com.hal.stun.message.attribute.value;
 
-import com.hal.stun.message.StunParseException;
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -27,17 +25,17 @@ public class StunAttributeValueTest {
     }
   }
 
-  @Test(expected = StunParseException.class)
-  public void testInvalidStunAttributeValue() throws StunParseException {
+  @Test(expected = StunAttributeValueParseException.class)
+  public void testInvalidStunAttributeValue() throws StunAttributeValueParseException {
     new InvalidTestStunAttributeValue(new byte[0]);
   }
 
   private static class TestStunAttributeValue extends StunAttributeValue {
-    public TestStunAttributeValue(byte[] value) throws StunParseException {
+    public TestStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
       super(value);
     }
 
-    protected void parseValueBytes() throws StunParseException {
+    protected void parseValueBytes() throws StunAttributeValueParseException {
     }
 
     protected boolean isValid() {
@@ -46,11 +44,11 @@ public class StunAttributeValueTest {
   }
 
   private static class InvalidTestStunAttributeValue extends StunAttributeValue {
-    public InvalidTestStunAttributeValue(byte[] value) throws StunParseException {
+    public InvalidTestStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
       super(value);
     }
 
-    protected void parseValueBytes() throws StunParseException {
+    protected void parseValueBytes() throws StunAttributeValueParseException {
     }
 
     protected boolean isValid() {

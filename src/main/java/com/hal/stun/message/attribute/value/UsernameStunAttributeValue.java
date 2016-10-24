@@ -1,6 +1,5 @@
 package com.hal.stun.message.attribute.value;
 
-import com.hal.stun.message.StunParseException;
 import com.hal.stun.message.StunMessageUtils;
 
 public class UsernameStunAttributeValue extends StunAttributeValue {
@@ -9,7 +8,7 @@ public class UsernameStunAttributeValue extends StunAttributeValue {
 
   private String username;
 
-  public UsernameStunAttributeValue(byte[] value) throws StunParseException {
+  public UsernameStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
     super(value);
   }
 
@@ -21,7 +20,7 @@ public class UsernameStunAttributeValue extends StunAttributeValue {
     return value.length <= MAXIMUM_USERNAME_LENGTH_BYTES;
   }
 
-  protected void parseValueBytes() throws StunParseException {
+  protected void parseValueBytes() throws StunAttributeValueParseException {
     username = new String(value);
   }
 
