@@ -5,25 +5,23 @@ import java.io.InputStream;
 
 import java.io.IOException;
 
-public class StunProperties extends Properties {
+public abstract class StunProperties extends Properties {
 
-  private static final String DEFAULT_PROPERTIES = "/resources/default.properties";
-  private static final String OVERRIDE_PATH = "stunner.properties";
-
-  public StunProperties() {
-    super(loadDefault());
+  protected StunProperties() {
+    super();
   }
 
-  private static Properties loadDefault() {
-    Properties defaults = new Properties();
-    try {
-      InputStream propertiesInputStream = StunProperties.class.getResourceAsStream(DEFAULT_PROPERTIES);
-      defaults.load(propertiesInputStream);
-      propertiesInputStream.close();
-    } catch (IOException exception) {
-      throw new RuntimeException(exception);
+  protected StunProperties(Properties properties) {
+    super(properties);
+  }
+
+  public static StunProperties buildProperties() {
+    StunDefaultProperties defaultProperties = StunDefaultProperties.buildProperties();
+    if (StunOverrideProperties.canLoad()) {
+      return StunOverrideProperties.buildProperties(defaultProperties);
+    } else {
+      return defaultProperties;
     }
-    return defaults;
   }
 
   public boolean getServeTCP() {

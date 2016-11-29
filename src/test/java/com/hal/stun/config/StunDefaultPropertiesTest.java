@@ -6,13 +6,13 @@ import org.junit.Test;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 
-public class StunPropertiesTest {
+public class StunDefaultPropertiesTest {
 
-  private static StunProperties stunProperties;
+  private static StunDefaultProperties stunProperties;
 
   @BeforeClass
   public static void beforeAll() {
-    stunProperties = new StunProperties();
+    stunProperties = StunDefaultProperties.buildProperties();
   }
 
   @Test
