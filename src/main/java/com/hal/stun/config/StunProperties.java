@@ -35,4 +35,14 @@ public class StunProperties extends Properties {
     String serveUDP = getProperty("server.udp.serve");
     return Boolean.parseBoolean(serveUDP);
   }
+
+  public int getTCPPort() {
+    String tcpPort = getProperty("server.tcp.port");
+    return Integer.parseInt(tcpPort);
+  }
+
+  public int getUDPPort() {
+    String udpPort = getProperty("server.udp.port");
+    return Integer.parseInt(udpPort);
+  }
 }

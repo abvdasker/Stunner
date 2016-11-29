@@ -28,4 +28,19 @@ public class StunPropertiesTest {
                         false,
                         stunProperties.getServeUDP());
   }
+
+  @Test
+  public void testGetTCPPort() {
+    Assert.assertEquals("TCP port default matches",
+                        8000,
+                        stunProperties.getTCPPort());
+  }
+
+  @Test
+  public void testGetUDPPort() {
+    Assert.assertEquals("UDP port default matches",
+                        8001,
+                        stunProperties.getUDPPort());
+  }
+
 }
