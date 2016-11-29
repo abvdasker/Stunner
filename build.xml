@@ -37,19 +37,21 @@
 
   <property name="src" location="src" />
   <property name="src.main" location="${src}/main/java" />
+  <property name="src.main.resources" location="${src}/main/resources" />
   <property name="src.test" location="${src}/test/java" />
   <property name="build" location="build" />
   <property name="build.main" location="${build}/main" />
+  <property name="build.main.resources" location="${build.main}/resources" />
   <property name="build.test" location="${build}/test" />
   <property name="dist" location="dist" />
   <property name="version">0.1</property>
   <property name="sourcepath" location="${main}/com/hal/stun" />
   <property name="test.reports" location="reports" />
 
-  
   <target name="init">
     <tstamp />
     <mkdir dir="${build.main}" />
+    <mkdir dir="${build.main.resources}" />
   </target>
 
   <target name="resolve" depends="install-ivy" description="retrieve dependencies with ivy">
@@ -61,6 +63,7 @@
   </target>
   
   <target name="compile" depends="init" description="compile the source">
+    <copy file="${src.main.resources}/default.properties" todir="${build.main.resources}"/>
     <javac srcdir="${src.main}" destdir="${build.main}" debug="true" debuglevel="lines,vars,source" />
   </target>
 
