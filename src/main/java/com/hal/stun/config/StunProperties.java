@@ -32,7 +32,7 @@ public class StunProperties extends Properties {
   }
 
   public boolean getServeUDP() {
-    String serveUDP = getProperty("server.tcp.serve");
+    String serveUDP = getProperty("server.udp.serve");
     return Boolean.parseBoolean(serveUDP);
   }
 }

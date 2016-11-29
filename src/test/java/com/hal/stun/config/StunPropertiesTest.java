@@ -21,4 +21,11 @@ public class StunPropertiesTest {
                         true,
                         stunProperties.getServeTCP());
   }
+
+  @Test
+  public void testGetServeUDP() {
+    Assert.assertEquals("should serve TCP is true by default",
+                        false,
+                        stunProperties.getServeUDP());
+  }
 }
