@@ -43,4 +43,10 @@ public class StunPropertiesTest {
                         stunProperties.getUDPPort());
   }
 
+  @Test
+  public void testGetThreads() {
+    Assert.assertEquals("default 2 threads",
+                        2,
+                        stunProperties.getThreads());
+  }
 }
