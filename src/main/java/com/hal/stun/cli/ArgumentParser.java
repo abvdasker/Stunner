@@ -41,32 +41,32 @@ public class ArgumentParser {
   private static Map<String, ArgumentDefinition> buildDefinitions() {
     Map<String, ArgumentDefinition> newDefinitions = new HashMap<String, ArgumentDefinition>();
     addDefinition(newDefinitions, new FlagArgumentDefinition("--help",
-                                                          "-h",
-                                                          false,
-                                                          "Show help"));
+                                                             "-h",
+                                                             false,
+                                                             "Show help"));
     addDefinition(newDefinitions, new FlagArgumentDefinition("--tcp",
-                                                          "-tcp",
-                                                          new TCPDefaultConditionalValue(),
-                                                          "Run TCP STUN Server (can be used with --udp)"));
+                                                             "-tcp",
+                                                             new TCPDefaultConditionalValue(),
+                                                             "Run TCP STUN Server (can be used with --udp)"));
     addDefinition(newDefinitions, new FlagArgumentDefinition("--udp",
-                                                          "-udp",
-                                                          false,
-                                                          "Run UDP STUN Server (can be used with --tcp)"));
+                                                             "-udp",
+                                                             false,
+                                                             "Run UDP STUN Server (can be used with --tcp)"));
     addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
-                                                                   "--tcpport",
-                                                                   "-tport",
-                                                                   DEFAULT_TCP_PORT,
-                                                                   "Port on which to bind the TCP server"));
+                                                                      "--tcpport",
+                                                                      "-tport",
+                                                                      DEFAULT_TCP_PORT,
+                                                                      "Port on which to bind the TCP server"));
     addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
-                                                                   "--udpport",
-                                                                   "-uport",
-                                                                   DEFAULT_UDP_PORT,
-                                                                   "Port on which to bind the UDP server"));
+                                                                      "--udpport",
+                                                                      "-uport",
+                                                                      DEFAULT_UDP_PORT,
+                                                                      "Port on which to bind the UDP server"));
     addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
-                                                                   "--threads",
-                                                                   "-t",
-                                                                   DEFAULT_THREAD_COUNT,
-                                                                   "Number of threads to use in handler threadpool"));
+                                                                      "--threads",
+                                                                      "-t",
+                                                                      DEFAULT_THREAD_COUNT,
+                                                                      "Number of threads to use in handler threadpool"));
 
     return newDefinitions;
   }
