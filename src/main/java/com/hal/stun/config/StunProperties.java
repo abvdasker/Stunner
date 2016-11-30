@@ -5,6 +5,13 @@ import java.io.InputStream;
 
 import java.io.IOException;
 
+/*
+ * TODO: Create an adapter to convert the arguments into properties, then use the 
+ * StunOverrideProperties as the default for those.
+ *
+ * There should be some generic type of stun properties where you only have to override the
+ * builder method.
+ */
 public abstract class StunProperties extends Properties {
 
   protected StunProperties() {
