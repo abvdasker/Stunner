@@ -13,25 +13,26 @@ import java.net.SocketException;
 
 public class UDPStunTestClient extends StunTestClient {
 
-  private DatagramSocket socket;
-  public UDPStunTestClient(InetSocketAddress serverAddress) throws SocketException {
-    super(serverAddress);
-    socket = new DatagramSocket(StunMessageSocket.DEFAULT_PORT + 1);
-  }
+    private DatagramSocket socket;
 
-  public byte[] send(byte[] data) throws IOException, SocketTimeoutException {
-    DatagramPacket request = new DatagramPacket(data, data.length, serverAddress);
-    socket.send(request);
+    public UDPStunTestClient(InetSocketAddress serverAddress) throws SocketException {
+        super(serverAddress);
+        socket = new DatagramSocket(StunMessageSocket.DEFAULT_PORT + 1);
+    }
 
-    byte[] responseData = new byte[StunMessageSocket.MAX_PACKET_SIZE_BYTES];
-    DatagramPacket response = new DatagramPacket(responseData, responseData.length);
-    socket.receive(response);
+    public byte[] send(byte[] data) throws IOException, SocketTimeoutException {
+        DatagramPacket request = new DatagramPacket(data, data.length, serverAddress);
+        socket.send(request);
 
-    return UDPStunMessageSocket.getDataFromPacket(response);
-  }
+        byte[] responseData = new byte[StunMessageSocket.MAX_PACKET_SIZE_BYTES];
+        DatagramPacket response = new DatagramPacket(responseData, responseData.length);
+        socket.receive(response);
 
-  public void close() {
-    socket.disconnect();
-    socket.close();
-  }
+        return UDPStunMessageSocket.getDataFromPacket(response);
+    }
+
+    public void close() {
+        socket.disconnect();
+        socket.close();
+    }
 }

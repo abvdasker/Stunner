@@ -8,50 +8,50 @@ import java.io.IOException;
 
 public class UDPStunMessageSocket extends StunMessageSocket {
 
-  private DatagramSocket socket;
+    private DatagramSocket socket;
 
-  public UDPStunMessageSocket() throws IOException {
-    super();
-  }
+    public UDPStunMessageSocket() throws IOException {
+        super();
+    }
 
-  public UDPStunMessageSocket(int port) throws IOException {
-    super(port);
-  }
+    public UDPStunMessageSocket(int port) throws IOException {
+        super(port);
+    }
 
-  protected void setupSocket() throws IOException {
-    socket = new DatagramSocket(port);
-  }
+    protected void setupSocket() throws IOException {
+        socket = new DatagramSocket(port);
+    }
 
-  public void handle(StunHandler handler) throws IOException {
-    NetworkMessage request = listen();
-    NetworkMessage response = handler.handle(request);
-    transmit(response);
-  }
+    public void handle(StunHandler handler) throws IOException {
+        NetworkMessage request = listen();
+        NetworkMessage response = handler.handle(request);
+        transmit(response);
+    }
 
-  private NetworkMessage listen() throws IOException {
-    byte[] packetWrapper = new byte[MAX_PACKET_SIZE_BYTES];
-    DatagramPacket packet = new DatagramPacket(packetWrapper, packetWrapper.length);
+    private NetworkMessage listen() throws IOException {
+        byte[] packetWrapper = new byte[MAX_PACKET_SIZE_BYTES];
+        DatagramPacket packet = new DatagramPacket(packetWrapper, packetWrapper.length);
 
-    socket.receive(packet);
+        socket.receive(packet);
 
-    byte[] requestData = getDataFromPacket(packet);
+        byte[] requestData = getDataFromPacket(packet);
 
-    InetSocketAddress socketAddress = new InetSocketAddress(packet.getAddress(), packet.getPort());
-    return new NetworkMessage(socketAddress, requestData);
-  }
+        InetSocketAddress socketAddress = new InetSocketAddress(packet.getAddress(), packet.getPort());
+        return new NetworkMessage(socketAddress, requestData);
+    }
 
-  private boolean transmit(NetworkMessage message) throws IOException {
-    byte[] messageData = message.getData();
-    DatagramPacket packet = new DatagramPacket(messageData, messageData.length, message.getAddress(), message.getPort());
-    socket.send(packet);
-    return true;
-  }
+    private boolean transmit(NetworkMessage message) throws IOException {
+        byte[] messageData = message.getData();
+        DatagramPacket packet = new DatagramPacket(messageData, messageData.length, message.getAddress(), message.getPort());
+        socket.send(packet);
+        return true;
+    }
 
-  public static byte[] getDataFromPacket(DatagramPacket packet) {
-    int dataLengthBytes = packet.getLength();
-    byte[] requestData = new byte[dataLengthBytes];
-    int offset = packet.getOffset();
-    System.arraycopy(packet.getData(), offset, requestData, 0, dataLengthBytes);
-    return requestData;
-  }
+    public static byte[] getDataFromPacket(DatagramPacket packet) {
+        int dataLengthBytes = packet.getLength();
+        byte[] requestData = new byte[dataLengthBytes];
+        int offset = packet.getOffset();
+        System.arraycopy(packet.getData(), offset, requestData, 0, dataLengthBytes);
+        return requestData;
+    }
 }

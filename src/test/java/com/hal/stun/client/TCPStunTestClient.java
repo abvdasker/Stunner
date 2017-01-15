@@ -11,39 +11,40 @@ import java.io.IOException;
 
 public class TCPStunTestClient extends StunTestClient {
 
-  private Socket socket;
-  public TCPStunTestClient(InetSocketAddress serverAddress) throws IOException {
-    super(serverAddress);
-    socket = new Socket(serverAddress.getAddress(), serverAddress.getPort());
-  }
+    private Socket socket;
 
-  public byte[] send(byte[] data) throws IOException {
-    OutputStream output = socket.getOutputStream();
-    output.write(data);
-    output.flush();
-    socket.shutdownOutput();
-
-    InputStream input = socket.getInputStream();
-    byte[] paddedResponse = new byte[StunMessageSocket.MAX_PACKET_SIZE_BYTES];
-    int next;
-    int responsePosition = 0;
-    while ((next = input.read()) != -1) {
-      paddedResponse[responsePosition] = (byte) next;
-      responsePosition++;
+    public TCPStunTestClient(InetSocketAddress serverAddress) throws IOException {
+        super(serverAddress);
+        socket = new Socket(serverAddress.getAddress(), serverAddress.getPort());
     }
-    byte[] response = new byte[responsePosition];
-    System.arraycopy(paddedResponse, 0, response, 0, responsePosition);
 
-    return response;
-  }
+    public byte[] send(byte[] data) throws IOException {
+        OutputStream output = socket.getOutputStream();
+        output.write(data);
+        output.flush();
+        socket.shutdownOutput();
 
-  public void close() {
-    try {
-      if (!socket.isClosed()) {
-        socket.close();
-      }
-    } catch (IOException exception) {
-      throw new RuntimeException(exception);
+        InputStream input = socket.getInputStream();
+        byte[] paddedResponse = new byte[StunMessageSocket.MAX_PACKET_SIZE_BYTES];
+        int next;
+        int responsePosition = 0;
+        while ((next = input.read()) != -1) {
+            paddedResponse[responsePosition] = (byte) next;
+            responsePosition++;
+        }
+        byte[] response = new byte[responsePosition];
+        System.arraycopy(paddedResponse, 0, response, 0, responsePosition);
+
+        return response;
     }
-  }
+
+    public void close() {
+        try {
+            if (!socket.isClosed()) {
+                socket.close();
+            }
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 }

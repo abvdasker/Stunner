@@ -10,22 +10,23 @@ import java.util.ArrayList;
 
 public class ServerErrorAttributeFactory implements ErrorAttributeFactory {
 
-  private Exception exception;
-  public ServerErrorAttributeFactory(Exception exception) {
-    this.exception = exception;
-  }
+    private Exception exception;
 
-  public List<StunAttribute> build() {
-    List<StunAttribute> attributes = new ArrayList<StunAttribute>();
-    ServerErrorErrorCodeStunAttributeValue value;
-    try {
-      value = new ServerErrorErrorCodeStunAttributeValue(exception.getMessage());
-    } catch (StunParseException attributeValueException) {
-      throw new RuntimeException("failed to build server error code exception", attributeValueException);
+    public ServerErrorAttributeFactory(Exception exception) {
+        this.exception = exception;
     }
-    StunAttribute attribute = new StunAttribute(AttributeType.ERROR_CODE,
-                                                value);
-    attributes.add(attribute);
-    return attributes;
-  }
+
+    public List<StunAttribute> build() {
+        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        ServerErrorErrorCodeStunAttributeValue value;
+        try {
+            value = new ServerErrorErrorCodeStunAttributeValue(exception.getMessage());
+        } catch (StunParseException attributeValueException) {
+            throw new RuntimeException("failed to build server error code exception", attributeValueException);
+        }
+        StunAttribute attribute = new StunAttribute(AttributeType.ERROR_CODE,
+                value);
+        attributes.add(attribute);
+        return attributes;
+    }
 }

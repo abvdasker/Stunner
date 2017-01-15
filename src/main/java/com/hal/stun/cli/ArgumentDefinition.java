@@ -2,6 +2,7 @@ package com.hal.stun.cli;
 
 import java.util.Map;
 import java.util.Formatter;
+
 /*
  * 1. Create a hash mapping string keys to argument definitions
  * 2. Iterate over argument string array
@@ -12,35 +13,35 @@ import java.util.Formatter;
  */
 public abstract class ArgumentDefinition<T> {
 
-  protected String key;
-  protected String shortKey;
-  protected String description;
-  protected T defaultValue;
-  protected ConditionalValue<T> conditionalValue;
-  protected Class<T> valueType;
+    protected String key;
+    protected String shortKey;
+    protected String description;
+    protected T defaultValue;
+    protected ConditionalValue<T> conditionalValue;
+    protected Class<T> valueType;
 
-  public String getKey() {
-    return key;
-  }
+    public String getKey() {
+        return key;
+    }
 
-  public String getShortKey() {
-    return shortKey;
-  }
+    public String getShortKey() {
+        return shortKey;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  abstract public Argument parse(String stringValue) throws ArgumentParseException;
+    abstract public Argument parse(String stringValue) throws ArgumentParseException;
 
-  abstract public Argument getDefaultArgument(Map<String, Argument> otherArgs);
+    abstract public Argument getDefaultArgument(Map<String, Argument> otherArgs);
 
-  public String getHelp() {
-    StringBuffer output = new StringBuffer();
-    Formatter formatter = new Formatter(output);
-    formatter.format(" %1$s, %2$s  #  %3$s", key, shortKey, description);
-    formatter.flush();
-    formatter.close();
-    return output.toString();
-  }
+    public String getHelp() {
+        StringBuffer output = new StringBuffer();
+        Formatter formatter = new Formatter(output);
+        formatter.format(" %1$s, %2$s  #  %3$s", key, shortKey, description);
+        formatter.flush();
+        formatter.close();
+        return output.toString();
+    }
 }

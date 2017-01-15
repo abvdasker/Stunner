@@ -19,59 +19,60 @@ import com.hal.stun.message.attribute.value.StunAttributeValueParseException;
 
 public enum AttributeType {
 
-  // 16-bit attribute type
+    // 16-bit attribute type
 
-  // required
-  XOR_MAPPED_ADDRESS ((short) 0x0020, XORMappedAddressStunAttributeValue.class),
-  FINGERPRINT        ((short) 0x8028, FingerprintStunAttributeValue.class),
+    // required
+    XOR_MAPPED_ADDRESS((short) 0x0020, XORMappedAddressStunAttributeValue.class),
+    FINGERPRINT((short) 0x8028, FingerprintStunAttributeValue.class),
 
-  // optional
-  SOFTWARE           ((short) 0x8022, SoftwareStunAttributeValue.class),
-  PRIORITY           ((short) 0x0024, PriorityStunAttributeValue.class),
-  ICE_CONTROLLED     ((short) 0x8029, ICEControlledStunAttributeValue.class),
-  USERNAME           ((short) 0x0006, UsernameStunAttributeValue.class),
-  MESSAGE_INTEGRITY  ((short) 0x0008, MessageIntegrityStunAttributeValue.class),
-  MAPPED_ADDRESS     ((short) 0x0001, MappedAddressStunAttributeValue.class),
-  ERROR_CODE         ((short) 0x0009, ErrorCodeStunAttributeValue.class),
-  UNKNOWN_ATTRIBUTES ((short) 0x000A, UnknownAttributesAttributeValue.class);
+    // optional
+    SOFTWARE((short) 0x8022, SoftwareStunAttributeValue.class),
+    PRIORITY((short) 0x0024, PriorityStunAttributeValue.class),
+    ICE_CONTROLLED((short) 0x8029, ICEControlledStunAttributeValue.class),
+    USERNAME((short) 0x0006, UsernameStunAttributeValue.class),
+    MESSAGE_INTEGRITY((short) 0x0008, MessageIntegrityStunAttributeValue.class),
+    MAPPED_ADDRESS((short) 0x0001, MappedAddressStunAttributeValue.class),
+    ERROR_CODE((short) 0x0009, ErrorCodeStunAttributeValue.class),
+    UNKNOWN_ATTRIBUTES((short) 0x000A, UnknownAttributesAttributeValue.class);
 
-  private short type;
-  private Class<? extends StunAttributeValue> attributeValueClass;
-  private AttributeType(short type, Class<? extends StunAttributeValue> attributeValueClass) {
-    this.type = type;
-    this.attributeValueClass = attributeValueClass;
-  }
+    private short type;
+    private Class<? extends StunAttributeValue> attributeValueClass;
 
-  public short getTypeBytes() {
-    return type;
-  }
-
-  public StunAttributeValue buildAttributeValue(byte[] value)
-      throws StunAttributeValueParseException {
-    try {
-      Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(byte[].class);
-      return constructor.newInstance(value);
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
-      throw new RuntimeException(exception);
-    } catch (InvocationTargetException exception) {
-      Throwable cause = exception.getCause();
-      if (cause instanceof StunAttributeValueParseException) {
-        throw (StunAttributeValueParseException) cause;
-      } else {
-        throw new RuntimeException(cause);
-      }
-    }
-  }
-
-  public static AttributeType fromBytes(short type) throws UnrecognizedAttributeTypeException {
-    for (AttributeType attributeType : AttributeType.values()) {
-      if (attributeType.getTypeBytes() == type) {
-        return attributeType;
-      }
+    private AttributeType(short type, Class<? extends StunAttributeValue> attributeValueClass) {
+        this.type = type;
+        this.attributeValueClass = attributeValueClass;
     }
 
-    // TODO: only throw if attribute is comprehension-required
-    throw new UnrecognizedAttributeTypeException(type);
-  }
+    public short getTypeBytes() {
+        return type;
+    }
+
+    public StunAttributeValue buildAttributeValue(byte[] value)
+            throws StunAttributeValueParseException {
+        try {
+            Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(byte[].class);
+            return constructor.newInstance(value);
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
+            throw new RuntimeException(exception);
+        } catch (InvocationTargetException exception) {
+            Throwable cause = exception.getCause();
+            if (cause instanceof StunAttributeValueParseException) {
+                throw (StunAttributeValueParseException) cause;
+            } else {
+                throw new RuntimeException(cause);
+            }
+        }
+    }
+
+    public static AttributeType fromBytes(short type) throws UnrecognizedAttributeTypeException {
+        for (AttributeType attributeType : AttributeType.values()) {
+            if (attributeType.getTypeBytes() == type) {
+                return attributeType;
+            }
+        }
+
+        // TODO: only throw if attribute is comprehension-required
+        throw new UnrecognizedAttributeTypeException(type);
+    }
 
 }

@@ -8,29 +8,29 @@ import com.hal.stun.message.errorattributefactory.ErrorAttributeFactory;
 
 public class StunErrorResponseMessage extends StunResponseMessage {
 
-  public StunErrorResponseMessage(byte[] rawRequest, ErrorAttributeFactory errorAttributeFactory) {
-    attributes = buildResponseAttributes(errorAttributeFactory);
-    int messageLength = getAttributeListByteLength(attributes);
-    byte[] transactionID;
-    try {
-      StunHeader requestHeader = new StunHeader(getHeaderBytes(rawRequest));
-      transactionID = requestHeader.getTransactionID();
-    } catch (StunParseException headerParseException) {
-      transactionID = new byte[0];
+    public StunErrorResponseMessage(byte[] rawRequest, ErrorAttributeFactory errorAttributeFactory) {
+        attributes = buildResponseAttributes(errorAttributeFactory);
+        int messageLength = getAttributeListByteLength(attributes);
+        byte[] transactionID;
+        try {
+            StunHeader requestHeader = new StunHeader(getHeaderBytes(rawRequest));
+            transactionID = requestHeader.getTransactionID();
+        } catch (StunParseException headerParseException) {
+            transactionID = new byte[0];
+        }
+        header = new StunHeader(MessageClass.ERROR,
+                StunHeader.BINDING_METHOD,
+                messageLength,
+                transactionID);
+        updateFingerprint(attributes);
     }
-    header = new StunHeader(MessageClass.ERROR,
-                            StunHeader.BINDING_METHOD,
-                            messageLength,
-                            transactionID);
-    updateFingerprint(attributes);
-  }
 
-  private static List<StunAttribute> buildResponseAttributes(ErrorAttributeFactory errorAttributeFactory) {
-    List<StunAttribute> attributes = new ArrayList<StunAttribute>();
-    attributes.add(buildSoftwareAttribute());
-    attributes.addAll(errorAttributeFactory.build());
-    attributes.add(buildFingerprintAttribute());
-    return attributes;
-  }
+    private static List<StunAttribute> buildResponseAttributes(ErrorAttributeFactory errorAttributeFactory) {
+        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        attributes.add(buildSoftwareAttribute());
+        attributes.addAll(errorAttributeFactory.build());
+        attributes.add(buildFingerprintAttribute());
+        return attributes;
+    }
 
 }

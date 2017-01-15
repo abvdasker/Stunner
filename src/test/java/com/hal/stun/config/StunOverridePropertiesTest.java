@@ -11,32 +11,32 @@ import org.junit.After;
 
 public class StunOverridePropertiesTest {
 
-  private File tempFile;
+    private File tempFile;
 
-  @Before
-  public void beforeEach() throws Exception {
-    tempFile = File.createTempFile("stun", "test");
-  }
-
-  @Test
-  public void testOverrideDefaultProperty() throws Exception {
-    Properties properties = new Properties();
-    properties.setProperty("server.tcp.serve", "false");
-    properties.setProperty("server.threads", "7");
-    String overridesFilename = StunOverrideProperties.getResourceFilename();
-    tempFile.renameTo(new File(overridesFilename));
-    properties.store(new FileOutputStream(overridesFilename), "test");
-
-    StunOverrideProperties overrides = StunOverrideProperties.buildProperties(StunDefaultProperties.buildProperties());
-
-    Assert.assertEquals(false, overrides.getServeTCP());
-    Assert.assertEquals(7, overrides.getThreads());
-  }
-
-  @After
-  public void afterEach() {
-    if (tempFile.exists()) {
-      tempFile.delete();
+    @Before
+    public void beforeEach() throws Exception {
+        tempFile = File.createTempFile("stun", "test");
     }
-  }
+
+    @Test
+    public void testOverrideDefaultProperty() throws Exception {
+        Properties properties = new Properties();
+        properties.setProperty("server.tcp.serve", "false");
+        properties.setProperty("server.threads", "7");
+        String overridesFilename = StunOverrideProperties.getResourceFilename();
+        tempFile.renameTo(new File(overridesFilename));
+        properties.store(new FileOutputStream(overridesFilename), "test");
+
+        StunOverrideProperties overrides = StunOverrideProperties.build(StunDefaultProperties.buildProperties());
+
+        Assert.assertEquals(false, overrides.getServeTCP());
+        Assert.assertEquals(7, overrides.getThreads());
+    }
+
+    @After
+    public void afterEach() {
+        if (tempFile.exists()) {
+            tempFile.delete();
+        }
+    }
 }

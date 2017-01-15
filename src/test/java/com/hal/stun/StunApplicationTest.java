@@ -13,36 +13,36 @@ import org.junit.Assert;
 
 public class StunApplicationTest {
 
-  @Test
-  public void testMessageClassHandleParseError() throws Exception {
-    StunApplication application = new StunApplication();
-    byte[] rawRequest = ClientTestData.MALFORMED_REQUEST_IPV4;
+    @Test
+    public void testMessageClassHandleParseError() throws Exception {
+        StunApplication application = new StunApplication();
+        byte[] rawRequest = ClientTestData.MALFORMED_REQUEST_IPV4;
 
-    byte[] rawResponse = application.handle(rawRequest, null);
+        byte[] rawResponse = application.handle(rawRequest, null);
 
-    StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
-    StunHeader responseHeader = parsedResponse.getHeader();
-    Assert.assertEquals("Message class of response header is ERROR",
-                        MessageClass.ERROR,
-                        responseHeader.getMessageClass());
-  }
-
-  @Test
-  public void testErrorAttributeHandleParseError() throws Exception {
-    StunApplication application = new StunApplication();
-    byte[] rawRequest = ClientTestData.MALFORMED_REQUEST_IPV4;
-
-    byte[] rawResponse = application.handle(rawRequest, null);
-
-    StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
-    StunAttribute errorAttribute = null;
-    for (StunAttribute attribute : parsedResponse.getAttributes()) {
-      if (attribute.getAttributeType() == AttributeType.ERROR_CODE) {
-        errorAttribute = attribute;
-      }
+        StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
+        StunHeader responseHeader = parsedResponse.getHeader();
+        Assert.assertEquals("Message class of response header is ERROR",
+                MessageClass.ERROR,
+                responseHeader.getMessageClass());
     }
 
-    Assert.assertNotNull("error code attribute set in response",
-                         errorAttribute);
-  }
+    @Test
+    public void testErrorAttributeHandleParseError() throws Exception {
+        StunApplication application = new StunApplication();
+        byte[] rawRequest = ClientTestData.MALFORMED_REQUEST_IPV4;
+
+        byte[] rawResponse = application.handle(rawRequest, null);
+
+        StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
+        StunAttribute errorAttribute = null;
+        for (StunAttribute attribute : parsedResponse.getAttributes()) {
+            if (attribute.getAttributeType() == AttributeType.ERROR_CODE) {
+                errorAttribute = attribute;
+            }
+        }
+
+        Assert.assertNotNull("error code attribute set in response",
+                errorAttribute);
+    }
 }

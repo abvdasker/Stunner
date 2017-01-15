@@ -4,32 +4,32 @@ import com.hal.stun.message.StunMessageUtils;
 
 public class UsernameStunAttributeValue extends StunAttributeValue {
 
-  private final static int MAXIMUM_USERNAME_LENGTH_BYTES = 512;
+    private final static int MAXIMUM_USERNAME_LENGTH_BYTES = 512;
 
-  private String username;
+    private String username;
 
-  public UsernameStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
-    super(value);
-  }
+    public UsernameStunAttributeValue(byte[] value) throws StunAttributeValueParseException {
+        super(value);
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  protected boolean isValid() {
-    return value.length <= MAXIMUM_USERNAME_LENGTH_BYTES;
-  }
+    protected boolean isValid() {
+        return value.length <= MAXIMUM_USERNAME_LENGTH_BYTES;
+    }
 
-  protected void parseValueBytes() throws StunAttributeValueParseException {
-    username = new String(value);
-  }
+    protected void parseValueBytes() throws StunAttributeValueParseException {
+        username = new String(value);
+    }
 
-  public String toString() {
-    StringBuffer usernameStringBuffer = new StringBuffer();
-    usernameStringBuffer.append('\n');
-    usernameStringBuffer.append(getUsername());
-    usernameStringBuffer.append('\n');
-    usernameStringBuffer.append(StunMessageUtils.formatByteArray(value));
-    return usernameStringBuffer.toString();
-  }
+    public String toString() {
+        StringBuffer usernameStringBuffer = new StringBuffer();
+        usernameStringBuffer.append('\n');
+        usernameStringBuffer.append(getUsername());
+        usernameStringBuffer.append('\n');
+        usernameStringBuffer.append(StunMessageUtils.formatByteArray(value));
+        return usernameStringBuffer.toString();
+    }
 }

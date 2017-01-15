@@ -7,26 +7,27 @@ import java.net.InetSocketAddress;
 
 public class StunRequestMessage extends StunMessage {
 
-  private byte[] messageBytes;
-  public StunRequestMessage(byte[] message, InetSocketAddress address) throws StunParseException {
-    messageBytes = message;
-    this.address = address;
-    header = new StunHeader(getHeaderBytes(message));
-    header.validateMessageLength(message);
-    attributes = StunAttribute.parseAttributes(getAttributesBytes(message));
-  }
+    private byte[] messageBytes;
 
-  private static byte[] getAttributesBytes(byte[] message) throws StunParseException {
-    byte[] attributesBytes = new byte[message.length - StunHeader.HEADER_SIZE];
-    for(int i = 0; i < attributesBytes.length; i++) {
-      attributesBytes[i] = message[StunHeader.HEADER_SIZE + i]; 
+    public StunRequestMessage(byte[] message, InetSocketAddress address) throws StunParseException {
+        messageBytes = message;
+        this.address = address;
+        header = new StunHeader(getHeaderBytes(message));
+        header.validateMessageLength(message);
+        attributes = StunAttribute.parseAttributes(getAttributesBytes(message));
     }
 
-    return attributesBytes;
-  }
+    private static byte[] getAttributesBytes(byte[] message) throws StunParseException {
+        byte[] attributesBytes = new byte[message.length - StunHeader.HEADER_SIZE];
+        for (int i = 0; i < attributesBytes.length; i++) {
+            attributesBytes[i] = message[StunHeader.HEADER_SIZE + i];
+        }
 
-  public byte[] getBytes() {
-    return messageBytes;
-  }
+        return attributesBytes;
+    }
+
+    public byte[] getBytes() {
+        return messageBytes;
+    }
 
 }
