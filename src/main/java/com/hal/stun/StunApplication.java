@@ -1,5 +1,7 @@
 package com.hal.stun;
 
+import com.hal.stun.config.StunConfiguration;
+import com.hal.stun.config.StunProperties;
 import com.hal.stun.message.StunRequestMessage;
 import com.hal.stun.message.StunResponseMessage;
 import com.hal.stun.message.StunSuccessResponseMessage;
@@ -20,6 +22,12 @@ import java.util.logging.Logger;
 class StunApplication {
 
     private static final Logger log = Logger.getLogger(StunApplication.class.getName());
+
+    private final StunProperties configuration;
+
+    public StunApplication(StunProperties configuration) {
+        this.configuration = configuration;
+    }
 
     // handler also needs some info about the connection like
     // source IP, request received time, etc.

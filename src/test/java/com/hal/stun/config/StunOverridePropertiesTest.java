@@ -23,7 +23,7 @@ public class StunOverridePropertiesTest {
         Properties properties = new Properties();
         properties.setProperty("server.tcp.serve", "false");
         properties.setProperty("server.threads", "7");
-        String overridesFilename = StunOverrideProperties.getResourceFilename();
+        String overridesFilename = StunOverrideProperties.getResourceFilepath();
         tempFile.renameTo(new File(overridesFilename));
         properties.store(new FileOutputStream(overridesFilename), "test");
 

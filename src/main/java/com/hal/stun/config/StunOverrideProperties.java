@@ -17,7 +17,7 @@ public class StunOverrideProperties extends StunProperties {
         StunOverrideProperties properties = new StunOverrideProperties(defaults);
         try {
             if (canLoad()) {
-                properties.load(new FileInputStream(getResourceFilename()));
+                properties.load(new FileInputStream(getResourceFilepath()));
             }
         } catch (IOException exception) {
             throw new RuntimeException(exception);
@@ -26,10 +26,10 @@ public class StunOverrideProperties extends StunProperties {
     }
 
     static boolean canLoad() {
-        return new File(getResourceFilename()).exists();
+        return new File(getResourceFilepath()).exists();
     }
 
-    static String getResourceFilename() {
+    static String getResourceFilepath() {
         try {
             String currentPath = StunOverrideProperties.
                     class.

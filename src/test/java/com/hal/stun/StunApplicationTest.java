@@ -1,5 +1,6 @@
 package com.hal.stun;
 
+import com.hal.stun.config.StunConfiguration;
 import com.hal.stun.message.StunMessage;
 import com.hal.stun.message.StunRequestMessage;
 import com.hal.stun.message.StunHeader;
@@ -15,7 +16,7 @@ public class StunApplicationTest {
 
     @Test
     public void testMessageClassHandleParseError() throws Exception {
-        StunApplication application = new StunApplication();
+        StunApplication application = new StunApplication(StunConfiguration.getConfig());
         byte[] rawRequest = ClientTestData.MALFORMED_REQUEST_IPV4;
 
         byte[] rawResponse = application.handle(rawRequest, null);
@@ -29,7 +30,7 @@ public class StunApplicationTest {
 
     @Test
     public void testErrorAttributeHandleParseError() throws Exception {
-        StunApplication application = new StunApplication();
+        StunApplication application = new StunApplication(StunConfiguration.getConfig());
         byte[] rawRequest = ClientTestData.MALFORMED_REQUEST_IPV4;
 
         byte[] rawResponse = application.handle(rawRequest, null);
