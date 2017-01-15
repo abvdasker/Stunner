@@ -56,7 +56,7 @@ public class StunHeaderTest {
         byte expectedClassBits = MessageClass.ERROR.getClassBits();
         headerBytes[0] = (byte) 0xff;
         headerBytes[1] = (byte) 0xff;
-        byte actualClassBits = (byte) getMessageClassBitsMethod.invoke(null, headerBytes);
+        byte actualClassBits = (byte) getMessageClassBitsMethod.invoke(null, (Object) headerBytes);
         Assert.assertEquals("message class retrieved from header matches that set in header",
                 expectedClassBits, actualClassBits);
     }
@@ -88,7 +88,7 @@ public class StunHeaderTest {
         expectedMessageLength <<= 2;
         headerBytes[2] = (byte) 0xff;
         headerBytes[3] = (byte) (0xff << 2); // clear lower 2 bits
-        int actualMessageLength = (int) parseMessageLengthMethod.invoke(null, headerBytes);
+        int actualMessageLength = (int) parseMessageLengthMethod.invoke(null, (Object) headerBytes);
         Assert.assertEquals("message length should match that set in header",
                 expectedMessageLength, actualMessageLength);
     }
@@ -108,7 +108,7 @@ public class StunHeaderTest {
         short expectedMessageMethod = (short) 0xff;
         headerBytes[0] = (byte) 0b11;
         headerBytes[1] = (byte) 0xff;
-        short actualMessageMethod = (short) getMessageMethodMethod.invoke(null, headerBytes);
+        short actualMessageMethod = (short) getMessageMethodMethod.invoke(null, (Object) headerBytes);
         Assert.assertEquals(
                 "retrieved method should be the same as the input method with the lowest bit of the upper method",
                 expectedMessageMethod, actualMessageMethod);

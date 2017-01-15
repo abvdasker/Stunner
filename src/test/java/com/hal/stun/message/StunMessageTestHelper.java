@@ -10,7 +10,7 @@ public class StunMessageTestHelper {
     public static void invokeWithPossibleParseException(Method method, StunHeader stunMessage, byte[] argument)
             throws IllegalAccessException, InvocationTargetException, StunParseException {
         try {
-            method.invoke(stunMessage, argument);
+            method.invoke(stunMessage, (Object) argument);
         } catch (InvocationTargetException exception) {
             Throwable cause = exception.getCause();
             if (cause != null && cause instanceof StunParseException) {

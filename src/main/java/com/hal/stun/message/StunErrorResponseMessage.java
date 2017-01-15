@@ -26,7 +26,7 @@ public class StunErrorResponseMessage extends StunResponseMessage {
     }
 
     private static List<StunAttribute> buildResponseAttributes(ErrorAttributeFactory errorAttributeFactory) {
-        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        List<StunAttribute> attributes = new ArrayList<>();
         attributes.add(buildSoftwareAttribute());
         attributes.addAll(errorAttributeFactory.build());
         attributes.add(buildFingerprintAttribute());

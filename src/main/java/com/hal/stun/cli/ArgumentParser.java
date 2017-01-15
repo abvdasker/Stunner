@@ -22,8 +22,8 @@ public class ArgumentParser {
     public static final String THREADS_KEY = "--threads";
 
     public static Map<String, Argument> parse(String[] args) throws ArgumentParseException {
-        Map<String, Argument> values = new HashMap<String, Argument>();
-        List<String> argList = new ArrayList<String>(Arrays.asList(args));
+        Map<String, Argument> values = new HashMap<>();
+        List<String> argList = new ArrayList<>(Arrays.asList(args));
 
         while (!argList.isEmpty()) {
             String argument = argList.remove(0);
@@ -40,11 +40,11 @@ public class ArgumentParser {
     }
 
     public static Set<ArgumentDefinition> getDefinitionSet() {
-        return new HashSet<ArgumentDefinition>(definitions.values());
+        return new HashSet<>(definitions.values());
     }
 
     private static Map<String, ArgumentDefinition> buildDefinitions() {
-        Map<String, ArgumentDefinition> newDefinitions = new HashMap<String, ArgumentDefinition>();
+        Map<String, ArgumentDefinition> newDefinitions = new HashMap<>();
         addDefinition(newDefinitions, new FlagArgumentDefinition("--help",
                 "-h",
                 false,
@@ -57,17 +57,17 @@ public class ArgumentParser {
                 "-udp",
                 false,
                 "Run UDP STUN Server (can be used with --tcp)"));
-        addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
+        addDefinition(newDefinitions, new PairArgumentDefinition<>(Integer.class,
                 TCP_PORT_KEY,
                 "-tport",
                 DEFAULT_TCP_PORT,
                 "Port on which to bind the TCP server"));
-        addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
+        addDefinition(newDefinitions, new PairArgumentDefinition<>(Integer.class,
                 UDP_PORT_KEY,
                 "-uport",
                 DEFAULT_UDP_PORT,
                 "Port on which to bind the UDP server"));
-        addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
+        addDefinition(newDefinitions, new PairArgumentDefinition<>(Integer.class,
                 THREADS_KEY,
                 "-t",
                 DEFAULT_THREAD_COUNT,

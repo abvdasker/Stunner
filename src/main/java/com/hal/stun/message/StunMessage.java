@@ -30,17 +30,13 @@ public abstract class StunMessage {
             throw new StunParseException("message was smaller than header size. Header must be 20 bytes");
         }
         byte[] header = new byte[StunHeader.HEADER_SIZE];
-        for (int i = 0; i < header.length; i++) {
-            header[i] = message[i];
-        }
+        System.arraycopy(message, 0, header, 0, header.length);
         return header;
     }
 
     private static byte[] getAttributesBytes(byte[] message) throws StunParseException {
         byte[] attributesBytes = new byte[message.length - StunHeader.HEADER_SIZE];
-        for (int i = 0; i < attributesBytes.length; i++) {
-            attributesBytes[i] = message[StunHeader.HEADER_SIZE + i];
-        }
+        System.arraycopy(message, 20, attributesBytes, 0, attributesBytes.length);
 
         return attributesBytes;
     }

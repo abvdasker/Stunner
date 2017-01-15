@@ -42,8 +42,10 @@ public class StunMessageTestData {
     public static byte[] getRealTransactionID() {
         int transactionIDIndex = 8;
         int transactionIDLength = 12;
-        byte[] transactionID = Arrays.copyOfRange(getRealStunMessageBytes(), transactionIDIndex, transactionIDIndex + transactionIDLength);
-        return transactionID;
+        return Arrays.copyOfRange(
+                getRealStunMessageBytes(),
+                transactionIDIndex,
+                transactionIDIndex + transactionIDLength);
     }
 
     public static byte[] getRealStunMessageBytes() {

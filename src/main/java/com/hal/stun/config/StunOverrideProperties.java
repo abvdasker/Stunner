@@ -25,11 +25,11 @@ public class StunOverrideProperties extends StunProperties {
         return properties;
     }
 
-    static boolean canLoad() {
+    public static boolean canLoad() {
         return new File(getResourceFilepath()).exists();
     }
 
-    static String getResourceFilepath() {
+    public static String getResourceFilepath() {
         try {
             String currentPath = StunOverrideProperties.
                     class.

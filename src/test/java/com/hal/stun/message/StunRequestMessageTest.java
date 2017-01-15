@@ -31,7 +31,7 @@ public class StunRequestMessageTest {
         byte[] testBytes = new byte[messageSize];
         testBytes[messageSize - 1] = 0b10;
         testBytes[StunHeader.HEADER_SIZE - 1] = 0b11;
-        byte[] actualHeaderBytes = (byte[]) getHeaderBytesMethod.invoke(null, testBytes);
+        byte[] actualHeaderBytes = (byte[]) getHeaderBytesMethod.invoke(null, (Object) testBytes);
 
         byte[] expectedHeaderBytes = new byte[StunHeader.HEADER_SIZE];
         expectedHeaderBytes[19] = 0b11;

@@ -18,7 +18,7 @@ public class MagicCookieTest {
     }
 
     @Test
-    public void testGetTyopTwoBytes() {
+    public void testGetTopTwoBytes() {
         short expected = (short) 0x2112;
         short actual = MagicCookie.getTopTwoBytes();
 

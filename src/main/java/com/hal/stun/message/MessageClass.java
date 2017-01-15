@@ -3,7 +3,7 @@ package com.hal.stun.message;
 public enum MessageClass {
 
   /*
-   * 0b00 - requeust
+   * 0b00 - request
    * 0b01 - indication
    * 0b10 - success response
    * 0b11 - error response

@@ -17,7 +17,7 @@ public class InvalidRequestErrorAttributeFactory implements ErrorAttributeFactor
     }
 
     public List<StunAttribute> build() {
-        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        List<StunAttribute> attributes = new ArrayList<>();
         BadRequestErrorCodeStunAttributeValue value;
         try {
             value = new BadRequestErrorCodeStunAttributeValue(exception.getMessage());

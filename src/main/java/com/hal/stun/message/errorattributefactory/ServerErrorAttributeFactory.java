@@ -17,7 +17,7 @@ public class ServerErrorAttributeFactory implements ErrorAttributeFactory {
     }
 
     public List<StunAttribute> build() {
-        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        List<StunAttribute> attributes = new ArrayList<>();
         ServerErrorErrorCodeStunAttributeValue value;
         try {
             value = new ServerErrorErrorCodeStunAttributeValue(exception.getMessage());

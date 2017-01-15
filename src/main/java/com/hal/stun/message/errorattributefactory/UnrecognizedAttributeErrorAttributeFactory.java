@@ -19,7 +19,7 @@ public class UnrecognizedAttributeErrorAttributeFactory implements ErrorAttribut
     }
 
     public List<StunAttribute> build() {
-        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        List<StunAttribute> attributes = new ArrayList<>();
         attributes.add(buildUnknownAttributesAttribute(exception));
         attributes.add(buildUnknownAttributeErrorCodeAttribute());
         return attributes;

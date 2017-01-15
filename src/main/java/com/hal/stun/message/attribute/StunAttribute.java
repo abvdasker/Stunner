@@ -41,7 +41,7 @@ public class StunAttribute {
         byte[] typeBytes = StunMessageUtils.toBytes(attributeType.getTypeBytes());
         byte[] lengthBytes = StunMessageUtils.toBytes((short) length);
 
-        List<byte[]> unjoinedAttributeBytes = new ArrayList<byte[]>();
+        List<byte[]> unjoinedAttributeBytes = new ArrayList<>();
         unjoinedAttributeBytes.add(typeBytes);
         unjoinedAttributeBytes.add(lengthBytes);
         unjoinedAttributeBytes.add(attributeValue.getPaddedBytes());
@@ -67,7 +67,7 @@ public class StunAttribute {
 
     public static List<StunAttribute> parseAttributes(byte[] attributesBytes) throws StunAttributeParseException {
         validateAttributesBytes(attributesBytes);
-        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        List<StunAttribute> attributes = new ArrayList<>();
 
         int offset = 0;
         int paddedLength = 0;

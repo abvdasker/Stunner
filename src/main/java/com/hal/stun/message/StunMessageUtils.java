@@ -97,10 +97,9 @@ public class StunMessageUtils {
 
     private static byte convertHexToByte(String chars) {
         if (chars.length() != 2) {
-            throw new RuntimeException("can only convery exactly 2-chars at a time");
+            throw new RuntimeException("can only convert exactly 2-chars at a time");
         }
-        byte val = (byte) (Integer.parseInt(chars, 16) & MASK);
-        return val;
+        return (byte) (Integer.parseInt(chars, 16) & MASK);
     }
 
     public static byte[] convert(int number) {

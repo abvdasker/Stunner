@@ -7,7 +7,7 @@ public class PairArgumentDefinitionTest {
     @Test
     public void testGetDefaultArgument() {
         ArgumentDefinition<Integer> definition
-                = new PairArgumentDefinition<Integer>(Integer.class,
+                = new PairArgumentDefinition<>(Integer.class,
                 "--number",
                 "-n",
                 123,
@@ -21,7 +21,7 @@ public class PairArgumentDefinitionTest {
     @Test
     public void testParse() throws ArgumentParseException {
         ArgumentDefinition<Integer> definition
-                = new PairArgumentDefinition<Integer>(Integer.class,
+                = new PairArgumentDefinition<>(Integer.class,
                 "--number",
                 "-n",
                 123,
@@ -35,7 +35,7 @@ public class PairArgumentDefinitionTest {
     @Test(expected = ArgumentParseException.class)
     public void testParseInvalidString() throws ArgumentParseException {
         ArgumentDefinition<Integer> definition
-                = new PairArgumentDefinition<Integer>(Integer.class,
+                = new PairArgumentDefinition<>(Integer.class,
                 "--number",
                 "-n",
                 123,
@@ -46,7 +46,7 @@ public class PairArgumentDefinitionTest {
     @Test
     public void testGetShortKey() throws ArgumentParseException {
         ArgumentDefinition<Integer> definition
-                = new PairArgumentDefinition<Integer>(Integer.class,
+                = new PairArgumentDefinition<>(Integer.class,
                 "--number",
                 "-n",
                 123,

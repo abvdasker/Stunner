@@ -23,7 +23,7 @@ public class StunSuccessResponseMessage extends StunResponseMessage {
 
     private static List<StunAttribute> buildResponseAttributes(StunRequestMessage request) throws StunParseException {
         StunHeader requestHeader = request.getHeader();
-        List<StunAttribute> attributes = new ArrayList<StunAttribute>();
+        List<StunAttribute> attributes = new ArrayList<>();
         attributes.add(buildSoftwareAttribute());
         if (requestHeader.getMessageMethod() == StunHeader.BINDING_METHOD) {
             attributes.add(buildXORMappedAddressAttribute(request));

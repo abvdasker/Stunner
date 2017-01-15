@@ -88,7 +88,7 @@ public class StunServer {
         };
     }
 
-    private static final StunHandler createStunHandler() {
+    private static StunHandler createStunHandler() {
         final StunApplication application = new StunApplication();
         return new StunHandler() {
             public NetworkMessage handle(NetworkMessage request) throws IOException {

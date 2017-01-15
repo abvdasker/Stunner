@@ -17,7 +17,7 @@ public class Help {
 
     public static String getHelpText() {
         Set<ArgumentDefinition> definitions = ArgumentParser.getDefinitionSet();
-        List<String> helpStrings = new ArrayList<String>(definitions.size());
+        List<String> helpStrings = new ArrayList<>(definitions.size());
         for (ArgumentDefinition definition : definitions) {
             helpStrings.add(definition.getHelp());
         }

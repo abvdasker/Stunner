@@ -68,8 +68,7 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
     }
 
     private short parsePort() {
-        short thisPort = 0;
-        thisPort = value[2];
+        short thisPort = value[2];
         thisPort <<= 8;
         thisPort |= (value[3] & StunMessageUtils.MASK);
         return thisPort;
@@ -89,13 +88,12 @@ public class MappedAddressStunAttributeValue extends StunAttributeValue {
     }
 
     public String toString() {
-        StringBuffer addressStringBuffer = new StringBuffer();
-        addressStringBuffer.append(super.toString());
-        addressStringBuffer.append('\n');
         InetSocketAddress addressAndPort
                 = new InetSocketAddress(address, port & StunMessageUtils.MASK);
-        addressStringBuffer.append(addressAndPort.toString());
-        return addressStringBuffer.toString();
+        String addressStringBuffer = super.toString() +
+                '\n' +
+                addressAndPort.toString();
+        return addressStringBuffer;
     }
 
 }

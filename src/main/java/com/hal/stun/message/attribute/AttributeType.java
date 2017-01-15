@@ -51,7 +51,7 @@ public enum AttributeType {
             throws StunAttributeValueParseException {
         try {
             Constructor<? extends StunAttributeValue> constructor = attributeValueClass.getConstructor(byte[].class);
-            return constructor.newInstance(value);
+            return constructor.newInstance((Object) value);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
             throw new RuntimeException(exception);
         } catch (InvocationTargetException exception) {

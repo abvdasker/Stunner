@@ -25,11 +25,10 @@ public class UsernameStunAttributeValue extends StunAttributeValue {
     }
 
     public String toString() {
-        StringBuffer usernameStringBuffer = new StringBuffer();
-        usernameStringBuffer.append('\n');
-        usernameStringBuffer.append(getUsername());
-        usernameStringBuffer.append('\n');
-        usernameStringBuffer.append(StunMessageUtils.formatByteArray(value));
-        return usernameStringBuffer.toString();
+        String usernameStringBuffer = "\n" +
+                getUsername() +
+                '\n' +
+                StunMessageUtils.formatByteArray(value);
+        return usernameStringBuffer;
     }
 }

@@ -19,7 +19,7 @@ public class PairArgumentDefinition<T> extends ArgumentDefinition<T> {
             throw new ArgumentParseException("argument " + key + " requires a value");
         }
 
-        T value = null;
+        T value;
 
         try {
             Constructor<T> constructor = valueType.getConstructor(String.class);
