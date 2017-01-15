@@ -2,3 +2,8 @@ build
 dist
 ivy
 reports
+
+.idea
+out
+
+**/*.iml
