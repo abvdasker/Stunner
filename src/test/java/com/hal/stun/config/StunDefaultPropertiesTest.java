@@ -10,7 +10,7 @@ public class StunDefaultPropertiesTest {
 
   @BeforeClass
   public static void beforeAll() {
-    stunProperties = StunDefaultProperties.buildProperties();
+    stunProperties = StunDefaultProperties.build();
   }
 
   @Test

@@ -25,9 +25,9 @@ public class FlagArgumentDefinition extends ArgumentDefinition<Boolean> {
 
     public Argument getDefaultArgument(Map<String, Argument> otherArgs) {
         if (conditionalValue != null) {
-            return new Argument(conditionalValue.getValue(otherArgs));
+            return new DefaultArgument(conditionalValue.getValue(otherArgs));
         } else {
-            return new Argument(defaultValue);
+            return new DefaultArgument(defaultValue);
         }
     }
 }

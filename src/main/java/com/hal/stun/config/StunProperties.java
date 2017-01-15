@@ -1,7 +1,5 @@
 package com.hal.stun.config;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 /*
@@ -12,6 +10,13 @@ import java.util.Properties;
  * builder method.
  */
 public abstract class StunProperties extends Properties {
+
+    public static final String TCP_SERVE_PROPERTY = "server.tcp.serve";
+    public static final String UDP_SERVE_PROPERTY = "server.udp.serve";
+    public static final String TCP_PORT_PROPERTY = "server.tcp.port";
+    public static final String UDP_PORT_PROPERTY = "server.udp.port";
+    public static final String THREADS_PROPERTY = "server.threads";
+
     protected StunProperties() {
         super();
     }
@@ -30,27 +35,27 @@ public abstract class StunProperties extends Properties {
     }
 
     public boolean getServeTCP() {
-        String serveTCP = getProperty("server.tcp.serve");
+        String serveTCP = getProperty(TCP_SERVE_PROPERTY);
         return Boolean.parseBoolean(serveTCP);
     }
 
     public boolean getServeUDP() {
-        String serveUDP = getProperty("server.udp.serve");
+        String serveUDP = getProperty(UDP_SERVE_PROPERTY);
         return Boolean.parseBoolean(serveUDP);
     }
 
     public int getTCPPort() {
-        String tcpPort = getProperty("server.tcp.port");
+        String tcpPort = getProperty(TCP_PORT_PROPERTY);
         return Integer.parseInt(tcpPort);
     }
 
     public int getUDPPort() {
-        String udpPort = getProperty("server.udp.port");
+        String udpPort = getProperty(UDP_PORT_PROPERTY);
         return Integer.parseInt(udpPort);
     }
 
     public int getThreads() {
-        String threads = getProperty("server.threads");
+        String threads = getProperty(THREADS_PROPERTY);
         return Integer.parseInt(threads);
     }
 

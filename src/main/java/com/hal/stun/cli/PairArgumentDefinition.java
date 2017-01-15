@@ -34,6 +34,6 @@ public class PairArgumentDefinition<T> extends ArgumentDefinition<T> {
     }
 
     public Argument getDefaultArgument(Map<String, Argument> otherArgs) {
-        return new Argument(defaultValue);
+        return new DefaultArgument(defaultValue);
     }
 }

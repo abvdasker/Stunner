@@ -15,6 +15,11 @@ public class ArgumentParser {
     public static final int DEFAULT_THREAD_COUNT = 2;
 
     public static final Map<String, ArgumentDefinition> definitions = buildDefinitions();
+    public static final String TCP_KEY = "--tcp";
+    public static final String UDP_KEY = "--udp";
+    public static final String TCP_PORT_KEY = "--tcpport";
+    public static final String UDP_PORT_KEY = "--udpport";
+    public static final String THREADS_KEY = "--threads";
 
     public static Map<String, Argument> parse(String[] args) throws ArgumentParseException {
         Map<String, Argument> values = new HashMap<String, Argument>();
@@ -44,26 +49,26 @@ public class ArgumentParser {
                 "-h",
                 false,
                 "Show help"));
-        addDefinition(newDefinitions, new FlagArgumentDefinition("--tcp",
+        addDefinition(newDefinitions, new FlagArgumentDefinition(TCP_KEY,
                 "-tcp",
                 new TCPDefaultConditionalValue(),
                 "Run TCP STUN Server (can be used with --udp)"));
-        addDefinition(newDefinitions, new FlagArgumentDefinition("--udp",
+        addDefinition(newDefinitions, new FlagArgumentDefinition(UDP_KEY,
                 "-udp",
                 false,
                 "Run UDP STUN Server (can be used with --tcp)"));
         addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
-                "--tcpport",
+                TCP_PORT_KEY,
                 "-tport",
                 DEFAULT_TCP_PORT,
                 "Port on which to bind the TCP server"));
         addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
-                "--udpport",
+                UDP_PORT_KEY,
                 "-uport",
                 DEFAULT_UDP_PORT,
                 "Port on which to bind the UDP server"));
         addDefinition(newDefinitions, new PairArgumentDefinition<Integer>(Integer.class,
-                "--threads",
+                THREADS_KEY,
                 "-t",
                 DEFAULT_THREAD_COUNT,
                 "Number of threads to use in handler threadpool"));

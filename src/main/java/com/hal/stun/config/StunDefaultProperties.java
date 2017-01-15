@@ -7,7 +7,7 @@ public class StunDefaultProperties extends StunProperties {
 
     private static final String DEFAULT_PROPERTIES = "/resources/default.properties";
 
-    public static StunDefaultProperties buildProperties() {
+    public static StunDefaultProperties build() {
         StunDefaultProperties defaults = new StunDefaultProperties();
         try {
             InputStream propertiesInputStream = StunProperties.class.getResourceAsStream(DEFAULT_PROPERTIES);

@@ -14,4 +14,13 @@ public class Argument {
     public Boolean getBoolean() {
         return (Boolean) value;
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
+    public boolean wasSet() {
+        return true;
+    }
 }

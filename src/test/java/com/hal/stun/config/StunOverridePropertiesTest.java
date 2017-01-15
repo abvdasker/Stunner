@@ -27,7 +27,7 @@ public class StunOverridePropertiesTest {
         tempFile.renameTo(new File(overridesFilename));
         properties.store(new FileOutputStream(overridesFilename), "test");
 
-        StunOverrideProperties overrides = StunOverrideProperties.build(StunDefaultProperties.buildProperties());
+        StunOverrideProperties overrides = StunOverrideProperties.build(StunDefaultProperties.build());
 
         Assert.assertEquals(false, overrides.getServeTCP());
         Assert.assertEquals(7, overrides.getThreads());
