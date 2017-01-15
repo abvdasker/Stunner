@@ -1,5 +1,7 @@
 package com.hal.stun.message;
 
+import com.hal.stun.config.StunConfiguration;
+import com.hal.stun.config.StunProperties;
 import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.attribute.AttributeType;
 
@@ -11,10 +13,10 @@ import java.util.ArrayList;
 
 public abstract class StunResponseMessage extends StunMessage {
 
-    private static final String SOFTWARE_NAME = "test vector";
+    private static StunProperties configuration = StunConfiguration.getConfig();
 
     public byte[] getBytes() {
-        List<byte[]> messageByteArray = new ArrayList<byte[]>();
+        List<byte[]> messageByteArray = new ArrayList<>();
         messageByteArray.add(header.getBytes());
         for (StunAttribute attribute : attributes) {
             messageByteArray.add(attribute.getBytes());
@@ -44,7 +46,8 @@ public abstract class StunResponseMessage extends StunMessage {
 
     protected static StunAttribute buildSoftwareAttribute() {
         try {
-            SoftwareStunAttributeValue softwareValue = new SoftwareStunAttributeValue(SOFTWARE_NAME);
+            SoftwareStunAttributeValue softwareValue
+                    = new SoftwareStunAttributeValue(configuration.getSoftwareName());
             return new StunAttribute(AttributeType.SOFTWARE, softwareValue);
         } catch (StunParseException exception) {
             throw new RuntimeException(exception);
@@ -62,7 +65,7 @@ public abstract class StunResponseMessage extends StunMessage {
     }
 
     private byte[] getBytesNoFingerprint() {
-        List<byte[]> messageByteArray = new ArrayList<byte[]>();
+        List<byte[]> messageByteArray = new ArrayList<>();
         messageByteArray.add(header.getBytes());
         for (StunAttribute attribute : attributes) {
             if (attribute.getAttributeType() != AttributeType.FINGERPRINT) {
@@ -71,5 +74,4 @@ public abstract class StunResponseMessage extends StunMessage {
         }
         return StunMessageUtils.joinByteArrays(messageByteArray);
     }
-
 }

@@ -16,6 +16,7 @@ public abstract class StunProperties extends Properties {
     public static final String TCP_PORT_PROPERTY = "server.tcp.port";
     public static final String UDP_PORT_PROPERTY = "server.udp.port";
     public static final String THREADS_PROPERTY = "server.threads";
+    public static final String SOFTWARE_NAME_PROPERTY = "server.software.name";
 
     protected StunProperties() {
         super();
@@ -60,6 +61,6 @@ public abstract class StunProperties extends Properties {
     }
 
     public String getSoftwareName() {
-        return getProperty("server.software.name");
+        return getProperty(SOFTWARE_NAME_PROPERTY);
     }
 }

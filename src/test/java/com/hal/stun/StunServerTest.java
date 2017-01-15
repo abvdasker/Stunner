@@ -5,6 +5,7 @@ import com.hal.stun.client.StunTestClient;
 import com.hal.stun.client.UDPStunTestClient;
 import com.hal.stun.client.TCPStunTestClient;
 import com.hal.stun.client.data.ClientTestData;
+import com.hal.stun.config.StunConfiguration;
 import com.hal.stun.message.attribute.value.XORMappedAddressStunAttributeValue;
 
 import java.net.InetSocketAddress;
@@ -16,6 +17,8 @@ import org.junit.AfterClass;
 
 import java.net.SocketException;
 
+import static com.hal.stun.config.StunProperties.SOFTWARE_NAME_PROPERTY;
+
 public class StunServerTest {
 
     private static final String LOCAL_SERVER_ADDRESS_V4 = "127.0.0.1";
@@ -23,11 +26,14 @@ public class StunServerTest {
     private static final String[] TEST_ARGS = {
             "--udp", "--tcp"
     };
+    private static final String TEST_SOFTWARE_NAME = "test vector";
 
     private static Thread serverThread;
 
     @BeforeClass
     public static void beforeAll() throws SocketException {
+        // kind-of a hack. Doesn't work if you try to call this after startServer
+        StunConfiguration.getConfig().setProperty(SOFTWARE_NAME_PROPERTY, TEST_SOFTWARE_NAME);
         serverThread = startServer();
     }
 

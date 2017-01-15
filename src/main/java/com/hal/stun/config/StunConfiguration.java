@@ -6,12 +6,13 @@ import java.util.Map;
 
 public class StunConfiguration {
 
-    public static StunProperties getConfig(Map<String, Argument> parsedArgs) {
-        StunProperties propertiesConfiguration = StunProperties.build();
-        return StunArgumentProperties.build(parsedArgs, propertiesConfiguration);
+    private static StunProperties configuration = StunProperties.build();
+
+    public static void setConfig(Map<String, Argument> parsedArgs) {
+        configuration = StunArgumentProperties.build(parsedArgs, configuration);
     }
 
     public static StunProperties getConfig() {
-        return StunProperties.build();
+        return configuration;
     }
 }

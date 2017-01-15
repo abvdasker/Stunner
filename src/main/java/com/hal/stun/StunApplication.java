@@ -23,10 +23,7 @@ class StunApplication {
 
     private static final Logger log = Logger.getLogger(StunApplication.class.getName());
 
-    private final StunProperties configuration;
-
-    public StunApplication(StunProperties configuration) {
-        this.configuration = configuration;
+    public StunApplication() {
     }
 
     // handler also needs some info about the connection like

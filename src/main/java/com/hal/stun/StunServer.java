@@ -27,7 +27,8 @@ public class StunServer {
     public static void main(String[] args) {
         try {
             Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
-            configuration = StunConfiguration.getConfig(parsedArgs);
+            StunConfiguration.setConfig(parsedArgs);
+            configuration = StunConfiguration.getConfig();
 
             if (parsedArgs.get("--help").getBoolean()) {
                 printHelpAndDie(0);
@@ -88,7 +89,7 @@ public class StunServer {
     }
 
     private static final StunHandler createStunHandler() {
-        final StunApplication application = new StunApplication(configuration);
+        final StunApplication application = new StunApplication();
         return new StunHandler() {
             public NetworkMessage handle(NetworkMessage request) throws IOException {
                 byte[] requestBytes = request.getData();
