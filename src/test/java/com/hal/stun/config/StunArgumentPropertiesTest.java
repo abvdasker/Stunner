@@ -15,7 +15,8 @@ public class StunArgumentPropertiesTest {
         Map<String, Argument> parsedArgs = new HashMap<>();
         Argument arg = new Argument(7);
         parsedArgs.put(ArgumentParser.TCP_PORT_KEY, arg);
-        StunArgumentProperties properties = StunArgumentProperties.build(parsedArgs, StunDefaultProperties.build());
+        StunProperties properties = StunDefaultProperties.build();
+        StunArgumentProperties.update(parsedArgs, properties);
         Assert.assertEquals(
                 "Should override default property using arguments",
                 7,

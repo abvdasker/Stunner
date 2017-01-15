@@ -32,7 +32,6 @@ public class StunServerTest {
 
     @BeforeClass
     public static void beforeAll() throws SocketException {
-        // kind-of a hack. Doesn't work if you try to call this after startServer
         StunConfiguration.getConfig().setProperty(SOFTWARE_NAME_PROPERTY, TEST_SOFTWARE_NAME);
         serverThread = startServer();
     }

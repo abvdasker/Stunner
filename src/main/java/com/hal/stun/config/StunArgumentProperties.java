@@ -21,15 +21,10 @@ public class StunArgumentProperties extends StunProperties {
         put(THREADS_KEY, THREADS_PROPERTY);
     }};
 
-    private StunArgumentProperties(StunProperties defaults) {
-        super(defaults);
-    }
-
-    public static StunArgumentProperties build(
+    public static void update(
             Map<String, Argument> parsedArguments,
-            StunProperties defaults
+            StunProperties properties
     ) {
-        StunArgumentProperties properties = new StunArgumentProperties(defaults);
         for (Map.Entry<String, String> entry : ARGUMENTS_TO_PROPERTIES.entrySet()) {
             Argument parsedArg = parsedArguments.get(entry.getKey());
             if (parsedArg != null && parsedArg.wasSet()) {
@@ -37,6 +32,5 @@ public class StunArgumentProperties extends StunProperties {
                 properties.setProperty(entry.getValue(), value);
             }
         }
-        return properties;
     }
 }

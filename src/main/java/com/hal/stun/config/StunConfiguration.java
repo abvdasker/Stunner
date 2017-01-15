@@ -8,8 +8,8 @@ public class StunConfiguration {
 
     private static StunProperties configuration = StunProperties.build();
 
-    public static void setConfig(Map<String, Argument> parsedArgs) {
-        configuration = StunArgumentProperties.build(parsedArgs, configuration);
+    public static void update(Map<String, Argument> parsedArgs) {
+        StunArgumentProperties.update(parsedArgs, configuration);
     }
 
     public static StunProperties getConfig() {

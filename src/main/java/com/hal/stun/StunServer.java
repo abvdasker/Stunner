@@ -22,12 +22,12 @@ import java.util.logging.Logger;
 public class StunServer {
 
     private static final Logger log = Logger.getLogger(StunServer.class.getName());
-    private static StunProperties configuration;
+    private static StunProperties configuration = StunConfiguration.getConfig();
 
     public static void main(String[] args) {
         try {
             Map<String, Argument> parsedArgs = ArgumentParser.parse(args);
-            StunConfiguration.setConfig(parsedArgs);
+            StunConfiguration.update(parsedArgs);
             configuration = StunConfiguration.getConfig();
 
             if (parsedArgs.get("--help").getBoolean()) {
