@@ -1,8 +1,13 @@
 package com.hal.stun;
 
-import com.hal.stun.message.*;
+import com.hal.stun.message.StunRequestMessage;
+import com.hal.stun.message.StunMessage;
+import com.hal.stun.message.StunHeader;
+import com.hal.stun.message.MessageClass;
 import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.attribute.AttributeType;
+
+import com.hal.stun.message.StunParseException;
 
 import com.hal.stun.client.data.ClientTestData;
 import org.junit.Test;
