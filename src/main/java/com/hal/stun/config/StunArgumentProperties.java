@@ -4,7 +4,6 @@ import com.hal.stun.cli.Argument;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static com.hal.stun.cli.ArgumentParser.TCP_KEY;
 import static com.hal.stun.cli.ArgumentParser.UDP_KEY;
@@ -13,8 +12,6 @@ import static com.hal.stun.cli.ArgumentParser.UDP_PORT_KEY;
 import static com.hal.stun.cli.ArgumentParser.THREADS_KEY;
 
 public class StunArgumentProperties extends StunProperties {
-
-    private static final Logger log = Logger.getLogger(StunArgumentProperties.class.getName());
 
     private static final Map<String, String> ARGUMENTS_TO_PROPERTIES = new HashMap<String, String>() {{
         // put(TCP_KEY, TCP_SERVE_PROPERTY);
