@@ -44,7 +44,7 @@ class StunApplication {
         return response.getBytes();
     }
 
-    private static StunResponseMessage buildResponse(StunRequestMessage request) throws UnsupportedStunClassException, StunParseException {
+    private static StunResponseMessage buildResponse(StunRequestMessage request) throws StunParseException {
         StunHeader header = request.getHeader();
         MessageClass requestMessageClass = header.getMessageClass();
         StunResponseMessage response;
@@ -62,7 +62,7 @@ class StunApplication {
         return response;
     }
 
-    public static class UnsupportedStunClassException extends Exception {
+    public static class UnsupportedStunClassException extends StunParseException {
 
         public UnsupportedStunClassException(MessageClass messageClass) {
             super("stun message type " + messageClass.name() + " is not supported by the STUN server");

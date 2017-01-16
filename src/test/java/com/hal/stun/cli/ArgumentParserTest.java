@@ -106,4 +106,10 @@ public class ArgumentParserTest {
         Assert.assertTrue(showHelp);
         Assert.assertEquals(7, threadCount);
     }
+
+    @Test(expected = ArgumentParseException.class)
+    public void testParseError() throws ArgumentParseException {
+        String[] args = {"hi"};
+        ArgumentParser.parse(args);
+    }
 }

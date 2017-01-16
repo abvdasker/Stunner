@@ -1,9 +1,6 @@
 package com.hal.stun;
 
-import com.hal.stun.message.StunMessage;
-import com.hal.stun.message.StunRequestMessage;
-import com.hal.stun.message.StunHeader;
-import com.hal.stun.message.MessageClass;
+import com.hal.stun.message.*;
 import com.hal.stun.message.attribute.StunAttribute;
 import com.hal.stun.message.attribute.AttributeType;
 
@@ -22,7 +19,7 @@ public class StunApplicationTest {
 
         StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
         StunHeader responseHeader = parsedResponse.getHeader();
-        Assert.assertEquals("Message class of response header is ERROR",
+        Assert.assertEquals("Request length in request is too long",
                 MessageClass.ERROR,
                 responseHeader.getMessageClass());
     }
@@ -44,5 +41,19 @@ public class StunApplicationTest {
 
         Assert.assertNotNull("error code attribute set in response",
                 errorAttribute);
+    }
+
+    @Test
+    public void testHandleUnsupportedClassError() throws StunParseException {
+        StunApplication application = new StunApplication();
+        byte[] rawRequest = ClientTestData.BAD_MESSAGE_CLASS_REQUEST_IPV4;
+
+        byte[] rawResponse = application.handle(rawRequest, null);
+
+        StunMessage parsedResponse = new StunRequestMessage(rawResponse, null);
+        StunHeader responseHeader = parsedResponse.getHeader();
+        Assert.assertEquals("Message class of response header is ERROR",
+                MessageClass.ERROR,
+                responseHeader.getMessageClass());
     }
 }
