@@ -54,4 +54,28 @@ public class PairArgumentDefinitionTest {
 
         Assert.assertEquals("-n", definition.getShortKey());
     }
+
+    @Test(expected = ArgumentParseRuntimeException.class)
+    public void testParseInvalidConstructorException() throws ArgumentParseException {
+        ArgumentDefinition<Object> definition
+                = new PairArgumentDefinition<>(Object.class,
+                "--blah",
+                "-b",
+                123,
+                "test invalid class");
+
+        definition.parse("77");
+    }
+
+    @Test(expected = ArgumentParseException.class)
+    public void testParseMissingString() throws ArgumentParseException {
+        ArgumentDefinition<Object> definition
+                = new PairArgumentDefinition<>(Object.class,
+                "--blah",
+                "-b",
+                123,
+                "test invalid class");
+
+            definition.parse(null);
+    }
 }

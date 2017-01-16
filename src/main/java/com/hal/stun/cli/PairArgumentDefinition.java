@@ -27,7 +27,7 @@ public class PairArgumentDefinition<T> extends ArgumentDefinition<T> {
         } catch (InvocationTargetException exception) {
             throw new ArgumentParseException("could not parse value \"" + stringValue +
                     "\" for argument " + key, exception.getCause());
-        } catch (Exception exception) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException exception) {
             throw new ArgumentParseRuntimeException(exception);
         }
         return new Argument(value);
