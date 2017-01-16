@@ -45,15 +45,18 @@ public class ArgumentParser {
 
     private static Map<String, ArgumentDefinition> buildDefinitions() {
         Map<String, ArgumentDefinition> newDefinitions = new HashMap<>();
-        addDefinition(newDefinitions, new FlagArgumentDefinition("--help",
+        addDefinition(newDefinitions, new FlagArgumentDefinition(
+                "--help",
                 "-h",
                 false,
                 "Show help"));
-        addDefinition(newDefinitions, new FlagArgumentDefinition(TCP_KEY,
+        addDefinition(newDefinitions, new FlagArgumentDefinition(
+                TCP_KEY,
                 "-tcp",
                 new TCPDefaultConditionalValue(),
                 "Run TCP STUN Server (can be used with --udp)"));
-        addDefinition(newDefinitions, new FlagArgumentDefinition(UDP_KEY,
+        addDefinition(newDefinitions, new FlagArgumentDefinition(
+                UDP_KEY,
                 "-udp",
                 false,
                 "Run UDP STUN Server (can be used with --tcp)"));
