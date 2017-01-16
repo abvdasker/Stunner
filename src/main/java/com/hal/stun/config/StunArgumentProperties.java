@@ -27,7 +27,6 @@ public class StunArgumentProperties extends StunProperties {
     ) {
         Argument udpArgument = parsedArguments.get(UDP_KEY);
         Argument tcpArgument = parsedArguments.get(TCP_KEY);
-        System.out.println(parsedArguments);
         if ((tcpArgument != null && tcpArgument.wasSet()) || (udpArgument != null && udpArgument.getBoolean())) {
             properties.setProperty(TCP_SERVE_PROPERTY, tcpArgument.toString());
         }
